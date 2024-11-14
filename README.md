@@ -8,8 +8,9 @@ This is a Compose Multiplatform adaptation of the [Android News App](https://git
 ### Set up:
 
 #### To run the app:
-1. Create a local.properties file in the root of the project.
-2. Add a line `API_KEY=your_newsapi.org_key_here`
+1. Get your Api key at [NewsAPI.org](https://newsapi.org/)
+2. Create a local.properties file in the root of the project.
+3. Add a line `API_KEY=your_newsapi.org_key_here`
 
 #### This is a showcase app intended to for my own learning purposes and to demonstrate the usage of:
 
