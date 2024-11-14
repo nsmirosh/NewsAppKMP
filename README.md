@@ -1,21 +1,21 @@
-This is a Kotlin Multiplatform project targeting Android, iOS, Web, Desktop.
+# Clean Architecture MVVM Compose Multiplatform News App
 
-* `/composeApp` is for code that will be shared across your Compose Multiplatform applications.
-  It contains several subfolders:
-  - `commonMain` is for code that’s common for all targets.
-  - Other folders are for Kotlin code that will be compiled for only the platform indicated in the folder name.
-    For example, if you want to use Apple’s CoreCrypto for the iOS part of your Kotlin app,
-    `iosMain` would be the right folder for such calls.
+### App description
+This is a simple app that displays a list of news article from [NewsAPI.org](https://newsapi.org/).
 
-* `/iosApp` contains iOS applications. Even if you’re sharing your UI with Compose Multiplatform, 
-  you need this entry point for your iOS app. This is also where you should add SwiftUI code for your project.
+This is a Compose Multiplatform adaptation of the [Android News App](https://github.com/nsmirosh/NewsApp). 
 
+### Set up:
 
-Learn more about [Kotlin Multiplatform](https://www.jetbrains.com/help/kotlin-multiplatform-dev/get-started.html),
-[Compose Multiplatform](https://github.com/JetBrains/compose-multiplatform/#compose-multiplatform),
-[Kotlin/Wasm](https://kotl.in/wasm/)…
+#### To run the app:
+1. Create a local.properties file in the root of the project.
+2. Add a line `API_KEY=your_newsapi.org_key_here`
 
-We would appreciate your feedback on Compose/Web and Kotlin/Wasm in the public Slack channel [#compose-web](https://slack-chats.kotlinlang.org/c/compose-web).
-If you face any issues, please report them on [GitHub](https://github.com/JetBrains/compose-multiplatform/issues).
+#### This is a showcase app intended to for my own learning purposes and to demonstrate the usage of:
 
-You can open the web application by running the `:composeApp:wasmJsBrowserDevelopmentRun` Gradle task.# NewsAppKMP
+- Kotlin
+- Compose
+- MVVM Clean Architecture
+- Koin
+- Coroutines
+- Ktor
