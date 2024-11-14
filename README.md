@@ -1,6 +1,9 @@
 # Clean Architecture MVVM Compose Multiplatform News App
 
 ### App description
+
+Disclaimer: This is a WIP - do not expect everything to work here pefectly :) 
+
 This is a simple app that displays a list of news article from [NewsAPI.org](https://newsapi.org/).
 
 This is a Compose Multiplatform adaptation of the [Android News App](https://github.com/nsmirosh/NewsApp). 

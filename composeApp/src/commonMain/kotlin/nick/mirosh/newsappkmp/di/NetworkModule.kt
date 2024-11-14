@@ -33,9 +33,7 @@ val networkModule = module {
                 url {
                     protocol = URLProtocol.HTTPS
                     host = "newsapi.org"
-//                    header("X-Api-Key", BuildConfig.API_KEY)
-                    header("X-Api-Key", "adcaafd32edf41d9b6cf341b71cafcaa")
-
+                    header("X-Api-Key", BuildConfig.API_KEY)
                 }
             }
         }
