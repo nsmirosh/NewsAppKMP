@@ -3,10 +3,13 @@ package nick.mirosh.newsappkmp.ui.feed
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -104,38 +107,36 @@ fun ArticleFeed(
         Scaffold(
             modifier = modifier,
             content = {
-                LazyColumn(
-                    modifier = modifier.padding(it)
-                ) {
-                    items(articles, key = { article -> article.url }) { article ->
-                        ArticleItem(
-                            article = article,
-                            onArticleClick = onArticleClick,
-//                            onLikeClick = onLikeClick
-                        )
-                    }
-                }
+                FeedList(
+                    articles = articles,
+                    onArticleClick = onArticleClick
+                )
             },
-            floatingActionButton = {
-                FloatingActionButton(
-                    onClick = onSavedArticlesClicked,
-                    modifier = Modifier.padding(bottom = 16.dp, end = 16.dp)
-                ) {
-//                    Icon(
-//                        modifier = Modifier.size(32.dp),
-//                        imageVector = ImageVector.vectorResource(id = R.drawable.save),
-//                        contentDescription = "Save"
-//                    )
-                }
-            },
-            floatingActionButtonPosition = FabPosition.End,
         )
     }
 }
 
 
 @Composable
-fun LikeButton(
+fun FeedList( articles: List<Article>, onArticleClick: (Article) -> Unit, modifier: Modifier = Modifier,) {
+
+    LazyColumn(
+        modifier = modifier,
+//        modifier = modifier.padding(it)
+    ) {
+        items(articles, key = { article -> article.url }) { article ->
+            ArticleItem(
+                article = article,
+                onArticleClick = onArticleClick,
+//                            onLikeClick = onLikeClick
+            )
+        }
+    }
+}
+
+
+@Composable
+fun SaveButton(
     liked: Boolean,
     modifier: Modifier = Modifier,
     onLikeCLick: () -> Unit
@@ -148,8 +149,8 @@ fun LikeButton(
     ) {
         Icon(
             imageVector = if (liked) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
-            contentDescription = "Favorite",
-            tint = if (liked) Color.Red else Color.Black,
+            contentDescription = "Save For Later",
+            tint = if (liked) Color.Red else Color.Gray,
             modifier = Modifier.size(24.dp)
         )
     }
@@ -162,7 +163,7 @@ fun ArticleItem(
     onArticleClick: (Article) -> Unit,
 //    onLikeClick: (Article) -> Unit
 ) {
-    Column {
+    Column(modifier = modifier) {
         Row(
             modifier = Modifier
                 .padding(16.dp)
@@ -170,15 +171,6 @@ fun ArticleItem(
                 .testTag("article_item"),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            AsyncImage(
-                contentScale = ContentScale.FillWidth,
-                modifier = Modifier
-                    .clickable { onArticleClick(article) }
-                    .width(150.dp)
-                    .clip(shape = RoundedCornerShape(4.dp)),
-                model = article.urlToImage,
-                contentDescription = "Article image"
-            )
 
 
             Column(
@@ -198,50 +190,32 @@ fun ArticleItem(
                     overflow = TextOverflow.Ellipsis,
                 )
 
-                LikeButton(liked = article.liked) {
+                SaveButton(liked = article.liked) {
 //                onLikeClick(article)
                 }
             }
+
+            if (article.urlToImage.isNotEmpty()) {
+                AsyncImage(
+                    contentScale = ContentScale.FillWidth,
+                    modifier = Modifier
+                        .clickable { onArticleClick(article) }
+                        .width(150.dp)
+                        .clip(shape = RoundedCornerShape(4.dp)),
+                    model = article.urlToImage,
+                    contentDescription = "Article image"
+                )
+            }
         }
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(1.dp)
+                .background(Color.Gray)
+        )
     }
 }
 
-@Preview
-@Composable
-fun FeedScreenContentPreview() {
-
-    FeedScreenContent(
-        uiState = FeedUIState.Feed(
-            listOf(
-                Article(
-                    title = "Title 1",
-                    description = "Description 1",
-                    url = "url1",
-                    urlToImage = "urlToImage1",
-                    liked = false,
-                    source = Source("id", "name"),
-                    author = "author",
-                    content = "content",
-                    publishedAt = "publishedAt",
-                ),
-                Article(
-                   title = "Title 1",
-                    description = "Description 1",
-                    url = "url1",
-                    urlToImage = "urlToImage1",
-                    liked = false,
-                    source = Source("id", "name"),
-                    author = "author",
-                    content = "content",
-                    publishedAt = "publishedAt",
-                ),
-            )
-        ),
-        onArticleClick = {},
-        onSavedArticlesClicked = {}
-    )
-
-}
 
 //@Composable
 //fun NoNetworkState() {
