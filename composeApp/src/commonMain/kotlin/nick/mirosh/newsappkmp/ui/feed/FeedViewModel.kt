@@ -23,17 +23,19 @@ class FeedViewModel(
 
     init {
         viewModelScope.launch {
-                    fetchArticles()
-            }
+            fetchArticles()
         }
+    }
 
     private suspend fun fetchArticles() {
         _uiState.value = FeedUIState.Loading
         _uiState.value = when (val result = fetchArticlesUsecase("us")) {
             is Result.Success -> {
-                println("fetchArticles: result.data.size = ${result.data.size}")
                 _articles.clear()
-                _articles.addAll(result.data)
+                result.data.forEach {
+                    println("it = $it")
+                }
+                _articles.addAll(result.data.filterNot { it.title.lowercase().contains("removed") })
                 if (result.data.isNotEmpty()) FeedUIState.Feed(articles) else FeedUIState.Empty
             }
 

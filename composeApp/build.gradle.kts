@@ -11,13 +11,13 @@ plugins {
     alias(libs.plugins.buildConfig)
 }
 
-//
-//val properties = Properties()
-//properties.load(project.rootProject.file("local.properties").inputStream())
-//
-//buildConfig {
-//    buildConfigField("API_KEY", properties.getProperty("API_KEY"))
-//}
+
+val properties = Properties()
+properties.load(project.rootProject.file("local.properties").inputStream())
+
+buildConfig {
+    buildConfigField("API_KEY", properties.getProperty("API_KEY"))
+}
 
 kotlin {
     androidTarget {
@@ -97,6 +97,9 @@ android {
         getByName("release") {
             isMinifyEnabled = false
         }
+    }
+    buildFeatures {
+        compose = true
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11

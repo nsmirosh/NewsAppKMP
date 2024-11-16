@@ -23,3 +23,5 @@ This is a Compose Multiplatform adaptation of the [Android News App](https://git
 - Koin
 - Coroutines
 - Ktor
+
+Design inspired by [Tomas Nozina](https://dribbble.com/shots/15246621-Denn-k-N-News-App)

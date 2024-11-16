@@ -1,6 +1,9 @@
 package nick.mirosh.newsapp.domain.feed.model
 
+import nick.mirosh.newsappkmp.domain.feed.model.Source
+
 data class Article(
+    val source: Source,
     val author: String,
     val content: String,
     val description: String,

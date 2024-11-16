@@ -18,6 +18,7 @@ data class ArticleDTO(
 ) {
 
     fun toArticle() = Article(
+        source = source?.toSource() ?: SourceDTO().toSource(),
         author = author.orEmpty(),
         content = content.orEmpty(),
         description = description.orEmpty(),
