@@ -149,8 +149,8 @@ fun FeedList(
 @Composable
 fun SaveButton(
     liked: Boolean,
+    onLikeCLick: () -> Unit,
     modifier: Modifier = Modifier,
-    onLikeCLick: () -> Unit
 ) {
     IconButton(
         modifier = modifier,
@@ -169,12 +169,12 @@ fun SaveButton(
 
 @Composable
 fun ArticleItem(
-    modifier: Modifier = Modifier,
     article: Article,
     onArticleClick: (Article) -> Unit,
+    modifier: Modifier = Modifier,
 //    onLikeClick: (Article) -> Unit
 ) {
-    Column {
+    Column(modifier = modifier) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
