@@ -3,8 +3,10 @@ package nick.mirosh.newsappkmp.ui.feed
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -16,10 +18,9 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.FabPosition
-import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
@@ -36,14 +37,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.platform.testTag
-import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import coil3.annotation.ExperimentalCoilApi
 import coil3.compose.AsyncImage
+import kotlinproject.composeapp.generated.resources.Res
+import kotlinproject.composeapp.generated.resources.compose_multiplatform
 import nick.mirosh.newsapp.domain.feed.model.Article
-import nick.mirosh.newsappkmp.domain.feed.model.Source
-import org.jetbrains.compose.ui.tooling.preview.Preview
+import org.jetbrains.compose.resources.painterResource
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
@@ -108,6 +114,7 @@ fun ArticleFeed(
             modifier = modifier,
             content = {
                 FeedList(
+                    modifier = Modifier.padding(16.dp),
                     articles = articles,
                     onArticleClick = onArticleClick
                 )
@@ -118,7 +125,11 @@ fun ArticleFeed(
 
 
 @Composable
-fun FeedList( articles: List<Article>, onArticleClick: (Article) -> Unit, modifier: Modifier = Modifier,) {
+fun FeedList(
+    articles: List<Article>,
+    onArticleClick: (Article) -> Unit,
+    modifier: Modifier = Modifier,
+) {
 
     LazyColumn(
         modifier = modifier,
@@ -151,7 +162,7 @@ fun SaveButton(
             imageVector = if (liked) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
             contentDescription = "Save For Later",
             tint = if (liked) Color.Red else Color.Gray,
-            modifier = Modifier.size(24.dp)
+            modifier = Modifier.size(16.dp)
         )
     }
 }
@@ -163,49 +174,66 @@ fun ArticleItem(
     onArticleClick: (Article) -> Unit,
 //    onLikeClick: (Article) -> Unit
 ) {
-    Column(modifier = modifier) {
+    Column {
         Row(
             modifier = Modifier
-                .padding(16.dp)
                 .fillMaxWidth()
+                .padding(top = 16.dp)
                 .testTag("article_item"),
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.Top
         ) {
-
-
-            Column(
+            Text(
                 modifier = Modifier
-                    .padding(start = 8.dp)
-                    .weight(1f)
-            ) {
-                Text(
-                    text = article.title,
-                    maxLines = 2,
-                    overflow = TextOverflow.Ellipsis
-                )
-
-                Text(
-                    text = article.description,
-                    maxLines = 2,
-                    overflow = TextOverflow.Ellipsis,
-                )
-
-                SaveButton(liked = article.liked) {
-//                onLikeClick(article)
-                }
-            }
+                    .fillMaxWidth()
+                    .weight(1f),
+                text = article.title,
+                style = TextStyle(fontWeight = FontWeight.Bold, fontSize = 16.sp)
+            )
 
             if (article.urlToImage.isNotEmpty()) {
-                AsyncImage(
-                    contentScale = ContentScale.FillWidth,
-                    modifier = Modifier
-                        .clickable { onArticleClick(article) }
-                        .width(150.dp)
-                        .clip(shape = RoundedCornerShape(4.dp)),
-                    model = article.urlToImage,
-                    contentDescription = "Article image"
-                )
+                val imageModifier = Modifier
+                    .clickable { onArticleClick(article) }
+                    .width(150.dp)
+                    .padding(start = 16.dp)
+                    .clip(shape = RoundedCornerShape(8.dp))
+                //If we're not in Preview mode
+                if (!LocalInspectionMode.current) {
+                    AsyncImage(
+                        contentScale = ContentScale.Crop,
+                        modifier = imageModifier,
+                        model = article.urlToImage,
+                        contentDescription = "Article image"
+                    )
+                } else {
+                    //For Preview mode
+                    Image(
+                        modifier = imageModifier,
+                        painter = painterResource(Res.drawable.compose_multiplatform),
+                        contentDescription = "Article image",
+                    )
+                }
+
             }
+        }
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                modifier = Modifier,
+                text = article.author,
+                style = TextStyle(
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 12.sp,
+                    color = Color.Gray
+                )
+            )
+
+            SaveButton(
+                liked = article.liked,
+                onLikeCLick = { /*onLikeClick(article)*/ }
+            )
         }
         Box(
             modifier = Modifier
@@ -215,9 +243,6 @@ fun ArticleItem(
         )
     }
 }
-
-
-//@Composable
 //fun NoNetworkState() {
 //    Column(
 //        modifier = Modifier.fillMaxSize(),

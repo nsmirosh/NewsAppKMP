@@ -40,6 +40,7 @@ androidx-ui-android = { group = "androidx.compose.ui", name = "ui-android", vers
 androidx-material3-android = { group = "androidx.compose.material3", name = "material3-android", version.ref = "material3Android" }
 coil-compose = {group = "io.coil-kt.coil3", name="coil-compose", version.ref = "coil"}
 coil-network = {group = "io.coil-kt.coil3", name="coil-network-ktor3", version.ref = "coil"}
+coil-test = {group = "io.coil-kt.coil3", name ="coil-test", version.ref = "coil"}
 ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
 ktor-client-logging = {module = "io.ktor:ktor-client-logging", version.ref = "ktor" }
 ktor-client-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktor" }
