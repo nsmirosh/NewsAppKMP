@@ -17,11 +17,18 @@ This is a Compose Multiplatform adaptation of the [Android News App](https://git
 
 #### This is a showcase app intended to for my own learning purposes and to demonstrate the usage of:
 
+Implemented / In progress:
 - Kotlin
 - Compose
 - MVVM Clean Architecture
 - Koin
 - Coroutines
 - Ktor
+
+Planned: 
+- Room
+- Sensor management
+- Permission handling
+- Work with native components
 
 Design inspired by [Tomas Nozina](https://dribbble.com/shots/15246621-Denn-k-N-News-App)
