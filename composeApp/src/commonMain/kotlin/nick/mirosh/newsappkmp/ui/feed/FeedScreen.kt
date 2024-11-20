@@ -54,13 +54,14 @@ import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun FeedScreen(
+    onArticleClick: (Article) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: FeedViewModel = koinViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     FeedScreenContent(
         uiState = uiState,
-        onArticleClick = { /*onArticleClick(it)*/ },
+        onArticleClick = { onArticleClick(it) },
         onSavedArticlesClicked = { /*onSavedArticlesClicked()*/ },
         modifier = modifier
     )
