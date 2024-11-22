@@ -1,4 +1,4 @@
-package nick.mirosh.newsappkmp.ui
+package nick.mirosh.newsappkmp.ui.feed
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
@@ -7,7 +7,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import nick.mirosh.newsapp.domain.feed.model.Article
 import nick.mirosh.newsappkmp.domain.feed.model.Source
-import nick.mirosh.newsappkmp.ui.feed.FeedList
 
 @Preview(showBackground = true)
 @Composable

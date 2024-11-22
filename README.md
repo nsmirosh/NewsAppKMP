@@ -17,7 +17,7 @@ This is a Compose Multiplatform adaptation of the [Android News App](https://git
 
 #### This is a showcase app intended to for my own learning purposes and to demonstrate the usage of:
 
-Implemented / In progress:
+Implemented :
 - Kotlin
 - Compose
 - MVVM Clean Architecture
@@ -25,6 +25,9 @@ Implemented / In progress:
 - Coroutines
 - Ktor
 - Navigation using [Voyager](https://voyager.adriel.cafe/)
+
+In Progress:
+- WebView
 
 Planned: 
 - Room
