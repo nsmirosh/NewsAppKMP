@@ -20,7 +20,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
@@ -44,11 +43,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import coil3.annotation.ExperimentalCoilApi
+import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.currentOrThrow
 import coil3.compose.AsyncImage
 import kotlinproject.composeapp.generated.resources.Res
 import kotlinproject.composeapp.generated.resources.compose_multiplatform
 import nick.mirosh.newsapp.domain.feed.model.Article
+import nick.mirosh.newsappkmp.ui.article.DetailsScreen
 import org.jetbrains.compose.resources.painterResource
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -65,6 +67,21 @@ fun FeedScreen(
         onSavedArticlesClicked = { /*onSavedArticlesClicked()*/ },
         modifier = modifier
     )
+}
+
+class FeedScreenVoyager: Screen {
+
+    @Composable
+    override fun Content() {
+        val navigator = LocalNavigator.currentOrThrow
+        FeedScreen(
+            onArticleClick = {
+                navigator.push(
+                    DetailsScreen(it.url)
+                )
+            }
+        )
+    }
 }
 
 @Composable
@@ -134,7 +151,6 @@ fun FeedList(
 
     LazyColumn(
         modifier = modifier,
-//        modifier = modifier.padding(it)
     ) {
         items(articles, key = { article -> article.url }) { article ->
             ArticleItem(

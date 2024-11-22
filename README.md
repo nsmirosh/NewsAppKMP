@@ -24,6 +24,7 @@ Implemented / In progress:
 - Koin
 - Coroutines
 - Ktor
+- Navigation using [Voyager](https://voyager.adriel.cafe/)
 
 Planned: 
 - Room

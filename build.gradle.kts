@@ -2,6 +2,7 @@
 repositories {
     google()
     mavenCentral() // Add this if it's missing
+    maven("https://jogamp.org/deployment/maven")
     // any other repositories you need
 }
 plugins {
