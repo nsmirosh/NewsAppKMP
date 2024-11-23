@@ -50,6 +50,8 @@ kotlin {
         }
         commonMain.dependencies {
             implementation(compose.runtime)
+
+            implementation(libs.kotlinx.datetime)
             implementation(compose.foundation)
             implementation(compose.material)
             implementation(compose.ui)
@@ -115,5 +117,6 @@ android {
 dependencies {
     implementation(libs.androidx.ui.android)
     implementation(libs.androidx.material3.android)
+    implementation(libs.androidx.core.i18n)
     debugImplementation(compose.uiTooling)
 }

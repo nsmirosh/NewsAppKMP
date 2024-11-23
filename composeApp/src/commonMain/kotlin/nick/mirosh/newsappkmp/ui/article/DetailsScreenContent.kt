@@ -13,27 +13,18 @@ import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import coil3.compose.AsyncImage
-import com.multiplatform.webview.web.WebView
-import com.multiplatform.webview.web.rememberWebViewState
 import kotlinproject.composeapp.generated.resources.Res
 import kotlinproject.composeapp.generated.resources.compose_multiplatform
+import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.format.DateTimeComponents
 import nick.mirosh.newsapp.domain.feed.model.Article
 import org.jetbrains.compose.resources.painterResource
 
-@Composable
-fun DetailsScreenContent(
-    articleUrl: String,
-    modifier: Modifier = Modifier,
-) {
-    val state = rememberWebViewState(articleUrl)
-    WebView(state, modifier)
-}
-
 //voyager Details Screen
-class DetailsScreen(private val articleUrl: String) : Screen {
+class DetailsScreen(private val article: Article) : Screen {
     @Composable
     override fun Content() {
-        DetailsScreenContent(articleUrl = articleUrl)
+        DetailsScreenContent(article)
     }
 }
 
@@ -48,9 +39,9 @@ fun DetailsScreenContent(
             .fillMaxSize()
             .padding(16.dp)
     ) {
-
         Text(article.title)
         Text(article.author)
+        Text(formatDateTime(article.publishedAt))
         val imageModifier = Modifier.fillMaxWidth()
         if (!LocalInspectionMode.current) {
             AsyncImage(
@@ -72,6 +63,16 @@ fun DetailsScreenContent(
     }
 }
 
-
+fun formatDateTime(dateString: String) =
+    try {
+        DateTimeComponents.Formats.ISO_DATE_TIME_OFFSET.parse(dateString).run {
+            "${
+                month?.name?.lowercase()?.replaceFirstChar { it.uppercase() }
+            }, $dayOfMonth, $year $hour:$minute"
+        }
+    } catch (e: Exception) {
+        e.printStackTrace()
+        ""
+    }
 
 

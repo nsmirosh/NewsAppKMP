@@ -18,7 +18,7 @@ fun DetailsScreenContentPreview() {
         source = Source("id", "name"),
         author = "Anthony Faiola, Niha Masih",
         content = "content",
-        publishedAt = "publishedAt",
+        publishedAt = "2024-11-21T10:47:00Z",
     )
     DetailsScreenContent(article = article)
 }

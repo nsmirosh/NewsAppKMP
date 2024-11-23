@@ -23,7 +23,7 @@ fun FeedScreenContentPreview() {
                 source = Source("id", "name"),
                 author = "Anthony Faiola, Niha Masih",
                 content = "content",
-                publishedAt = "publishedAt",
+                publishedAt = "2024-11-21T05:37:29Z",
             ),
 
             Article(
@@ -35,7 +35,7 @@ fun FeedScreenContentPreview() {
                 source = Source("id2", "name2"),
                 author = "Taylor Nicioli",
                 content = "content2",
-                publishedAt = "publishedAt2",
+                publishedAt = "2024-11-21T10:47:00Z",
             ),
         ),
         onArticleClick = {},

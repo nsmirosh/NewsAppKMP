@@ -77,7 +77,7 @@ class FeedScreenVoyager: Screen {
         FeedScreen(
             onArticleClick = {
                 navigator.push(
-                    DetailsScreen(it.url)
+                    DetailsScreen(it)
                 )
             }
         )

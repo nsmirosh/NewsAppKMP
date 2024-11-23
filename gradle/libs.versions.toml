@@ -11,6 +11,7 @@ kotlin = "2.0.21"
 androidx-navigation = "2.8.0-alpha10"
 koin = "4.0.0"
 koinComposeMultiplatform = "4.0.0"
+kotlinxDatetime = "0.6.0"
 lifecycleViewModel = "2.8.7"
 uiAndroid = "1.7.5"
 
@@ -23,9 +24,11 @@ coroutines = "1.9.0"
 kotlinx-serialization = "1.7.3"
 gmazzoBuildConfig = "5.5.0"
 voyager = "1.1.0-beta02"
+coreI18n = "1.0.0-alpha01"
 
 
 [libraries]
+kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinxDatetime" }
 voyager-navigator = { module = "cafe.adriel.voyager:voyager-navigator", version.ref = "voyager" }
 voyager-screenModel = { module = "cafe.adriel.voyager:voyager-screenmodel", version.ref = "voyager" }
 voyager-bottomSheetNavigator = { module = "cafe.adriel.voyager:voyager-bottom-sheet-navigator", version.ref = "voyager" }
@@ -58,6 +61,7 @@ ktor-negotiation = {module ="io.ktor:ktor-client-content-negotiation", version.r
 
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
 kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
+androidx-core-i18n = { group = "androidx.core", name = "core-i18n", version.ref = "coreI18n" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

@@ -34,7 +34,6 @@ class FeedViewModel(
                 _articles.clear()
                 result.data.forEach {
                     println("it = $it")
-
                 }
                 _articles.addAll(result.data.filterNot { it.title.lowercase().contains("removed") })
                 if (result.data.isNotEmpty()) FeedUIState.Feed(articles) else FeedUIState.Empty
