@@ -1,6 +1,7 @@
 package nick.mirosh.newsappkmp.ui.feed
 
 import androidx.compose.animation.AnimatedVisibility
+import kotlinx.datetime.format.DateTimeComponents
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.Image
@@ -10,6 +11,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -65,11 +67,11 @@ fun FeedScreen(
         uiState = uiState,
         onArticleClick = { onArticleClick(it) },
         onSavedArticlesClicked = { /*onSavedArticlesClicked()*/ },
-        modifier = modifier
+        modifier = modifier.fillMaxSize()
     )
 }
 
-class FeedScreenVoyager: Screen {
+class FeedScreenVoyager : Screen {
 
     @Composable
     override fun Content() {
@@ -191,7 +193,7 @@ fun ArticleItem(
     modifier: Modifier = Modifier,
 //    onLikeClick: (Article) -> Unit
 ) {
-    Column(modifier = modifier) {
+    Column(modifier = modifier.clickable { onArticleClick(article) }) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -209,7 +211,6 @@ fun ArticleItem(
 
             if (article.urlToImage.isNotEmpty()) {
                 val imageModifier = Modifier
-                    .clickable { onArticleClick(article) }
                     .width(150.dp)
                     .padding(start = 16.dp)
                     .clip(shape = RoundedCornerShape(8.dp))
@@ -237,15 +238,25 @@ fun ArticleItem(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(
-                modifier = Modifier,
-                text = article.author,
-                style = TextStyle(
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 12.sp,
-                    color = Color.Gray
+            Column {
+                Text(
+                    modifier = Modifier.padding(top = 8.dp, bottom = 4.dp),
+                    text = formatDateTime(article.publishedAt),
+                    style = TextStyle(
+                        fontSize = 12.sp,
+                        color = Color.Black
+                    )
                 )
-            )
+                Text(
+                    modifier = Modifier,
+                    text = article.author,
+                    style = TextStyle(
+//                        fontWeight = FontWeight.Bold,
+                        fontSize = 12.sp,
+                        color = Color.Gray
+                    )
+                )
+            }
 
             SaveButton(
                 liked = article.liked,
@@ -260,6 +271,18 @@ fun ArticleItem(
         )
     }
 }
+
+fun formatDateTime(dateString: String) =
+    try {
+        DateTimeComponents.Formats.ISO_DATE_TIME_OFFSET.parse(dateString).run {
+            "${
+                month?.name?.lowercase()?.replaceFirstChar { it.uppercase() }
+            } $dayOfMonth, $year $hour:${minute?.let {if (it > 9) minute else "0$minute"}}"
+        }
+    } catch (e: Exception) {
+        e.printStackTrace()
+        ""
+    }
 //fun NoNetworkState() {
 //    Column(
 //        modifier = Modifier.fillMaxSize(),
