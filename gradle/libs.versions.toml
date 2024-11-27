@@ -13,6 +13,7 @@ koin = "4.0.0"
 koinComposeMultiplatform = "4.0.0"
 kotlinxDatetime = "0.6.0"
 lifecycleViewModel = "2.8.7"
+room = "2.7.0-alpha11"
 uiAndroid = "1.7.5"
 
 material3Android = "1.3.1"
@@ -28,6 +29,8 @@ coreI18n = "1.0.0-alpha01"
 
 
 [libraries]
+room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
+room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinxDatetime" }
 voyager-navigator = { module = "cafe.adriel.voyager:voyager-navigator", version.ref = "voyager" }
 voyager-screenModel = { module = "cafe.adriel.voyager:voyager-screenmodel", version.ref = "voyager" }
@@ -71,5 +74,6 @@ compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 buildConfig = { id = "com.github.gmazzo.buildconfig", version.ref = "gmazzoBuildConfig" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "kotlin" }
 
 

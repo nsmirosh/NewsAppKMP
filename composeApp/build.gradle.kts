@@ -9,6 +9,8 @@ plugins {
     alias(libs.plugins.jetbrainsCompose)
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.buildConfig)
+//    alias(libs.plugins.ksp)
+    id("com.google.devtools.ksp") version "2.0.21-1.0.25"
 }
 
 
@@ -77,6 +79,8 @@ kotlin {
             implementation(libs.voyager.navigator)
             implementation(libs.voyager.koin)
             implementation(libs.voyager.screenModel)
+            implementation(libs.room.runtime)
+//            add(libs.room.compiler)
         }
         iosMain.dependencies {
             implementation(libs.ktor.client.darwin)
