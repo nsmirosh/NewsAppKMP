@@ -12,7 +12,7 @@ import nick.mirosh.newsapp.domain.feed.usecase.FetchArticlesUsecase
 
 class FeedViewModel(
     private val fetchArticlesUsecase: FetchArticlesUsecase,
-//    private val likeArticleUsecase: LikeArticleUsecase,
+    private val likeArticleUsecase: LikeArticleUsecase,
 ) : ViewModel() {
 
     private val _articles = mutableStateListOf<Article>()

@@ -25,6 +25,7 @@ kotlin {
     androidTarget {
         @OptIn(ExperimentalKotlinGradlePluginApi::class)
         compilerOptions {
+            //Specifying the target JVM version to avoid compilation errors
             jvmTarget.set(JvmTarget.JVM_11)
         }
     }
