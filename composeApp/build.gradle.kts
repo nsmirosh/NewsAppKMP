@@ -77,6 +77,7 @@ kotlin {
             implementation(libs.voyager.navigator)
             implementation(libs.voyager.koin)
             implementation(libs.voyager.screenModel)
+            implementation(libs.voyager.tabNavigator)
         }
         iosMain.dependencies {
             implementation(libs.ktor.client.darwin)
