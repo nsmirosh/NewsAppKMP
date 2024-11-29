@@ -74,7 +74,6 @@ fun FeedScreen(
     FeedScreenContent(
         uiState = uiState,
         onArticleClick = { onArticleClick(it) },
-        onSavedArticlesClicked = { /*onSavedArticlesClicked()*/ },
         modifier = modifier.fillMaxSize()
     )
 }
@@ -93,34 +92,11 @@ class FeedScreenVoyager : Screen {
         )
     }
 }
-object HomeTab : Tab {
-
-    override val options: TabOptions
-        @Composable
-        get() {
-            val title = stringResource(Res.string.article)
-            val icon = rememberVectorPainter(Icons.Default.Home)
-
-            return remember {
-                TabOptions(
-                    index = 0u,
-                    title = title,
-                    icon = icon
-                )
-            }
-        }
-
-    @Composable
-    override fun Content() {
-        Navigator(FeedScreenVoyager())
-    }
-}
 
 @Composable
 fun FeedScreenContent(
     uiState: FeedUIState,
     onArticleClick: (Article) -> Unit,
-    onSavedArticlesClicked: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     with(uiState) {
@@ -130,7 +106,6 @@ fun FeedScreenContent(
                     modifier = modifier,
                     articles = articles,
                     onArticleClick = onArticleClick,
-                    onSavedArticlesClicked = onSavedArticlesClicked
                 )
 
             else -> {
@@ -147,7 +122,6 @@ fun ArticleFeed(
     articles: List<Article>,
     onArticleClick: (Article) -> Unit,
 //    onLikeClick: (Article) -> Unit,
-    onSavedArticlesClicked: () -> Unit
 ) {
     var isVisible by remember { mutableStateOf(false) }
 
@@ -164,7 +138,7 @@ fun ArticleFeed(
             modifier = modifier,
             content = {
                 FeedList(
-                    modifier = Modifier.padding(16.dp),
+                    modifier = Modifier.padding(top = 16.dp, start = 16.dp, end = 16.dp),
                     articles = articles,
                     onArticleClick = onArticleClick
                 )
@@ -270,22 +244,23 @@ fun ArticleItem(
         ) {
             Column {
                 Text(
-                    modifier = Modifier.padding(top = 8.dp, bottom = 4.dp),
+                    modifier = Modifier.padding(top = 8.dp),
                     text = formatDateTime(article.publishedAt),
                     style = TextStyle(
                         fontSize = 12.sp,
                         color = Color.Black
                     )
                 )
-                Text(
-                    modifier = Modifier,
-                    text = article.author,
-                    style = TextStyle(
-//                        fontWeight = FontWeight.Bold,
-                        fontSize = 12.sp,
-                        color = Color.Gray
+                if (article.author.isNotEmpty()) {
+                    Text(
+                        modifier = Modifier.padding(top = 4.dp),
+                        text = article.author,
+                        style = TextStyle(
+                            fontSize = 12.sp,
+                            color = Color.Gray
+                        )
                     )
-                )
+                }
             }
 
             SaveButton(
@@ -295,6 +270,7 @@ fun ArticleItem(
         }
         Box(
             modifier = Modifier
+                .padding(top = 8.dp)
                 .fillMaxWidth()
                 .height(1.dp)
                 .background(Color.Gray)
@@ -307,7 +283,7 @@ fun formatDateTime(dateString: String) =
         DateTimeComponents.Formats.ISO_DATE_TIME_OFFSET.parse(dateString).run {
             "${
                 month?.name?.lowercase()?.replaceFirstChar { it.uppercase() }
-            } $dayOfMonth, $year $hour:${minute?.let {if (it > 9) minute else "0$minute"}}"
+            } $dayOfMonth, $year $hour:${minute?.let { if (it > 9) minute else "0$minute" }}"
         }
     } catch (e: Exception) {
         e.printStackTrace()
