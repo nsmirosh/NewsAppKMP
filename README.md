@@ -25,8 +25,6 @@ Implemented :
 - Coroutines
 - Ktor
 - Navigation using [Voyager](https://voyager.adriel.cafe/)
-
-In Progress:
 - Date formatting using [Kotlinx DateTime](https://github.com/Kotlin/kotlinx-datetime)
 
 Planned: 
