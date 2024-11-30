@@ -4,11 +4,12 @@
 
 Disclaimer: 
 
-This is a WIP - do not expect everything to work here perfectly.
+This app is used for my own learning and is a WIP - do not expect everything to work here perfectly.
 The Compose UI for iOS and Room database are still in alpha - so don't expect them to work perfectly either.
 
 This is a simple app that displays a list of news article from [NewsAPI.org](https://newsapi.org/).
 It has the ability to preview the articles in a WebView and save them to favorites.
+The intent here is to try to share **as much as possible between Android and iOS**.
 
 This is a Compose Multiplatform adaptation of the [Android News App](https://github.com/nsmirosh/NewsApp). 
 
@@ -19,7 +20,7 @@ This is a Compose Multiplatform adaptation of the [Android News App](https://git
 2. Create a local.properties file in the root of the project.
 3. Add a line `API_KEY=your_newsapi.org_key_here`
 
-#### This is a showcase app intended to for my own learning purposes and to demonstrate the usage of:
+#### Technologies used
 
 - Kotlin
 - Compose
