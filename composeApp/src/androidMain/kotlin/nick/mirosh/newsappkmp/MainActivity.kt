@@ -3,9 +3,8 @@ package nick.mirosh.newsappkmp
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import cafe.adriel.voyager.navigator.Navigator
 import nick.mirosh.newsappkmp.di.KoinContainer
-import nick.mirosh.newsappkmp.ui.feed.FeedScreenVoyager
+import nick.mirosh.newsappkmp.ui.HomeNavigation
 import org.koin.android.ext.koin.androidContext
 
 class MainActivity : ComponentActivity() {
@@ -17,7 +16,7 @@ class MainActivity : ComponentActivity() {
         }
 
         setContent {
-            Navigator(FeedScreenVoyager())
+            HomeNavigation()
         }
     }
 }

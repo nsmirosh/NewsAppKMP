@@ -62,7 +62,6 @@ kotlin {
             implementation(compose.components.uiToolingPreview)
             implementation(libs.androidx.lifecycle.viewmodel)
             implementation(libs.androidx.lifecycle.runtime.compose)
-//            implementation(libs.androidx.navigation.compose)
             implementation(libs.coil.compose)
             implementation(libs.coil.network)
             implementation(libs.coil.test)
@@ -80,8 +79,6 @@ kotlin {
             implementation(libs.voyager.navigator)
             implementation(libs.voyager.koin)
             implementation(libs.voyager.screenModel)
-            implementation(libs.room.runtime)
-//            add(libs.room.compiler)
         }
         iosMain.dependencies {
             implementation(libs.ktor.client.darwin)
