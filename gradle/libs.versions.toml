@@ -8,7 +8,6 @@ androidx-lifecycle = "2.8.4"
 compose-plugin = "1.7.1"
 composeWebviewMultiplatform = "1.9.40-alpha04"
 kotlin = "2.0.21"
-androidx-navigation = "2.8.0-alpha10"
 koin = "4.0.0"
 koinComposeMultiplatform = "4.0.0"
 kotlinxDatetime = "0.6.0"
@@ -26,6 +25,7 @@ kotlinx-serialization = "1.7.3"
 gmazzoBuildConfig = "5.5.0"
 voyager = "1.1.0-beta02"
 coreI18n = "1.0.0-alpha01"
+ksp =  "2.0.21-1.0.25"
 
 
 [libraries]
@@ -59,7 +59,6 @@ ktor-client-darwin = { module = "io.ktor:ktor-client-darwin", version.ref = "kto
 ktor-serialization = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
 ktor-negotiation = {module ="io.ktor:ktor-client-content-negotiation", version.ref = "ktor" }
-
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
 kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
 androidx-core-i18n = { group = "androidx.core", name = "core-i18n", version.ref = "coreI18n" }
@@ -72,6 +71,6 @@ compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 buildConfig = { id = "com.github.gmazzo.buildconfig", version.ref = "gmazzoBuildConfig" }
-ksp = { id = "com.google.devtools.ksp", version.ref = "kotlin" }
+ksp = {id = "com.google.devtools.ksp", version.ref = "ksp"}
 
 

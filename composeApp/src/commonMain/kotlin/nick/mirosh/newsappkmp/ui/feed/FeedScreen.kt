@@ -67,6 +67,7 @@ import org.koin.compose.viewmodel.koinViewModel
 @Composable
 fun FeedScreen(
     onArticleClick: (Article) -> Unit,
+    onLikeClick: (Article) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: FeedViewModel = koinViewModel(),
 ) {
@@ -74,6 +75,7 @@ fun FeedScreen(
     FeedScreenContent(
         uiState = uiState,
         onArticleClick = { onArticleClick(it) },
+        onLikeClick = { onLikeClick(it) },
         modifier = modifier.fillMaxSize()
     )
 }
@@ -88,6 +90,11 @@ class FeedScreenVoyager : Screen {
                 navigator.push(
                     DetailsScreen(it)
                 )
+            },
+            onLikeClick = {
+                navigator.push(
+                    DetailsScreen(it)
+                )
             }
         )
     }
@@ -97,6 +104,7 @@ class FeedScreenVoyager : Screen {
 fun FeedScreenContent(
     uiState: FeedUIState,
     onArticleClick: (Article) -> Unit,
+    onLikeClick: (Article) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     with(uiState) {
@@ -106,6 +114,7 @@ fun FeedScreenContent(
                     modifier = modifier,
                     articles = articles,
                     onArticleClick = onArticleClick,
+                    onLikeClick = { onLikeClick }
                 )
 
             else -> {
@@ -121,7 +130,7 @@ fun ArticleFeed(
     modifier: Modifier = Modifier,
     articles: List<Article>,
     onArticleClick: (Article) -> Unit,
-//    onLikeClick: (Article) -> Unit,
+    onLikeClick: (Article) -> Unit,
 ) {
     var isVisible by remember { mutableStateOf(false) }
 
@@ -140,7 +149,8 @@ fun ArticleFeed(
                 FeedList(
                     modifier = Modifier.padding(top = 16.dp, start = 16.dp, end = 16.dp),
                     articles = articles,
-                    onArticleClick = onArticleClick
+                    onArticleClick = onArticleClick,
+                    onLikeClick = onLikeClick
                 )
             },
         )
@@ -152,6 +162,7 @@ fun ArticleFeed(
 fun FeedList(
     articles: List<Article>,
     onArticleClick: (Article) -> Unit,
+    onLikeClick: (Article) -> Unit,
     modifier: Modifier = Modifier,
 ) {
 
@@ -162,7 +173,7 @@ fun FeedList(
             ArticleItem(
                 article = article,
                 onArticleClick = onArticleClick,
-//                            onLikeClick = onLikeClick
+                onLikeClick = onLikeClick
             )
         }
     }
@@ -195,7 +206,7 @@ fun ArticleItem(
     article: Article,
     onArticleClick: (Article) -> Unit,
     modifier: Modifier = Modifier,
-//    onLikeClick: (Article) -> Unit
+    onLikeClick: (Article) -> Unit
 ) {
     Column(modifier = modifier.clickable { onArticleClick(article) }) {
         Row(
@@ -265,7 +276,7 @@ fun ArticleItem(
 
             SaveButton(
                 liked = article.liked,
-                onLikeCLick = { /*onLikeClick(article)*/ }
+                onLikeCLick = { onLikeClick(article) }
             )
         }
         Box(

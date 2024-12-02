@@ -9,6 +9,7 @@ import kotlinx.coroutines.launch
 import nick.mirosh.newsapp.domain.Result
 import nick.mirosh.newsapp.domain.feed.model.Article
 import nick.mirosh.newsapp.domain.feed.usecase.FetchArticlesUsecase
+import nick.mirosh.newsappkmp.domain.feed.usecase.LikeArticleUsecase
 
 class FeedViewModel(
     private val fetchArticlesUsecase: FetchArticlesUsecase,
@@ -42,20 +43,20 @@ class FeedViewModel(
             }
         }
     }
-//
-//    //https://stackoverflow.com/questions/74699081/jetpack-compose-lazy-column-all-items-recomposes-when-a-single-item-update
-//    fun onLikeClick(article: Article) {
-//        viewModelScope.launch {
-//            when (val result = likeArticleUsecase(article)) {
-//                is Result.Success -> {
-//                    val index = articles.indexOfFirst { it.url == result.data.url }
-//                    _articles[index] = result.data
-//                }
-//
-//                is Result.Error -> {
-////                    MyLogger.e("MainViewModel", "Error: ${result.error}")
-//                }
-//            }
-//        }
-//    }
+
+   //https://stackoverflow.com/questions/74699081/jetpack-compose-lazy-column-all-items-recomposes-when-a-single-item-update
+   fun onLikeClick(article: Article) {
+       viewModelScope.launch {
+           when (val result = likeArticleUsecase(article)) {
+               is Result.Success -> {
+                   val index = articles.indexOfFirst { it.url == result.data.url }
+                   _articles[index] = result.data
+               }
+
+               is Result.Error -> {
+//                    MyLogger.e("MainViewModel", "Error: ${result.error}")
+               }
+           }
+       }
+   }
 }

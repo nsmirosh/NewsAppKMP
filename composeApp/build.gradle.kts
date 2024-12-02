@@ -9,8 +9,7 @@ plugins {
     alias(libs.plugins.jetbrainsCompose)
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.buildConfig)
-//    alias(libs.plugins.ksp)
-    id("com.google.devtools.ksp") version "2.0.21-1.0.25"
+    alias(libs.plugins.ksp)
 }
 
 
@@ -42,7 +41,6 @@ kotlin {
     }
 
     sourceSets {
-
         androidMain.dependencies {
             implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
@@ -50,6 +48,9 @@ kotlin {
             implementation(libs.koin.androidx.compose)
             implementation(libs.ktor.client.okhttp)
             implementation(libs.kotlinx.coroutines.android)
+            implementation(libs.androidx.ui.android)
+            implementation(libs.androidx.material3.android)
+            implementation(libs.androidx.core.i18n)
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -79,6 +80,8 @@ kotlin {
             implementation(libs.voyager.navigator)
             implementation(libs.voyager.koin)
             implementation(libs.voyager.screenModel)
+            implementation(libs.voyager.tabNavigator)
+            implementation(libs.room.runtime)
         }
         iosMain.dependencies {
             implementation(libs.ktor.client.darwin)
@@ -115,10 +118,13 @@ android {
         targetCompatibility = JavaVersion.VERSION_11
     }
 }
+//room {
+//    schemaDirectory("$project/schemas")
+//
+//
+//}
 
 dependencies {
-    implementation(libs.androidx.ui.android)
-    implementation(libs.androidx.material3.android)
-    implementation(libs.androidx.core.i18n)
+    ksp(libs.room.compiler)
     debugImplementation(compose.uiTooling)
 }
