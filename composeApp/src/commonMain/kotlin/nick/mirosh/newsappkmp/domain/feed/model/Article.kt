@@ -1,6 +1,6 @@
 package nick.mirosh.newsapp.domain.feed.model
 
-import nick.mirosh.newsappkmp.data.repository.DatabaseArticle
+import nick.mirosh.newsappkmp.data.model.DatabaseArticle
 import nick.mirosh.newsappkmp.domain.feed.model.Source
 
 data class Article(

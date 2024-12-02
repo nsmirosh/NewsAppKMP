@@ -5,7 +5,7 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import nick.mirosh.newsappkmp.data.repository.DatabaseArticle
+import nick.mirosh.newsappkmp.data.model.DatabaseArticle
 
 @Dao
 interface ArticleDao {

@@ -3,6 +3,7 @@ package nick.mirosh.newsappkmp.di
 import nick.mirosh.newsapp.di.networkModule
 import org.koin.core.KoinApplication
 import org.koin.core.context.startKoin
+import org.koin.core.module.Module
 import org.koin.dsl.KoinAppDeclaration
 
 object KoinContainer {
@@ -11,7 +12,8 @@ object KoinContainer {
 
     fun initKoin(
         enableNetworkLogs: Boolean = false,
-        appDeclaration: KoinAppDeclaration = {}
+        platformSpecificModule: Module,
+        appDeclaration: KoinAppDeclaration = {},
     ): KoinApplication? {
         var koinApplication: KoinApplication? = null
 
@@ -21,7 +23,7 @@ object KoinContainer {
 
             koinApplication = startKoin {
                 appDeclaration()
-                modules(appModule, networkModule)
+                modules(platformSpecificModule, appModule, networkModule)
             }
         }
         return koinApplication

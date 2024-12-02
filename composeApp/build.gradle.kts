@@ -82,6 +82,7 @@ kotlin {
             implementation(libs.voyager.screenModel)
             implementation(libs.voyager.tabNavigator)
             implementation(libs.room.runtime)
+            implementation(libs.room.sqlite)
         }
         iosMain.dependencies {
             implementation(libs.ktor.client.darwin)

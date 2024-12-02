@@ -39,5 +39,6 @@ fun FeedScreenContentPreview() {
             ),
         ),
         onArticleClick = {},
+        onLikeClick = {}
     )
 }

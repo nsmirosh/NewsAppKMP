@@ -26,11 +26,14 @@ gmazzoBuildConfig = "5.5.0"
 voyager = "1.1.0-beta02"
 coreI18n = "1.0.0-alpha01"
 ksp =  "2.0.21-1.0.25"
+sqliteBundledAndroid = "2.5.0-alpha11"
+sqlite = "2.5.0-alpha11"
 
 
 [libraries]
 room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
 room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
+room-sqlite = { module = "androidx.sqlite:sqlite-bundled", version.ref = "sqlite"}
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinxDatetime" }
 voyager-navigator = { module = "cafe.adriel.voyager:voyager-navigator", version.ref = "voyager" }
 voyager-screenModel = { module = "cafe.adriel.voyager:voyager-screenmodel", version.ref = "voyager" }
@@ -62,6 +65,7 @@ ktor-negotiation = {module ="io.ktor:ktor-client-content-negotiation", version.r
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
 kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
 androidx-core-i18n = { group = "androidx.core", name = "core-i18n", version.ref = "coreI18n" }
+androidx-sqlite-bundled-android = { group = "androidx.sqlite", name = "sqlite-bundled-android", version.ref = "sqliteBundledAndroid" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

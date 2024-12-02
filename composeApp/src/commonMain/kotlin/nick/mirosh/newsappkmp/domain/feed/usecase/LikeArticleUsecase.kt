@@ -9,7 +9,7 @@ import nick.mirosh.newsappkmp.domain.feed.repository.NewsRepository
 
 class LikeArticleUsecase (
     private val repository: NewsRepository,
-    private val coroutineDispatcher: CoroutineDispatcher,
+//    private val coroutineDispatcher: CoroutineDispatcher,
 ) {
     suspend operator fun invoke(article: Article): Result<Article> {
         return withContext(Dispatchers.Default/*coroutineDispatcher*/) {

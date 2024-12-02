@@ -49,6 +49,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.koin.getScreenModel
+import cafe.adriel.voyager.koin.koinScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.currentOrThrow
@@ -69,7 +71,8 @@ fun FeedScreen(
     onArticleClick: (Article) -> Unit,
     onLikeClick: (Article) -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: FeedViewModel = koinViewModel(),
+//    viewModel: FeedViewModel = koinViewModel(),
+    viewModel: FeedScreenModel
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     FeedScreenContent(
@@ -84,17 +87,17 @@ class FeedScreenVoyager : Screen {
 
     @Composable
     override fun Content() {
+        val screenModel = koinScreenModel<FeedScreenModel>()
         val navigator = LocalNavigator.currentOrThrow
         FeedScreen(
+            viewModel = screenModel,
             onArticleClick = {
                 navigator.push(
                     DetailsScreen(it)
                 )
             },
             onLikeClick = {
-                navigator.push(
-                    DetailsScreen(it)
-                )
+                screenModel.onLikeClick(it)
             }
         )
     }
