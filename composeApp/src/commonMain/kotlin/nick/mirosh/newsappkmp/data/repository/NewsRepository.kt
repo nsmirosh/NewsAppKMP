@@ -18,17 +18,17 @@ class NewsRepositoryImpl(
 ) : NewsRepository {
     override suspend fun getNewsArticles(country: String): Result<List<Article>> {
         return try {
-            val dtoList = newsRemoteDataSource.getHeadlines(country)
-            println(
-                "$TAG: getNewsArticles: dtoList.size = ${dtoList.size}"
-            )
-            Result.Success(dtoList.map { it.toArticle() })
-
+            newsRemoteDataSource.getHeadlines(country).let { articleDtos ->
+                newsLocalDataSource.insertAll(articleDtos.map { it.asDatabaseModel() })
+            }
+            Result.Success(newsLocalDataSource.getAllArticles().map { it.asDomainModel() })
         } catch (e: Exception) {
+            val result = newsLocalDataSource.getAllArticles().map { it.asDomainModel() }
+            println("THESE ARE DATABASE ARTICLES: $result")
+            e.printStackTrace()
             Result.Error(e)
         }
     }
-
 
     override suspend fun getFavoriteArticles() =
         try {

@@ -28,5 +28,15 @@ data class ArticleDTO(
         urlToImage = urlToImage.orEmpty(),
         liked = liked ?: false
     )
+
+    fun asDatabaseModel() = DatabaseArticle(
+        author = author.orEmpty(),
+        content = content.orEmpty(),
+        description = description.orEmpty(),
+        publishedAt = publishedAt.orEmpty(),
+        title = title.orEmpty(),
+        url = url.orEmpty(),
+        urlToImage = urlToImage.orEmpty(),
+    )
 }
 
