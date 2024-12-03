@@ -14,23 +14,16 @@ const val TAG = "NewsRepository"
 class NewsRepositoryImpl(
     private val newsRemoteDataSource: NewsRemoteDataSource,
     private val newsLocalDataSource: ArticleDao,
-//    private val databaseToDomainArticleMapper: DatabaseToDomainArticleMapper,
 ) : NewsRepository {
     override suspend fun getNewsArticles(country: String): Result<List<Article>> {
         return try {
             newsRemoteDataSource.getHeadlines(country).let { articleDtos ->
                 newsLocalDataSource.insertAll(articleDtos.map { it.asDatabaseModel() })
             }
-            Result.Success(newsLocalDataSource.getAllArticles().map { it.asDomainModel() })
+            Result.Success(getAllArticlesFromDb().map { it.asDomainModel() })
         } catch (e: Exception) {
-            val result = newsLocalDataSource.getAllArticles().map { it.asDomainModel() }
-            if (result.isNotEmpty()) {
-                Result.Success(result)
-            }
-            else {
-                e.printStackTrace()
-                Result.Error(e)
-            }
+            e.printStackTrace()
+            Result.Error(e)
         }
     }
 
@@ -57,7 +50,7 @@ class NewsRepositoryImpl(
             else
                 Result.Error(Exception("Error updating article"))
         } catch (e: Exception) {
-//            Log.e(TAG, e.message.toString())
+            e.printStackTrace()
             Result.Error(e)
         }
 

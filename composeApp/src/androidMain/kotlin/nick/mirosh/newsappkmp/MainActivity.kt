@@ -16,7 +16,6 @@ class MainActivity : ComponentActivity() {
             platformSpecificModule = androidModule
         ) {
             androidContext(applicationContext)
-//            getDatabaseBuilder(applicationContext)
         }
 
         setContent {

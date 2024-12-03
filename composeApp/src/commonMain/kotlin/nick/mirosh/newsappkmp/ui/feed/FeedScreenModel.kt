@@ -48,7 +48,6 @@ class FeedScreenModel(
 
    //https://stackoverflow.com/questions/74699081/jetpack-compose-lazy-column-all-items-recomposes-when-a-single-item-update
    fun onLikeClick(article: Article) {
-       println("FeedScreenModel.onLikeClick")
        screenModelScope.launch {
            when (val result = likeArticleUsecase(article)) {
                is Result.Success -> {
@@ -57,7 +56,7 @@ class FeedScreenModel(
                }
 
                is Result.Error -> {
-//                    MyLogger.e("MainViewModel", "Error: ${result.error}")
+                     println("error = ${result.throwable.message}")
                }
            }
        }

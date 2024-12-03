@@ -7,10 +7,7 @@ import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.Icon
 import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.runtime.Composable
@@ -19,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.unit.dp
+import cafe.adriel.voyager.koin.koinScreenModel
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.tab.CurrentTab
 import cafe.adriel.voyager.navigator.tab.LocalTabNavigator
@@ -27,9 +25,10 @@ import cafe.adriel.voyager.navigator.tab.TabDisposable
 import cafe.adriel.voyager.navigator.tab.TabNavigator
 import cafe.adriel.voyager.navigator.tab.TabOptions
 import kotlinproject.composeapp.generated.resources.Res
-import kotlinproject.composeapp.generated.resources.article
 import kotlinproject.composeapp.generated.resources.home
 import kotlinproject.composeapp.generated.resources.saved
+import nick.mirosh.newsappkmp.ui.favorite.FavoriteArticlesScreenContent
+import nick.mirosh.newsappkmp.ui.favorite.FavoriteArticlesScreenModel
 import nick.mirosh.newsappkmp.ui.favorite.FavoriteScreenVoyager
 import nick.mirosh.newsappkmp.ui.feed.FeedScreenVoyager
 import org.jetbrains.compose.resources.stringResource

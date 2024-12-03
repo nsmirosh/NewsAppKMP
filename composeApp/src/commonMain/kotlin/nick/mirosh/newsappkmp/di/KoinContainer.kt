@@ -11,7 +11,6 @@ object KoinContainer {
     private var initialized = false
 
     fun initKoin(
-        enableNetworkLogs: Boolean = false,
         platformSpecificModule: Module,
         appDeclaration: KoinAppDeclaration = {},
     ): KoinApplication? {

@@ -9,24 +9,25 @@ import nick.mirosh.newsapp.data.database.ArticleDao
 import nick.mirosh.newsapp.domain.feed.usecase.FetchArticlesUsecase
 import nick.mirosh.newsappkmp.data.repository.NewsRemoteDataSource
 import nick.mirosh.newsappkmp.data.repository.NewsRepositoryImpl
+import nick.mirosh.newsappkmp.domain.favorite.FetchFavoriteArticlesUsecase
 import nick.mirosh.newsappkmp.domain.feed.repository.NewsRepository
 import nick.mirosh.newsappkmp.domain.feed.usecase.LikeArticleUsecase
+import nick.mirosh.newsappkmp.ui.favorite.FavoriteArticlesScreenModel
 import nick.mirosh.newsappkmp.ui.feed.FeedScreenModel
-import nick.mirosh.newsappkmp.ui.feed.FeedViewModel
-import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.bind
 import org.koin.dsl.module
 
 val appModule = module {
 
-    single { FetchArticlesUsecase(get()) }
-    single { LikeArticleUsecase(get()) }
-    viewModel { FeedViewModel(get(), get()) }
-    single { NewsRemoteDataSource(get()) }
-    single { NewsRepositoryImpl(get(), get()) } bind NewsRepository::class
+    factory { FetchArticlesUsecase(get()) }
+    factory{ LikeArticleUsecase(get()) }
+    factory { FetchFavoriteArticlesUsecase(get()) }
 
-    //voyager
+    single{ NewsRemoteDataSource(get()) }
+    single{ NewsRepositoryImpl(get(), get()) } bind NewsRepository::class
+
     factory { FeedScreenModel(get(), get()) }
+    factory { FavoriteArticlesScreenModel(get()) }
 
     single<ArticleDao> { ArticleDaoConfiguration(get()).build() }
 
