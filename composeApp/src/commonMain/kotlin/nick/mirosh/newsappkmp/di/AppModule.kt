@@ -25,22 +25,10 @@ val appModule = module {
     single { NewsRemoteDataSource(get()) }
     single { NewsRepositoryImpl(get(), get()) } bind NewsRepository::class
 
-
     //voyager
     factory { FeedScreenModel(get(), get()) }
 
     single<ArticleDao> { ArticleDaoConfiguration(get()).build() }
-
-//    fun getRoomDatabase(
-//        builder: RoomDatabase.Builder<AppDatabase>
-//    ): ArticleDao {
-//        return builder
-//            .setDriver(BundledSQLiteDriver())
-//            .setQueryCoroutineContext(Dispatchers.IO)
-//            .build()
-//            .articleDao()
-//    }
-
 
 }
 
@@ -55,9 +43,4 @@ class ArticleDaoConfiguration(
             .build()
             .articleDao()
     }
-}
-
-
-interface DatabaseProvider {
-    fun getDatabaseBuilder(ctx: Any? = null): RoomDatabase.Builder<AppDatabase>
 }
