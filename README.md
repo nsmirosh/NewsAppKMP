@@ -24,16 +24,16 @@ This is a Compose Multiplatform adaptation of the [Android News App](https://git
 
 - Kotlin
 - Compose
-- MVVM Clean Architecture
+- MVVM 
 - Koin
-- Coroutines
+- Coroutines, Flows
 - Ktor
-- Navigation using [Voyager](https://voyager.adriel.cafe/)
+- Navigation and state management using [Voyager](https://voyager.adriel.cafe/)
 - Date formatting using [Kotlinx DateTime](https://github.com/Kotlin/kotlinx-datetime)
+- Room
 
 Planned: 
 
-- Room
 - Tests
 - Sensor Managemenent
 - Permission handling
