@@ -1,7 +1,6 @@
 package nick.mirosh.newsapp.di
 
 import androidx.room.Room
-import androidx.room.RoomDatabase
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.darwin.Darwin
 import kotlinx.cinterop.ExperimentalForeignApi

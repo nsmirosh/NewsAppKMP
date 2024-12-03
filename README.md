@@ -25,17 +25,17 @@ This is a Compose Multiplatform adaptation of the [Android News App](https://git
 - Kotlin
 - Compose
 - MVVM 
-- Koin
 - Coroutines, Flows
-- Ktor
+- Room
+- Dependency injection via [Koin](https://insert-koin.io/)
+- Networking using [Ktor](https://ktor.io/)
 - Navigation and state management using [Voyager](https://voyager.adriel.cafe/)
 - Date formatting using [Kotlinx DateTime](https://github.com/Kotlin/kotlinx-datetime)
-- Room
 
 Planned: 
 
 - Tests
-- Sensor Managemenent
+- GPS locating 
 - Permission handling
 - Work with native components
 
