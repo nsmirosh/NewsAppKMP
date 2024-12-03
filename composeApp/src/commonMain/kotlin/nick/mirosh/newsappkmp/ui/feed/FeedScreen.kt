@@ -154,7 +154,7 @@ fun ArticleFeed(
 fun FeedList(
     articles: List<Article>,
     onArticleClick: (Article) -> Unit,
-    onLikeClick: (Article) -> Unit,
+    onLikeClick: ((Article) -> Unit)? = null,
     modifier: Modifier = Modifier,
 ) {
 
@@ -198,7 +198,7 @@ fun ArticleItem(
     article: Article,
     onArticleClick: (Article) -> Unit,
     modifier: Modifier = Modifier,
-    onLikeClick: (Article) -> Unit
+    onLikeClick: ((Article) -> Unit)? = null
 ) {
     Column(modifier = modifier.clickable { onArticleClick(article) }) {
         Row(
@@ -265,11 +265,12 @@ fun ArticleItem(
                     )
                 }
             }
-
-            SaveButton(
-                liked = article.liked,
-                onLikeCLick = { onLikeClick(article) }
-            )
+            onLikeClick?.let {
+                SaveButton(
+                    liked = article.liked,
+                    onLikeCLick = { onLikeClick(article) }
+                )
+            }
         }
         Box(
             modifier = Modifier

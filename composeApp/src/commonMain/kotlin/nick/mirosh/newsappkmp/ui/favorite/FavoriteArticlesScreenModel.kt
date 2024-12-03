@@ -8,25 +8,28 @@ import kotlinx.coroutines.launch
 import nick.mirosh.newsapp.domain.Result
 import nick.mirosh.newsappkmp.domain.favorite.FetchFavoriteArticlesUsecase
 
-class FavoriteArticlesScreenModel (
+class FavoriteArticlesScreenModel(
     private val fetchFavoriteArticlesUsecase: FetchFavoriteArticlesUsecase
 ) : ScreenModel {
 
-    private val _uiState = MutableStateFlow<FavoriteArticlesUIState>(FavoriteArticlesUIState.Loading)
+    private val _uiState =
+        MutableStateFlow<FavoriteArticlesUIState>(FavoriteArticlesUIState.Loading)
     val uiState = _uiState.asStateFlow()
 
     init {
         screenModelScope.launch {
-            when (val result = fetchFavoriteArticlesUsecase()) {
-                is Result.Success ->
-                    _uiState.value = if (result.data.isEmpty())
-                        FavoriteArticlesUIState.FavoriteArticlesEmpty
-                    else
-                        FavoriteArticlesUIState.FavoriteArticles(result.data)
+            fetchFavoriteArticlesUsecase().collect { result ->
+                when (result) {
+                    is Result.Success ->
+                        _uiState.value = if (result.data.isEmpty())
+                            FavoriteArticlesUIState.FavoriteArticlesEmpty
+                        else
+                            FavoriteArticlesUIState.FavoriteArticles(result.data)
 
-                is Result.Error -> {
-                    _uiState.value = FavoriteArticlesUIState.Failed
-                    println("Error = ${result.throwable.message}")
+                    is Result.Error -> {
+                        _uiState.value = FavoriteArticlesUIState.Failed
+                        println("Error = ${result.throwable.message}")
+                    }
                 }
             }
         }

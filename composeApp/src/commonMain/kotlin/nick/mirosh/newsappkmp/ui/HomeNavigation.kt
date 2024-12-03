@@ -16,7 +16,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.unit.dp
-import cafe.adriel.voyager.koin.koinScreenModel
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.tab.CurrentTab
 import cafe.adriel.voyager.navigator.tab.LocalTabNavigator
@@ -27,8 +26,6 @@ import cafe.adriel.voyager.navigator.tab.TabOptions
 import kotlinproject.composeapp.generated.resources.Res
 import kotlinproject.composeapp.generated.resources.home
 import kotlinproject.composeapp.generated.resources.saved
-import nick.mirosh.newsappkmp.ui.favorite.FavoriteArticlesScreenContent
-import nick.mirosh.newsappkmp.ui.favorite.FavoriteArticlesScreenModel
 import nick.mirosh.newsappkmp.ui.favorite.FavoriteScreenVoyager
 import nick.mirosh.newsappkmp.ui.feed.FeedScreenVoyager
 import org.jetbrains.compose.resources.stringResource

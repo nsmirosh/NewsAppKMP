@@ -5,6 +5,7 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import kotlinx.coroutines.flow.Flow
 import nick.mirosh.newsappkmp.data.model.DatabaseArticle
 
 @Dao
@@ -13,7 +14,7 @@ interface ArticleDao {
     suspend fun getAllArticles():  List<DatabaseArticle>
 
     @Query("SELECT * FROM articles WHERE liked = 1")
-    suspend fun getLikedArticles(): List<DatabaseArticle>
+    fun getLikedArticles(): Flow<List<DatabaseArticle>>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertAll(articles: List<DatabaseArticle>): List<Long>

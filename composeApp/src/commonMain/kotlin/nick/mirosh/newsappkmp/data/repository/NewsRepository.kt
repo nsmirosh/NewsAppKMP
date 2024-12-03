@@ -1,5 +1,7 @@
 package nick.mirosh.newsappkmp.data.repository
 
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.map
 import nick.mirosh.newsapp.data.database.ArticleDao
 import nick.mirosh.newsapp.domain.Result
 import nick.mirosh.newsapp.domain.feed.model.Article
@@ -27,20 +29,15 @@ class NewsRepositoryImpl(
         }
     }
 
-    override suspend fun getFavoriteArticles() =
+    override suspend fun getFavoriteArticles() = flow {
         try {
-            Result.Success(
-                newsLocalDataSource.getLikedArticles().map {
-                    it.asDomainModel()
-                }
-//                databaseToDomainArticleMapper.map(
-//                    newsLocalDataSource.getLikedArticles()
-//                )
-            )
+            newsLocalDataSource.getLikedArticles().collect { list ->
+                emit(Result.Success(list.map { it.asDomainModel() }))
+            }
         } catch (e: Exception) {
-//            Log.e(TAG, e.message.toString())
-            Result.Error(e)
+            emit(Result.Error(e))
         }
+    }
 
     override suspend fun updateArticle(article: Article) =
         try {
