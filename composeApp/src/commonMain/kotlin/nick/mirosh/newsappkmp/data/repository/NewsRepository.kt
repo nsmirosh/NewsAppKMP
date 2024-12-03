@@ -24,9 +24,13 @@ class NewsRepositoryImpl(
             Result.Success(newsLocalDataSource.getAllArticles().map { it.asDomainModel() })
         } catch (e: Exception) {
             val result = newsLocalDataSource.getAllArticles().map { it.asDomainModel() }
-            println("THESE ARE DATABASE ARTICLES: $result")
-            e.printStackTrace()
-            Result.Error(e)
+            if (result.isNotEmpty()) {
+                Result.Success(result)
+            }
+            else {
+                e.printStackTrace()
+                Result.Error(e)
+            }
         }
     }
 
