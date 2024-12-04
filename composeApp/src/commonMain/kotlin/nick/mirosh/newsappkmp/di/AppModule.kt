@@ -2,6 +2,8 @@ package nick.mirosh.newsappkmp.di
 
 import androidx.room.RoomDatabase
 import androidx.sqlite.driver.bundled.BundledSQLiteDriver
+import dev.icerock.moko.permissions.Permission
+import dev.icerock.moko.permissions.PermissionsController
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import nick.mirosh.newsapp.data.database.AppDatabase
@@ -26,10 +28,11 @@ val appModule = module {
     single{ NewsRemoteDataSource(get()) }
     single{ NewsRepositoryImpl(get(), get()) } bind NewsRepository::class
 
-    factory { FeedScreenModel(get(), get()) }
+    factory { FeedScreenModel(get(), get(), get()) }
     factory { FavoriteArticlesScreenModel(get()) }
 
     single<ArticleDao> { ArticleDaoConfiguration(get()).build() }
+//    single { PermissionsController(androidContext()) }
 
 }
 

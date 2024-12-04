@@ -3,6 +3,8 @@ package nick.mirosh.newsappkmp
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.lifecycle.viewmodel.compose.viewModel
+import dev.icerock.moko.permissions.PermissionsController
 import nick.mirosh.newsapp.di.androidModule
 import nick.mirosh.newsappkmp.di.KoinContainer
 import nick.mirosh.newsappkmp.ui.HomeNavigation
@@ -18,10 +20,15 @@ class MainActivity : ComponentActivity() {
             androidContext(applicationContext)
         }
 
+
         setContent {
             HomeNavigation()
         }
     }
-
 }
+
+
+
+
+
 

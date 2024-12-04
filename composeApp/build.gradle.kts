@@ -51,6 +51,7 @@ kotlin {
             implementation(libs.androidx.ui.android)
             implementation(libs.androidx.material3.android)
             implementation(libs.androidx.core.i18n)
+            implementation(libs.play.services.location)
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -87,6 +88,11 @@ kotlin {
         iosMain.dependencies {
             implementation(libs.ktor.client.darwin)
         }
+        getByName("commonMain") {
+            dependencies {
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.1")
+            }
+        }
     }
 }
 
@@ -119,13 +125,11 @@ android {
         targetCompatibility = JavaVersion.VERSION_11
     }
 }
-//room {
-//    schemaDirectory("$project/schemas")
-//
-//
-//}
 
 dependencies {
+    // compose multiplatform
+    commonMainApi(libs.moko.permissions)
+    commonMainApi(libs.moko.permissions.compose) // permissions api + compose extensions
     ksp(libs.room.compiler)
     debugImplementation(compose.uiTooling)
 }

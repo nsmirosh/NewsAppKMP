@@ -5,6 +5,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
+import dev.icerock.moko.permissions.DeniedAlwaysException
+import dev.icerock.moko.permissions.DeniedException
+import dev.icerock.moko.permissions.Permission
+import dev.icerock.moko.permissions.PermissionsController
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -12,11 +16,15 @@ import nick.mirosh.newsapp.domain.Result
 import nick.mirosh.newsapp.domain.feed.model.Article
 import nick.mirosh.newsapp.domain.feed.usecase.FetchArticlesUsecase
 import nick.mirosh.newsappkmp.domain.feed.usecase.LikeArticleUsecase
+import nick.mirosh.newsappkmp.location.LocationProvider
 
 class FeedScreenModel(
     private val fetchArticlesUsecase: FetchArticlesUsecase,
     private val likeArticleUsecase: LikeArticleUsecase,
+    private val locationProvider: LocationProvider,
 ) : ScreenModel {
+
+//    lateinit var permissionController: PermissionsController
 
     private val _articles = mutableStateListOf<Article>()
     val articles: List<Article> = _articles
@@ -28,6 +36,25 @@ class FeedScreenModel(
         screenModelScope.launch {
             fetchArticles()
         }
+    }
+
+    fun requestLocationPermissions(permissionController: PermissionsController) {
+        val job = screenModelScope.launch {
+            try {
+                permissionController.providePermission(Permission.COARSE_LOCATION)
+                // Permission has been granted successfully.
+            } catch (deniedAlways: DeniedAlwaysException) {
+                // Permission is always denied.
+            } catch (denied: DeniedException) {
+                // Permission was denied.
+            }
+
+            locationProvider.getCurrentLocation().collect {
+                println("location = $it")
+            }
+        }
+
+
     }
 
     private suspend fun fetchArticles() {
@@ -46,19 +73,19 @@ class FeedScreenModel(
         }
     }
 
-   //https://stackoverflow.com/questions/74699081/jetpack-compose-lazy-column-all-items-recomposes-when-a-single-item-update
-   fun onLikeClick(article: Article) {
-       screenModelScope.launch {
-           when (val result = likeArticleUsecase(article)) {
-               is Result.Success -> {
-                   val index = articles.indexOfFirst { it.url == result.data.url }
-                   _articles[index] = result.data
-               }
+    //https://stackoverflow.com/questions/74699081/jetpack-compose-lazy-column-all-items-recomposes-when-a-single-item-update
+    fun onLikeClick(article: Article) {
+        screenModelScope.launch {
+            when (val result = likeArticleUsecase(article)) {
+                is Result.Success -> {
+                    val index = articles.indexOfFirst { it.url == result.data.url }
+                    _articles[index] = result.data
+                }
 
-               is Result.Error -> {
-                     println("error = ${result.throwable.message}")
-               }
-           }
-       }
-   }
+                is Result.Error -> {
+                    println("error = ${result.throwable.message}")
+                }
+            }
+        }
+    }
 }

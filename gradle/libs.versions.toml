@@ -12,6 +12,8 @@ koin = "4.0.0"
 koinComposeMultiplatform = "4.0.0"
 kotlinxDatetime = "0.6.0"
 lifecycleViewModel = "2.8.7"
+mokoPermissions = "0.18.1"
+playServicesLocation = "21.3.0"
 room = "2.7.0-alpha11"
 uiAndroid = "1.7.5"
 
@@ -30,6 +32,9 @@ sqlite = "2.5.0-alpha11"
 
 
 [libraries]
+moko-permissions = { module = "dev.icerock.moko:permissions", version.ref = "mokoPermissions" }
+moko-permissions-compose = { module = "dev.icerock.moko:permissions-compose", version.ref = "mokoPermissions" }
+play-services-location = { module = "com.google.android.gms:play-services-location", version.ref = "playServicesLocation" }
 room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
 room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
 room-sqlite = { module = "androidx.sqlite:sqlite-bundled", version.ref = "sqlite"}
