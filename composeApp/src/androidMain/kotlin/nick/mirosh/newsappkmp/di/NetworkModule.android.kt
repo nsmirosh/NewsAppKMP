@@ -28,12 +28,6 @@ val androidModule = module {
     }
 
     single{ LocationProviderImpl(androidContext())} bind LocationProvider::class
-//    single {
-//        PermissionsController(androidContext()).bind()
-//    }
-//    viewModel{
-//        MyViewModel()
-//    }
 
     single<HttpClient> {
         HttpClient(OkHttp)

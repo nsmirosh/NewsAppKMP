@@ -5,6 +5,9 @@ import io.ktor.client.HttpClient
 import io.ktor.client.engine.darwin.Darwin
 import kotlinx.cinterop.ExperimentalForeignApi
 import nick.mirosh.newsapp.data.database.AppDatabase
+import nick.mirosh.newsappkmp.location.IOSLocationProvider
+import nick.mirosh.newsappkmp.location.LocationProvider
+import org.koin.dsl.bind
 import org.koin.dsl.module
 import platform.Foundation.NSDocumentDirectory
 import platform.Foundation.NSFileManager
@@ -14,7 +17,7 @@ actual fun createPlatformHttpClient(): HttpClient {
     return HttpClient(Darwin)
 }
 
-val iOSSModule = module {
+val iOSModule = module {
     factory { HttpClient(Darwin) }
 
     @OptIn(ExperimentalForeignApi::class)
@@ -35,4 +38,6 @@ val iOSSModule = module {
             name = dbFilePath,
         )
     }
+
+    single{ IOSLocationProvider() } bind LocationProvider::class
 }

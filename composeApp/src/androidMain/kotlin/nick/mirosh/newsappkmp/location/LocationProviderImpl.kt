@@ -2,15 +2,10 @@ package nick.mirosh.newsappkmp.location
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.location.Location
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.tasks.Task
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
