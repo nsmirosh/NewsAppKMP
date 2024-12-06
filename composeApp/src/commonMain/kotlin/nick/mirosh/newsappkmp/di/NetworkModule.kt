@@ -25,10 +25,10 @@ val networkModule = module {
                 })
             }
 
-            install(Logging) {
-                logger = Logger.SIMPLE
-                level = LogLevel.ALL
-            }
+//            install(Logging) {
+//                logger = Logger.SIMPLE
+//                level = LogLevel.ALL
+//            }
             defaultRequest {
                 url {
                     protocol = URLProtocol.HTTPS

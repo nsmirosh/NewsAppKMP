@@ -19,7 +19,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Button
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Scaffold
@@ -32,7 +31,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -51,15 +49,12 @@ import cafe.adriel.voyager.koin.koinScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import coil3.compose.AsyncImage
-import dev.icerock.moko.permissions.Permission
 import dev.icerock.moko.permissions.PermissionsController
 import dev.icerock.moko.permissions.compose.BindEffect
 import dev.icerock.moko.permissions.compose.PermissionsControllerFactory
 import dev.icerock.moko.permissions.compose.rememberPermissionsControllerFactory
 import kotlinproject.composeapp.generated.resources.Res
 import kotlinproject.composeapp.generated.resources.compose_multiplatform
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
 import kotlinx.datetime.format.DateTimeComponents
 import nick.mirosh.newsapp.domain.feed.model.Article
 import nick.mirosh.newsappkmp.ui.article.DetailsScreen
@@ -73,6 +68,9 @@ fun FeedScreen(
     viewModel: FeedScreenModel
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+//    LaunchedEffect(Unit) {
+//        viewModel.requestLocationPermissions()
+//    }
     FeedScreenContent(
         uiState = uiState,
         onArticleClick = { onArticleClick(it) },
@@ -85,16 +83,8 @@ class FeedScreenVoyager : Screen {
 
     @Composable
     override fun Content() {
-
-        val factory: PermissionsControllerFactory = rememberPermissionsControllerFactory()
-        val controller: PermissionsController = remember(factory) { factory.createPermissionsController() }
-
         val screenModel = koinScreenModel<FeedScreenModel>()
         val navigator = LocalNavigator.currentOrThrow
-
-
-        BindEffect(controller)
-        screenModel.requestLocationPermissions(controller)
 
         FeedScreen(
             viewModel = screenModel,

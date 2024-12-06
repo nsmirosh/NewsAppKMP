@@ -1,6 +1,8 @@
 package nick.mirosh.newsapp.di
 
 import androidx.room.Room
+import dev.icerock.moko.permissions.PermissionsController
+import dev.icerock.moko.permissions.ios.PermissionsController as PermissionsControllerIOS
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.darwin.Darwin
 import kotlinx.cinterop.ExperimentalForeignApi
@@ -19,6 +21,7 @@ actual fun createPlatformHttpClient(): HttpClient {
 
 val iOSModule = module {
     factory { HttpClient(Darwin) }
+    single<PermissionsController> { PermissionsControllerIOS()}
 
     @OptIn(ExperimentalForeignApi::class)
     fun documentDirectory(): String {
@@ -39,5 +42,5 @@ val iOSModule = module {
         )
     }
 
-    single{ IOSLocationProvider() } bind LocationProvider::class
+    single { IOSLocationProvider() } bind LocationProvider::class
 }

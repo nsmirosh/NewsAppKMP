@@ -74,6 +74,7 @@ kotlin {
             implementation(libs.ktor.client.core)
             implementation(libs.ktor.client.logging)
             implementation(libs.kotlinx.coroutines.core)
+            implementation(libs.kermit)
             api(libs.ktor.serialization)
             implementation(libs.kotlinx.serialization.json)
             implementation(libs.ktor.negotiation)
@@ -87,11 +88,6 @@ kotlin {
         }
         iosMain.dependencies {
             implementation(libs.ktor.client.darwin)
-        }
-        getByName("commonMain") {
-            dependencies {
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.1")
-            }
         }
     }
 }

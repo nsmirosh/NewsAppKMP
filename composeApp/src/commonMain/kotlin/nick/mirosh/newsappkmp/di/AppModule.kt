@@ -28,12 +28,10 @@ val appModule = module {
     single{ NewsRemoteDataSource(get()) }
     single{ NewsRepositoryImpl(get(), get()) } bind NewsRepository::class
 
-    factory { FeedScreenModel(get(), get(), get()) }
+    factory { FeedScreenModel(get(), get(), get(), get()) }
     factory { FavoriteArticlesScreenModel(get()) }
 
     single<ArticleDao> { ArticleDaoConfiguration(get()).build() }
-//    single { PermissionsController(androidContext()) }
-
 }
 
 

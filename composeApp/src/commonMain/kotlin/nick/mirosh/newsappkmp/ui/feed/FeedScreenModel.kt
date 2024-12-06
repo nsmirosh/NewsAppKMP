@@ -22,9 +22,8 @@ class FeedScreenModel(
     private val fetchArticlesUsecase: FetchArticlesUsecase,
     private val likeArticleUsecase: LikeArticleUsecase,
     private val locationProvider: LocationProvider,
+    private val permissionsController: PermissionsController
 ) : ScreenModel {
-
-//    lateinit var permissionController: PermissionsController
 
     private val _articles = mutableStateListOf<Article>()
     val articles: List<Article> = _articles
@@ -33,13 +32,17 @@ class FeedScreenModel(
     val uiState: StateFlow<FeedUIState> = _uiState
 
     init {
+        requestLocationPermissions(permissionsController)
         screenModelScope.launch {
             fetchArticles()
         }
     }
 
     fun requestLocationPermissions(permissionController: PermissionsController) {
-        val job = screenModelScope.launch {
+        //TODO in this app we're assuming that the user grants the permission
+        // but in a real app you should handle the permission denial with
+        // a proper UI/UX - more info https://developer.android.com/training/permissions/requesting
+        screenModelScope.launch {
             try {
                 permissionController.providePermission(Permission.COARSE_LOCATION)
                 // Permission has been granted successfully.
@@ -53,8 +56,6 @@ class FeedScreenModel(
                 println("location = $it")
             }
         }
-
-
     }
 
     private suspend fun fetchArticles() {

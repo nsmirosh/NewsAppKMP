@@ -9,3 +9,4 @@ sealed class FeedUIState {
     data object Loading : FeedUIState()
     data object Failed : FeedUIState()
 }
+
