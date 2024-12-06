@@ -59,8 +59,6 @@ class NewsRepositoryImpl(
 
 fun ArticleDTO.asDatabaseModel() = DatabaseArticle(
     author = author.orEmpty(),
-    content = content.orEmpty(),
-    description = description.orEmpty(),
     publishedAt = publishedAt.orEmpty(),
     title = title.orEmpty(),
     url = url.orEmpty(),
