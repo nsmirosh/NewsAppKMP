@@ -39,6 +39,6 @@ Planned:
 - Permission handling
 - Work with native components
 
-https://github.com/user-attachments/assets/2f9304ab-cfeb-4c89-9346-7bd14121666a
+https://github.com/user-attachments/assets/74e79d93-0e9a-4778-8dfe-6c8dd3e872fa
 
 Design inspired by [Tomas Nozina](https://dribbble.com/shots/15246621-Denn-k-N-News-App)
