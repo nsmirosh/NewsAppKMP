@@ -7,8 +7,8 @@ import io.ktor.http.path
 import nick.mirosh.newsappkmp.data.model.ApiResponse
 import nick.mirosh.newsappkmp.data.model.ArticleDTO
 
-const val ENDPOINT = "v2/top-headlines"
-//const val ENDPOINT = "api/1/latest"
+//const val ENDPOINT = "v2/top-headlines"
+const val ENDPOINT = "api/1/latest"
 const val COUNTRY_PARAM = "country"
 
 class NewsRemoteDataSource(private val client: HttpClient) {

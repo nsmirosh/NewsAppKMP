@@ -49,12 +49,9 @@ import cafe.adriel.voyager.koin.koinScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import coil3.compose.AsyncImage
-import dev.icerock.moko.permissions.PermissionsController
-import dev.icerock.moko.permissions.compose.BindEffect
-import dev.icerock.moko.permissions.compose.PermissionsControllerFactory
-import dev.icerock.moko.permissions.compose.rememberPermissionsControllerFactory
 import kotlinproject.composeapp.generated.resources.Res
 import kotlinproject.composeapp.generated.resources.compose_multiplatform
+import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.format.DateTimeComponents
 import nick.mirosh.newsapp.domain.feed.model.Article
 import nick.mirosh.newsappkmp.ui.article.DetailsScreen
@@ -68,9 +65,6 @@ fun FeedScreen(
     viewModel: FeedScreenModel
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-//    LaunchedEffect(Unit) {
-//        viewModel.requestLocationPermissions()
-//    }
     FeedScreenContent(
         uiState = uiState,
         onArticleClick = { onArticleClick(it) },
@@ -292,9 +286,12 @@ fun ArticleItem(
 
 fun formatDateTime(dateString: String) =
     try {
-        DateTimeComponents.Formats.ISO_DATE_TIME_OFFSET.parse(dateString).run {
+//        DateTimeComponents.Formats.ISO_DATE_TIME_OFFSET
+//        val formattedDateString =
+
+        LocalDateTime.parse(dateString.replace(" ", "T")).run {
             "${
-                month?.name?.lowercase()?.replaceFirstChar { it.uppercase() }
+                month.name.lowercase().replaceFirstChar { it.uppercase() }
             } $dayOfMonth, $year $hour:${minute?.let { if (it > 9) minute else "0$minute" }}"
         }
     } catch (e: Exception) {

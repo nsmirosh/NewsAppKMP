@@ -34,7 +34,7 @@ class FeedScreenModel(
     init {
         requestLocationPermissions()
         screenModelScope.launch {
-            fetchArticles()
+            fetchArticles("ua")
         }
     }
 
@@ -58,12 +58,12 @@ class FeedScreenModel(
         }
     }
 
-    private suspend fun fetchArticles() {
+    private suspend fun fetchArticles(country: String) {
         _uiState.value = FeedUIState.Loading
-        _uiState.value = when (val result = fetchArticlesUsecase("us")) {
+        _uiState.value = when (val result = fetchArticlesUsecase(country)) {
             is Result.Success -> {
                 _articles.clear()
-                _articles.addAll(result.data.filterNot { it.title.lowercase().contains("removed") })
+                _articles.addAll(result.data)
                 if (result.data.isNotEmpty()) FeedUIState.Feed(articles) else FeedUIState.Empty
             }
 

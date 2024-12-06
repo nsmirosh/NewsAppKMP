@@ -1,15 +1,20 @@
 package nick.mirosh.newsappkmp.data.model
 
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import nick.mirosh.newsapp.domain.feed.model.Article
 
 
 @Serializable
 data class ArticleDTO(
+    @SerialName("source_name")
     val author: String? = null,
+    @SerialName("pubDate")
     val publishedAt: String? = null,
     val title: String? = null,
+    @SerialName("link")
     val url: String? = null,
+    @SerialName("image_url")
     val urlToImage: String? = null,
     val liked: Boolean? = null
 ) {
