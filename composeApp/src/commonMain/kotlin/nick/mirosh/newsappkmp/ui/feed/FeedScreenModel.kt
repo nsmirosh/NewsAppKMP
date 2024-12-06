@@ -32,19 +32,19 @@ class FeedScreenModel(
     val uiState: StateFlow<FeedUIState> = _uiState
 
     init {
-        requestLocationPermissions(permissionsController)
+        requestLocationPermissions()
         screenModelScope.launch {
             fetchArticles()
         }
     }
 
-    fun requestLocationPermissions(permissionController: PermissionsController) {
+    fun requestLocationPermissions() {
         //TODO in this app we're assuming that the user grants the permission
         // but in a real app you should handle the permission denial with
         // a proper UI/UX - more info https://developer.android.com/training/permissions/requesting
         screenModelScope.launch {
             try {
-                permissionController.providePermission(Permission.COARSE_LOCATION)
+                permissionsController.providePermission(Permission.COARSE_LOCATION)
                 // Permission has been granted successfully.
             } catch (deniedAlways: DeniedAlwaysException) {
                 // Permission is always denied.
