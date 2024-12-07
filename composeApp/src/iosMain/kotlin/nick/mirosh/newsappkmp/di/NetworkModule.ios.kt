@@ -9,6 +9,8 @@ import kotlinx.cinterop.ExperimentalForeignApi
 import nick.mirosh.newsapp.data.database.AppDatabase
 import nick.mirosh.newsappkmp.location.IOSLocationProvider
 import nick.mirosh.newsappkmp.location.LocationProvider
+import nick.mirosh.newsappkmp.location.ReverseGeocodingService
+import nick.mirosh.newsappkmp.location.IosReverseGeocodingService
 import org.koin.dsl.bind
 import org.koin.dsl.module
 import platform.Foundation.NSDocumentDirectory
@@ -21,7 +23,7 @@ actual fun createPlatformHttpClient(): HttpClient {
 
 val iOSModule = module {
     factory { HttpClient(Darwin) }
-    single<PermissionsController> { PermissionsControllerIOS()}
+    single<PermissionsController> { PermissionsControllerIOS() }
 
     @OptIn(ExperimentalForeignApi::class)
     fun documentDirectory(): String {
@@ -43,4 +45,5 @@ val iOSModule = module {
     }
 
     single { IOSLocationProvider() } bind LocationProvider::class
+    single { IosReverseGeocodingService() } bind ReverseGeocodingService::class
 }
