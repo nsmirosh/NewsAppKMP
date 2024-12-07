@@ -16,6 +16,7 @@ data class ArticleDTO(
     val url: String? = null,
     @SerialName("image_url")
     val urlToImage: String? = null,
+    val duplicate: Boolean? = null,
     val liked: Boolean? = null
 ) {
 

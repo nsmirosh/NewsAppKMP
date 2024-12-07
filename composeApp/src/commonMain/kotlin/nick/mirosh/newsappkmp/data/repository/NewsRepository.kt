@@ -18,15 +18,23 @@ class NewsRepositoryImpl(
     private val newsLocalDataSource: ArticleDao,
 ) : NewsRepository {
     override suspend fun getNewsArticles(country: String): Result<List<Article>> {
-        return try {
+        try {
             newsRemoteDataSource.getHeadlines(country).let { articleDtos ->
-                newsLocalDataSource.insertAll(articleDtos.map { it.asDatabaseModel() })
+                val databaseArticles = articleDtos
+                    .filterNot { it.duplicate ?: false }
+                    .map { it.asDatabaseModel() }
+                newsLocalDataSource.insertAll(databaseArticles)
             }
-            Result.Success(getAllArticlesFromDb().map { it.asDomainModel() })
         } catch (e: Exception) {
             e.printStackTrace()
-            Result.Error(e)
         }
+        val databaseArticles = getAllArticlesFromDb().map { it.asDomainModel() }
+
+        return if (databaseArticles.isNotEmpty())
+            Result.Success(databaseArticles)
+        else Result.Error(
+            Exception("Error fetching articles")
+        )
     }
 
     override suspend fun getFavoriteArticles() = flow {

@@ -10,6 +10,8 @@ import io.ktor.client.engine.okhttp.OkHttp
 import nick.mirosh.newsapp.data.database.AppDatabase
 import nick.mirosh.newsappkmp.location.LocationProvider
 import nick.mirosh.newsappkmp.location.LocationProviderImpl
+import nick.mirosh.newsappkmp.location.ReverseGeocodingService
+import nick.mirosh.newsappkmp.location.ReverseGeocodingServiceImpl
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.bind
 import org.koin.dsl.module
@@ -37,6 +39,7 @@ val androidModule = module {
     }
 
     single { LocationProviderImpl(androidContext()) } bind LocationProvider::class
+    single { ReverseGeocodingServiceImpl(androidContext()) } bind ReverseGeocodingService::class
 
     single<HttpClient> {
         HttpClient(OkHttp)

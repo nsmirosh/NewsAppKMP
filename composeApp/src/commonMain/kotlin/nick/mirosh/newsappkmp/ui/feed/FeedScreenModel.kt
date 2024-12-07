@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
+import co.touchlab.kermit.Logger
 import dev.icerock.moko.permissions.DeniedAlwaysException
 import dev.icerock.moko.permissions.DeniedException
 import dev.icerock.moko.permissions.Permission
@@ -17,12 +18,14 @@ import nick.mirosh.newsapp.domain.feed.model.Article
 import nick.mirosh.newsapp.domain.feed.usecase.FetchArticlesUsecase
 import nick.mirosh.newsappkmp.domain.feed.usecase.LikeArticleUsecase
 import nick.mirosh.newsappkmp.location.LocationProvider
+import nick.mirosh.newsappkmp.location.ReverseGeocodingService
 
 class FeedScreenModel(
     private val fetchArticlesUsecase: FetchArticlesUsecase,
     private val likeArticleUsecase: LikeArticleUsecase,
     private val locationProvider: LocationProvider,
-    private val permissionsController: PermissionsController
+    private val permissionsController: PermissionsController,
+    private val reverseGeocodingService: ReverseGeocodingService
 ) : ScreenModel {
 
     private val _articles = mutableStateListOf<Article>()
@@ -32,28 +35,43 @@ class FeedScreenModel(
     val uiState: StateFlow<FeedUIState> = _uiState
 
     init {
-        requestLocationPermissions()
         screenModelScope.launch {
-            fetchArticles("ua")
+            requestLocationPermissions(
+                onSuccess = { onPermissionGranted() },
+                onDenied = {
+                    Logger.d("Location permission denied")
+                }
+            )
         }
     }
 
-    fun requestLocationPermissions() {
+    private suspend fun requestLocationPermissions(
+        onSuccess: suspend () -> Unit = {},
+        onDenied: () -> Unit = {}
+    ) {
         //TODO in this app we're assuming that the user grants the permission
         // but in a real app you should handle the permission denial with
         // a proper UI/UX - more info https://developer.android.com/training/permissions/requesting
-        screenModelScope.launch {
-            try {
-                permissionsController.providePermission(Permission.COARSE_LOCATION)
-                // Permission has been granted successfully.
-            } catch (deniedAlways: DeniedAlwaysException) {
-                // Permission is always denied.
-            } catch (denied: DeniedException) {
-                // Permission was denied.
-            }
+        try {
+            permissionsController.providePermission(Permission.COARSE_LOCATION)
+            // Permission has been granted successfully.
+            onSuccess()
+        } catch (e: Exception) {
+            onDenied()
+        }
+    }
 
-            locationProvider.getCurrentLocation().collect {
-                println("location = $it")
+    private suspend fun onPermissionGranted() {
+        locationProvider.getCurrentLocation().collect { location ->
+            location?.let {
+                val countryCode = reverseGeocodingService.getCountryCode(
+                    location.latitude,
+                    location.longitude
+                )
+                fetchArticles(
+                    countryCode
+                        ?: "ua"
+                )
             }
         }
     }

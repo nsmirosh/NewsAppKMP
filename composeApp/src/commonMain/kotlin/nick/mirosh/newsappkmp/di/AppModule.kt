@@ -22,13 +22,13 @@ import org.koin.dsl.module
 val appModule = module {
 
     factory { FetchArticlesUsecase(get()) }
-    factory{ LikeArticleUsecase(get()) }
+    factory { LikeArticleUsecase(get()) }
     factory { FetchFavoriteArticlesUsecase(get()) }
 
-    single{ NewsRemoteDataSource(get()) }
-    single{ NewsRepositoryImpl(get(), get()) } bind NewsRepository::class
+    single { NewsRemoteDataSource(get()) }
+    single { NewsRepositoryImpl(get(), get()) } bind NewsRepository::class
 
-    factory { FeedScreenModel(get(), get(), get(), get()) }
+    factory { FeedScreenModel(get(), get(), get(), get(), get()) }
     factory { FavoriteArticlesScreenModel(get()) }
 
     single<ArticleDao> { ArticleDaoConfiguration(get()).build() }
