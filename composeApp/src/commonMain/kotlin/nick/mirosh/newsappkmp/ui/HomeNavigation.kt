@@ -59,14 +59,14 @@ fun HomeNavigation() {
             }
         }
         Scaffold(
-            topBar = {
-                Box {
-                    Text(modifier = Modifier.clickable {
-                        countriesClicked = !countriesClicked
-                    }, text = "balls")
-                }
-
-            },
+//            topBar = {
+//                Box {
+//                    Text(modifier = Modifier.clickable {
+//                        countriesClicked = !countriesClicked
+//                    }, text = "balls")
+//                }
+//
+//            },
             content = { padding ->
                 Box(modifier = Modifier.padding(padding)) {
                     CurrentTab()

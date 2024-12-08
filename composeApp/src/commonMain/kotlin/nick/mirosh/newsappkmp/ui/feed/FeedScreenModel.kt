@@ -1,15 +1,16 @@
 package nick.mirosh.newsappkmp.ui.feed
 
 import androidx.compose.runtime.mutableStateListOf
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
 import co.touchlab.kermit.Logger
-import dev.icerock.moko.permissions.DeniedAlwaysException
-import dev.icerock.moko.permissions.DeniedException
 import dev.icerock.moko.permissions.Permission
+import dev.icerock.moko.permissions.PermissionState
 import dev.icerock.moko.permissions.PermissionsController
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.IO
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -37,7 +38,7 @@ class FeedScreenModel(
     init {
         screenModelScope.launch {
             requestLocationPermissions(
-                onSuccess = { onPermissionGranted() },
+                onSuccess = { getCurrentLocation() },
                 onDenied = {
                     Logger.d("Location permission denied")
                 }
@@ -49,25 +50,42 @@ class FeedScreenModel(
         onSuccess: suspend () -> Unit = {},
         onDenied: () -> Unit = {}
     ) {
+
+        Logger.d("Requesting location permissions")
         //TODO in this app we're assuming that the user grants the permission
         // but in a real app you should handle the permission denial with
         // a proper UI/UX - more info https://developer.android.com/training/permissions/requesting
+
+        if (permissionsController.getPermissionState(Permission.COARSE_LOCATION) == PermissionState.Granted) {
+            onSuccess()
+            return
+        }
+
+        //TODO: Hack to overcome the moko libraries' bug for ios first-time permission requst
+        screenModelScope.launch(Dispatchers.IO) {
+            while (permissionsController.getPermissionState(Permission.COARSE_LOCATION) != PermissionState.Granted) {
+                delay(200)
+            }
+            onSuccess()
+        }
         try {
             permissionsController.providePermission(Permission.COARSE_LOCATION)
-            // Permission has been granted successfully.
-            onSuccess()
         } catch (e: Exception) {
+            Logger.e("Error requesting location permissions: ${e.message}")
             onDenied()
         }
     }
 
-    private suspend fun onPermissionGranted() {
+    private suspend fun getCurrentLocation() {
         locationProvider.getCurrentLocation().collect { location ->
+            Logger.d("current location = $location")
             location?.let {
                 val countryCode = reverseGeocodingService.getCountryCode(
                     location.latitude,
                     location.longitude
                 )
+
+                Logger.d("received country code = $location")
                 fetchArticles(
                     countryCode
                         ?: "ua"
