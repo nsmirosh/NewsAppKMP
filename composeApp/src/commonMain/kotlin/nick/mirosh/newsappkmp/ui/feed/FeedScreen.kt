@@ -52,9 +52,9 @@ import coil3.compose.AsyncImage
 import kotlinproject.composeapp.generated.resources.Res
 import kotlinproject.composeapp.generated.resources.compose_multiplatform
 import kotlinx.datetime.LocalDateTime
-import kotlinx.datetime.format.DateTimeComponents
 import nick.mirosh.newsapp.domain.feed.model.Article
 import nick.mirosh.newsappkmp.ui.article.DetailsScreen
+import nick.mirosh.newsappkmp.ui.country.CountryDialog
 import org.jetbrains.compose.resources.painterResource
 
 @Composable
@@ -62,16 +62,40 @@ fun FeedScreen(
     onArticleClick: (Article) -> Unit,
     onLikeClick: (Article) -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: FeedScreenModel
+    screenModel: FeedScreenModel
 ) {
-    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    FeedScreenContent(
-        uiState = uiState,
-        onArticleClick = { onArticleClick(it) },
-        onLikeClick = { onLikeClick(it) },
-        modifier = modifier.fillMaxSize()
+
+    var countriesClicked by remember { mutableStateOf(false) }
+    if (countriesClicked) {
+        CountryDialog(
+            onCountryClicked = {
+                screenModel.saveCountry(it)
+                countriesClicked = false
+            },
+            onDismissRequest = { countriesClicked = false }
+        )
+    }
+    Scaffold(
+        topBar = {
+            Box(modifier = Modifier.fillMaxWidth()) {
+                Text(modifier = Modifier.align(Alignment.TopEnd).clickable {
+                    countriesClicked = !countriesClicked
+                }, text = "choose country")
+            }
+
+        },
+        content = { padding ->
+            val uiState by screenModel.uiState.collectAsStateWithLifecycle()
+            FeedScreenContent(
+                uiState = uiState,
+                onArticleClick = { onArticleClick(it) },
+                onLikeClick = { onLikeClick(it) },
+                modifier = modifier.padding(padding).fillMaxSize()
+            )
+        },
     )
 }
+
 
 class FeedScreenVoyager : Screen {
 
@@ -81,7 +105,7 @@ class FeedScreenVoyager : Screen {
         val navigator = LocalNavigator.currentOrThrow
 
         FeedScreen(
-            viewModel = screenModel,
+            screenModel = screenModel,
             onArticleClick = {
                 navigator.push(
                     DetailsScreen(it)

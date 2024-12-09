@@ -85,6 +85,7 @@ kotlin {
             implementation(libs.voyager.tabNavigator)
             implementation(libs.room.runtime)
             implementation(libs.room.sqlite)
+            implementation(libs.androidx.datastore.preferences)
         }
         iosMain.dependencies {
             implementation(libs.ktor.client.darwin)

@@ -1,5 +1,7 @@
 package nick.mirosh.newsapp.di
 
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
 import androidx.room.Room
 import dev.icerock.moko.permissions.PermissionsController
 import dev.icerock.moko.permissions.ios.PermissionsController as PermissionsControllerIOS
@@ -11,6 +13,7 @@ import nick.mirosh.newsappkmp.location.IOSLocationProvider
 import nick.mirosh.newsappkmp.location.LocationProvider
 import nick.mirosh.newsappkmp.location.ReverseGeocodingService
 import nick.mirosh.newsappkmp.location.IosReverseGeocodingService
+import nick.mirosh.newsappkmp.repository.createDataStore
 import org.koin.dsl.bind
 import org.koin.dsl.module
 import platform.Foundation.NSDocumentDirectory
@@ -43,6 +46,7 @@ val iOSModule = module {
             name = dbFilePath,
         )
     }
+    single<DataStore<Preferences>>  { createDataStore() }
 
     single { IOSLocationProvider() } bind LocationProvider::class
     single { IosReverseGeocodingService() } bind ReverseGeocodingService::class

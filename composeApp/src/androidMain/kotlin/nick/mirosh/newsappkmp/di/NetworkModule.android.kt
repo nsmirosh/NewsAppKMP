@@ -2,12 +2,15 @@ package nick.mirosh.newsapp.di
 
 import android.app.Activity
 import androidx.activity.ComponentActivity
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import dev.icerock.moko.permissions.PermissionsController
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.okhttp.OkHttp
 import nick.mirosh.newsapp.data.database.AppDatabase
+import nick.mirosh.newsappkmp.data.createDataStore
 import nick.mirosh.newsappkmp.location.LocationProvider
 import nick.mirosh.newsappkmp.location.LocationProviderImpl
 import nick.mirosh.newsappkmp.location.ReverseGeocodingService
@@ -41,9 +44,9 @@ val androidModule = module {
     single { LocationProviderImpl(androidContext()) } bind LocationProvider::class
     single { ReverseGeocodingServiceImpl(androidContext()) } bind ReverseGeocodingService::class
 
-    single<HttpClient> {
-        HttpClient(OkHttp)
-    }
+    single<DataStore<Preferences>> { createDataStore(androidContext()) }
+
+    single<HttpClient> { HttpClient(OkHttp) }
 }
 
 

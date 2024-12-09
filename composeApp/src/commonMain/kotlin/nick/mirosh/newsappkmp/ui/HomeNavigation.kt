@@ -1,30 +1,21 @@
 package nick.mirosh.newsappkmp.ui
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.RowScope
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.Icon
 import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Dialog
-import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.tab.CurrentTab
 import cafe.adriel.voyager.navigator.tab.LocalTabNavigator
@@ -50,23 +41,7 @@ fun HomeNavigation() {
             )
         }
     ) {
-        var countriesClicked by remember { mutableStateOf(false) }
-        if (countriesClicked) {
-            Dialog(onDismissRequest = { countriesClicked = false }) {
-                Box(modifier = Modifier.fillMaxSize().padding(16.dp).background(Color.Green)) {
-                    Text("Hello, World!")
-                }
-            }
-        }
         Scaffold(
-//            topBar = {
-//                Box {
-//                    Text(modifier = Modifier.clickable {
-//                        countriesClicked = !countriesClicked
-//                    }, text = "balls")
-//                }
-//
-//            },
             content = { padding ->
                 Box(modifier = Modifier.padding(padding)) {
                     CurrentTab()
@@ -140,17 +115,5 @@ object HomeTab : Tab {
     @Composable
     override fun Content() {
         Navigator(FeedScreenVoyager())
-    }
-}
-
-
-class CountriesDialog : Screen {
-    override val key: String = "countries"
-
-    @Composable
-    override fun Content() {
-        Dialog(onDismissRequest = { }) {
-            Text("Hello, World!")
-        }
     }
 }

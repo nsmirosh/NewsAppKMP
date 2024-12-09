@@ -17,6 +17,7 @@ import kotlinx.coroutines.launch
 import nick.mirosh.newsapp.domain.Result
 import nick.mirosh.newsapp.domain.feed.model.Article
 import nick.mirosh.newsapp.domain.feed.usecase.FetchArticlesUsecase
+import nick.mirosh.newsappkmp.domain.feed.repository.DataStoreRepository
 import nick.mirosh.newsappkmp.domain.feed.usecase.LikeArticleUsecase
 import nick.mirosh.newsappkmp.location.LocationProvider
 import nick.mirosh.newsappkmp.location.ReverseGeocodingService
@@ -26,7 +27,8 @@ class FeedScreenModel(
     private val likeArticleUsecase: LikeArticleUsecase,
     private val locationProvider: LocationProvider,
     private val permissionsController: PermissionsController,
-    private val reverseGeocodingService: ReverseGeocodingService
+    private val reverseGeocodingService: ReverseGeocodingService,
+    private val dataStoreRepository: DataStoreRepository
 ) : ScreenModel {
 
     private val _articles = mutableStateListOf<Article>()
@@ -34,6 +36,8 @@ class FeedScreenModel(
 
     private val _uiState = MutableStateFlow<FeedUIState>(FeedUIState.Loading)
     val uiState: StateFlow<FeedUIState> = _uiState
+
+    val country = dataStoreRepository.getCountry()
 
     init {
         screenModelScope.launch {
@@ -43,6 +47,16 @@ class FeedScreenModel(
                     Logger.d("Location permission denied")
                 }
             )
+            country.collect {
+                Logger.d("saved country = $it")
+            }
+        }
+    }
+
+
+    fun saveCountry(value: String) {
+        screenModelScope.launch {
+            dataStoreRepository.saveCountry(value)
         }
     }
 
