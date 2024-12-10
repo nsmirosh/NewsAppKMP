@@ -18,10 +18,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import nick.mirosh.newsappkmp.domain.feed.model.Country
 
 @Composable
 fun CountryDialog(
-    currentCountry: String,
+    countries: List<Country>,
     onCountryClicked: (String) -> Unit,
     onDismissRequest: () -> Unit,
 ) {
@@ -38,7 +39,7 @@ fun CountryDialog(
                 color = Color.White
             )
             CountryGrid(
-                currentCountry = currentCountry,
+                countries = countries,
                 onCountryClicked = onCountryClicked,
             )
         }
@@ -46,21 +47,20 @@ fun CountryDialog(
 }
 
 @Composable
-fun CountryGrid(currentCountry: String, onCountryClicked: (String) -> Unit, modifier: Modifier = Modifier) {
-    val countries = listOf(
-        "USA", "Canada", "Mexico",
-        "Brazil", "Argentina", "Peru",
-        "France", "Germany", "Italy",
-        "Japan", "China", "India"
-    )
-
+fun CountryGrid(
+    countries: List<Country>,
+    onCountryClicked: (String) -> Unit,
+    modifier: Modifier = Modifier
+) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
         verticalArrangement = Arrangement.Center,
         modifier = modifier
     ) {
         items(countries) { country ->
-            CountryItem(name = country, shouldHighlight = country == currentCountry) { chosenCountry ->
+            CountryItem(
+                country = country,
+            ) { chosenCountry ->
                 onCountryClicked(chosenCountry)
             }
         }
@@ -68,16 +68,16 @@ fun CountryGrid(currentCountry: String, onCountryClicked: (String) -> Unit, modi
 }
 
 @Composable
-fun CountryItem(name: String, shouldHighlight: Boolean, onClicked: (String) -> Unit) {
+fun CountryItem(country: Country, onClicked: (String) -> Unit) {
     Text(
-        text = name,
-        color = if (shouldHighlight) Color.Magenta else Color.White, // White text color
+        text = country.name,
+        color = if (country.selected) Color.Magenta else Color.White, // White text color
         style = MaterialTheme.typography.body1,
         maxLines = 1, // Limit to one line
         overflow = TextOverflow.Ellipsis, // Add ellipsis if the text is too long
         modifier = Modifier
             .padding(16.dp).clickable {
-                onClicked(name)
+                onClicked(country.code)
             }
     )
 }

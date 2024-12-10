@@ -23,6 +23,7 @@ class NewsRepositoryImpl(
                 val databaseArticles = articleDtos
                     .filterNot { it.duplicate ?: false }
                     .map { it.asDatabaseModel() }
+                newsLocalDataSource.deleteAll()
                 newsLocalDataSource.insertAll(databaseArticles)
             }
         } catch (e: Exception) {

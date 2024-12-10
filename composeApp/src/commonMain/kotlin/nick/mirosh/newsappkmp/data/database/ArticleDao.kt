@@ -16,7 +16,7 @@ interface ArticleDao {
     @Query("SELECT * FROM articles WHERE liked = 1")
     fun getLikedArticles(): Flow<List<DatabaseArticle>>
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(articles: List<DatabaseArticle>): List<Long>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -24,4 +24,7 @@ interface ArticleDao {
 
     @Delete
     suspend fun delete(article: DatabaseArticle)
+
+    @Query("DELETE FROM articles")
+    suspend fun deleteAll()
 }

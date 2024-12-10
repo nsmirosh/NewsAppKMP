@@ -7,19 +7,23 @@ import co.touchlab.kermit.Logger
 import dev.icerock.moko.permissions.Permission
 import dev.icerock.moko.permissions.PermissionState
 import dev.icerock.moko.permissions.PermissionsController
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.last
+import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.launch
 import nick.mirosh.newsapp.domain.Result
 import nick.mirosh.newsapp.domain.feed.model.Article
 import nick.mirosh.newsapp.domain.feed.usecase.FetchArticlesUsecase
 import nick.mirosh.newsappkmp.data.repository.CountriesRepository
+import nick.mirosh.newsappkmp.domain.feed.model.Country
 import nick.mirosh.newsappkmp.domain.feed.repository.DataStoreRepository
 import nick.mirosh.newsappkmp.domain.feed.usecase.LikeArticleUsecase
+import nick.mirosh.newsappkmp.location.LocationData
 import nick.mirosh.newsappkmp.location.LocationProvider
 import nick.mirosh.newsappkmp.location.ReverseGeocodingService
 
@@ -37,38 +41,68 @@ class FeedScreenModel(
     val articles: List<Article> = _articles
 
     private val _uiState = MutableStateFlow<FeedUIState>(FeedUIState.Loading)
-    val uiState: StateFlow<FeedUIState> = _uiState
+    val uiState: StateFlow<FeedUIState> = _uiState.asStateFlow()
 
-    val country = dataStoreRepository.getCountry()
+    private val _allCountries = MutableStateFlow<List<Country>?>(null)
+    val allCountries: StateFlow<List<Country>?> = _allCountries.asStateFlow()
+
+    private lateinit var selectedCountryCode: String
+
 
     init {
         screenModelScope.launch {
-            requestLocationPermissions(
-                onSuccess = { getCurrentLocation() },
-                onDenied = {
-                    Logger.d("Location permission denied")
-                }
-            )
+            dataStoreRepository.isFirstLaunch().collect { isFirstLaunch ->
 
-            countriesRepository.countries.collect {
-                when (it) {
-                    is Result.Success -> {
-                        Logger.d("countries = ${it.data}")
+                if (!isFirstLaunch) {
+                    dataStoreRepository.getSelectedCountryCode().collect {
+                        initializeCountriesList(it)
+                        fetchArticles(it)
                     }
-                    is Result.Error -> {
-                        Logger.d("error = ${it.throwable.message}")
-                    }
+                    return@collect
                 }
 
-
+                dataStoreRepository.saveFirstLaunch()
+                requestLocationPermissions(
+                    onSuccess = {
+                        getCurrentLocation { location ->
+                            reverseGeocodingService.getCountryCode(
+                                location.latitude,
+                                location.longitude
+                            ).let { code ->
+                                dataStoreRepository.saveSelectedCountryCode(code ?: "US")
+                                fetchArticles(code ?: "US")
+                            }
+                        }
+                    },
+                    onDenied = {
+                        Logger.d("Location permission denied")
+                    }
+                )
             }
         }
     }
 
+    private suspend fun initializeCountriesList(selectedCountryCode: String) {
+        when (val result = countriesRepository.getCountries()) {
+            is Result.Success -> {
+                //TODO Mutating a list of countries, should be done in a better way
+                result.data.first { it.code == selectedCountryCode }.selected = true
+                _allCountries.value = result.data
+            }
 
-    fun saveCountry(value: String) {
+            is Result.Error ->
+                Logger.e(
+                    tag = "FeedScreenModel",
+                    throwable = result.throwable,
+                    messageString = "Error reading countries"
+                )
+        }
+    }
+
+
+    fun saveCountry(countryCode: String) {
         screenModelScope.launch {
-            dataStoreRepository.saveCountry(value)
+            dataStoreRepository.saveSelectedCountryCode(countryCode)
         }
     }
 
@@ -102,20 +136,10 @@ class FeedScreenModel(
         }
     }
 
-    private suspend fun getCurrentLocation() {
+    private suspend fun getCurrentLocation(onLocationReceived: suspend (LocationData) -> Unit) {
         locationProvider.getCurrentLocation().collect { location ->
-            Logger.d("current location = $location")
             location?.let {
-                val countryCode = reverseGeocodingService.getCountryCode(
-                    location.latitude,
-                    location.longitude
-                )
-
-                Logger.d("received country code = $location")
-                fetchArticles(
-                    countryCode
-                        ?: "ua"
-                )
+                onLocationReceived(it)
             }
         }
     }

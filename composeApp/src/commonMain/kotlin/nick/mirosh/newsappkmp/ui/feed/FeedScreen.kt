@@ -66,25 +66,27 @@ fun FeedScreen(
 ) {
 
     val uiState by screenModel.uiState.collectAsStateWithLifecycle()
-    val country by screenModel.country.collectAsStateWithLifecycle("")
+    val countries by screenModel.allCountries.collectAsStateWithLifecycle()
 
     var countriesClicked by remember { mutableStateOf(false) }
     if (countriesClicked) {
-        CountryDialog(
-            currentCountry = country,
-            onCountryClicked = {
-                screenModel.saveCountry(it)
-                countriesClicked = false
-            },
-            onDismissRequest = { countriesClicked = false }
-        )
+        countries?.let {
+            CountryDialog(
+                countries = it,
+                onCountryClicked = { selectedCountryCode ->
+                    screenModel.saveCountry(selectedCountryCode)
+                    countriesClicked = false
+                },
+                onDismissRequest = { countriesClicked = false }
+            )
+        }
     }
     Scaffold(
         topBar = {
             Box(modifier = Modifier.fillMaxWidth()) {
                 Text(modifier = Modifier.align(Alignment.TopEnd).clickable {
                     countriesClicked = !countriesClicked
-                }, text = country)
+                }, text = countries?.first { it.selected }?.name ?: "Select Country")
             }
 
         },
