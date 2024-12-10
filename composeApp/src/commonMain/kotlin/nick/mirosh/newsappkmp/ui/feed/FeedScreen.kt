@@ -65,9 +65,13 @@ fun FeedScreen(
     screenModel: FeedScreenModel
 ) {
 
+    val uiState by screenModel.uiState.collectAsStateWithLifecycle()
+    val country by screenModel.country.collectAsStateWithLifecycle("")
+
     var countriesClicked by remember { mutableStateOf(false) }
     if (countriesClicked) {
         CountryDialog(
+            currentCountry = country,
             onCountryClicked = {
                 screenModel.saveCountry(it)
                 countriesClicked = false
@@ -80,12 +84,11 @@ fun FeedScreen(
             Box(modifier = Modifier.fillMaxWidth()) {
                 Text(modifier = Modifier.align(Alignment.TopEnd).clickable {
                     countriesClicked = !countriesClicked
-                }, text = "choose country")
+                }, text = country)
             }
 
         },
         content = { padding ->
-            val uiState by screenModel.uiState.collectAsStateWithLifecycle()
             FeedScreenContent(
                 uiState = uiState,
                 onArticleClick = { onArticleClick(it) },

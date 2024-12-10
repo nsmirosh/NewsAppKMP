@@ -10,23 +10,25 @@ import nick.mirosh.newsappkmp.domain.feed.repository.DataStoreRepository
 import okio.Path.Companion.toPath
 
 fun createDataStore(producePath: () -> String): DataStore<Preferences> =
-        PreferenceDataStoreFactory.createWithPath(
-            produceFile = { producePath().toPath() }
-        )
+    PreferenceDataStoreFactory.createWithPath(
+        produceFile = { producePath().toPath() }
+    )
 
 internal const val dataStoreFileName = "dice.preferences_pb"
 
 
-class DataStoreRepositoryImpl(private val prefs: DataStore<Preferences>): DataStoreRepository {
+const val DEFAULT_COUNTRY = "USA"
+const val COUNTRY_KEY = "country_key"
 
-    override suspend fun saveCountry( value: String) {
+class DataStoreRepositoryImpl(private val prefs: DataStore<Preferences>) : DataStoreRepository {
+
+    override suspend fun saveCountry(value: String) {
         prefs.edit {
-            it[stringPreferencesKey("country")] = value
+            it[stringPreferencesKey(COUNTRY_KEY)] = value
         }
     }
 
     override fun getCountry() = prefs.data.map {
-        it[stringPreferencesKey("country")]
+        it[stringPreferencesKey(COUNTRY_KEY)] ?: DEFAULT_COUNTRY
     }
-
 }

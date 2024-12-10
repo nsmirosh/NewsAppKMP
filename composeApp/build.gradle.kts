@@ -86,6 +86,7 @@ kotlin {
             implementation(libs.room.runtime)
             implementation(libs.room.sqlite)
             implementation(libs.androidx.datastore.preferences)
+            implementation(compose.components.resources)
         }
         iosMain.dependencies {
             implementation(libs.ktor.client.darwin)
@@ -126,7 +127,6 @@ android {
 dependencies {
     // compose multiplatform
     commonMainApi(libs.moko.permissions)
-    commonMainApi(libs.moko.permissions.compose) // permissions api + compose extensions
     ksp(libs.room.compiler)
     debugImplementation(compose.uiTooling)
 }

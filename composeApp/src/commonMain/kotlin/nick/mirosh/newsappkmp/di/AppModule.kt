@@ -4,9 +4,11 @@ import androidx.room.RoomDatabase
 import androidx.sqlite.driver.bundled.BundledSQLiteDriver
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
+import kotlinx.serialization.json.Json
 import nick.mirosh.newsapp.data.database.AppDatabase
 import nick.mirosh.newsapp.data.database.ArticleDao
 import nick.mirosh.newsapp.domain.feed.usecase.FetchArticlesUsecase
+import nick.mirosh.newsappkmp.data.repository.CountriesRepository
 import nick.mirosh.newsappkmp.data.repository.DataStoreRepositoryImpl
 import nick.mirosh.newsappkmp.data.repository.NewsRemoteDataSource
 import nick.mirosh.newsappkmp.data.repository.NewsRepositoryImpl
@@ -29,10 +31,13 @@ val appModule = module {
     single { NewsRepositoryImpl(get(), get()) } bind NewsRepository::class
     single { DataStoreRepositoryImpl(get()) } bind DataStoreRepository::class
 
-    factory { FeedScreenModel(get(), get(), get(), get(), get(), get()) }
+    factory { FeedScreenModel(get(), get(), get(), get(), get(), get(),get()) }
     factory { FavoriteArticlesScreenModel(get()) }
 
     single<ArticleDao> { ArticleDaoConfiguration(get()).build() }
+    single<Json> { Json { ignoreUnknownKeys = true } }
+    single { CountriesRepository(get()) }
+
 }
 
 
