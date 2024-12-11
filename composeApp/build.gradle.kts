@@ -86,7 +86,6 @@ kotlin {
             implementation(libs.room.runtime)
             implementation(libs.room.sqlite)
             implementation(libs.androidx.datastore.preferences)
-            implementation(compose.components.resources)
         }
         iosMain.dependencies {
             implementation(libs.ktor.client.darwin)
