@@ -19,13 +19,18 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
+import androidx.compose.material.OutlinedButton
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
+import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
+import androidx.compose.material.icons.filled.Place
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -35,7 +40,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.platform.testTag
@@ -83,10 +90,40 @@ fun FeedScreen(
     }
     Scaffold(
         topBar = {
-            Box(modifier = Modifier.fillMaxWidth()) {
-                Text(modifier = Modifier.align(Alignment.TopEnd).clickable {
-                    countriesClicked = !countriesClicked
-                }, text = countries?.first { it.selected }?.name ?: "Select Country")
+            TopAppBar(
+                backgroundColor = Color.White,
+                elevation = 8.dp,
+            ) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(8.dp)
+                ) {
+                    Button(
+                        colors = ButtonDefaults.buttonColors(
+                            backgroundColor = Color.Gray,
+                            contentColor = Color.White
+                        ),
+                        modifier = Modifier.align(Alignment.TopEnd),
+                        onClick = { countriesClicked = !countriesClicked },
+                    ) {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Place,
+                                contentDescription = "Select Country",
+                                tint = Color.White
+                            )
+
+                            Text(
+                                modifier = Modifier.padding(start = 8.dp),
+                                text = countries?.first { it.selected }?.name ?: "Select Country"
+                            )
+                        }
+                    }
+                }
             }
 
         },

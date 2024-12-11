@@ -1,13 +1,10 @@
 package nick.mirosh.newsappkmp.data.repository
 
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.map
 import nick.mirosh.newsapp.data.database.ArticleDao
 import nick.mirosh.newsapp.domain.Result
 import nick.mirosh.newsapp.domain.feed.model.Article
 import nick.mirosh.newsapp.domain.feed.model.asDatabaseModel
-import nick.mirosh.newsappkmp.data.model.ArticleDTO
-import nick.mirosh.newsappkmp.data.model.DatabaseArticle
 import nick.mirosh.newsappkmp.data.model.asDomainModel
 import nick.mirosh.newsappkmp.domain.feed.repository.NewsRepository
 
@@ -64,15 +61,6 @@ class NewsRepositoryImpl(
         newsLocalDataSource.getAllArticles()
             .sortedByDescending { it.liked }
 }
-
-
-fun ArticleDTO.asDatabaseModel() = DatabaseArticle(
-    author = author.orEmpty(),
-    publishedAt = publishedAt.orEmpty(),
-    title = title.orEmpty(),
-    url = url.orEmpty(),
-    urlToImage = urlToImage.orEmpty(),
-)
 
 
 

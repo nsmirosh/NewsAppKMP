@@ -13,8 +13,6 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.last
-import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.launch
 import nick.mirosh.newsapp.domain.Result
 import nick.mirosh.newsapp.domain.feed.model.Article
@@ -45,9 +43,6 @@ class FeedScreenModel(
 
     private val _allCountries = MutableStateFlow<List<Country>?>(null)
     val allCountries: StateFlow<List<Country>?> = _allCountries.asStateFlow()
-
-    private lateinit var selectedCountryCode: String
-
 
     init {
         screenModelScope.launch {
@@ -110,8 +105,6 @@ class FeedScreenModel(
         onSuccess: suspend () -> Unit = {},
         onDenied: () -> Unit = {}
     ) {
-
-        Logger.d("Requesting location permissions")
         //TODO in this app we're assuming that the user grants the permission
         // but in a real app you should handle the permission denial with
         // a proper UI/UX - more info https://developer.android.com/training/permissions/requesting
@@ -154,7 +147,7 @@ class FeedScreenModel(
             }
 
             is Result.Error -> {
-                println("error = ${result.throwable.message}")
+                Logger.e("error = ${result.throwable.message}")
                 FeedUIState.Failed
             }
         }
@@ -170,7 +163,7 @@ class FeedScreenModel(
                 }
 
                 is Result.Error -> {
-                    println("error = ${result.throwable.message}")
+                   Logger.e("error = ${result.throwable.message}")
                 }
             }
         }
