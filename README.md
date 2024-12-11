@@ -27,8 +27,7 @@ This is a Compose Multiplatform adaptation of the [Android News App](https://git
 - MVVM 
 - Coroutines, Flows
 - Room
-- Location services
-- Native components
+- Native Location services
 - Image loading using [Coil](https://coil-kt.github.io/coil/)
 - Dependency injection via [Koin](https://insert-koin.io/)
 - Networking using [Ktor](https://ktor.io/)
@@ -36,11 +35,11 @@ This is a Compose Multiplatform adaptation of the [Android News App](https://git
 - Date formatting using [Kotlinx DateTime](https://github.com/Kotlin/kotlinx-datetime)
 - Permission handling using [Moko](https://github.com/icerockdev/moko-permissions)
 - Logging via [Kermit](https://kermit.touchlab.co/)
+- Key- Value storage using [DataStore](https://developer.android.com/topic/libraries/architecture/datastore)
 
 Planned: 
-
-- Key / Value storage
 - Tests
+- Custom UI per platform
 
 https://github.com/user-attachments/assets/74e79d93-0e9a-4778-8dfe-6c8dd3e872fa
 
