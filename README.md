@@ -13,6 +13,8 @@ The intent here is to try to share **as much as possible between Android and iOS
 
 This is a Compose Multiplatform adaptation of the [Android News App](https://github.com/nsmirosh/NewsApp). 
 
+https://github.com/user-attachments/assets/74e79d93-0e9a-4778-8dfe-6c8dd3e872fa
+
 ### Set up:
 
 #### To run the app:
@@ -40,7 +42,5 @@ This is a Compose Multiplatform adaptation of the [Android News App](https://git
 Planned: 
 - Tests
 - Custom UI per platform
-
-https://github.com/user-attachments/assets/74e79d93-0e9a-4778-8dfe-6c8dd3e872fa
 
 Design inspired by [Tomas Nozina](https://dribbble.com/shots/15246621-Denn-k-N-News-App)
