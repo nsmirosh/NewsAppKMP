@@ -1,6 +1,7 @@
 package nick.mirosh.newsappkmp.di
 
 import nick.mirosh.newsapp.di.networkModule
+import nick.mirosh.newsapp.di.repositoryModule
 import org.koin.core.KoinApplication
 import org.koin.core.context.startKoin
 import org.koin.core.module.Module
@@ -22,7 +23,7 @@ object KoinContainer {
 
             koinApplication = startKoin {
                 appDeclaration()
-                modules(platformSpecificModule, appModule, networkModule)
+                modules(platformSpecificModule, appModule, networkModule, repositoryModule)
             }
         }
         return koinApplication

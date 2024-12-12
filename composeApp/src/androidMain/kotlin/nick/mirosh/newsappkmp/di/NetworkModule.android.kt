@@ -33,7 +33,7 @@ val androidModule = module {
         }
     }
 
-    factory<RoomDatabase.Builder<AppDatabase>> {
+    single<RoomDatabase.Builder<AppDatabase>> {
         val dbFile = androidContext().getDatabasePath("my_room.db")
         Room.databaseBuilder<AppDatabase>(
             context = androidContext(),

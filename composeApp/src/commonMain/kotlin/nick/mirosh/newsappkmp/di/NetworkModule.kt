@@ -35,20 +35,13 @@ val networkModule = module {
             defaultRequest {
                 url {
                     protocol = URLProtocol.HTTPS
-//                    host = "newsapi.org"
                     host = "newsdata.io"
-//                    header("X-Api-Key", BuildConfig.API_KEY)
                     parameters.append("apikey", BuildConfig.API_KEY)
-
                 }
             }
         }
     }
-
 }
-
-
-
 
 
 expect fun createPlatformHttpClient(): HttpClient

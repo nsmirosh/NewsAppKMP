@@ -11,7 +11,7 @@ import platform.Foundation.NSUserDomainMask
 
 
 @OptIn(ExperimentalForeignApi::class)
-fun createDataStore(): DataStore<Preferences> = nick.mirosh.newsappkmp.data.repository.createDataStore(
+fun createIosDataStore(): DataStore<Preferences> = nick.mirosh.newsappkmp.data.repository.createDataStore(
     producePath = {
         val documentDirectory: NSURL? = NSFileManager.defaultManager.URLForDirectory(
             directory = NSDocumentDirectory,

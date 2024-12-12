@@ -13,7 +13,7 @@ import nick.mirosh.newsappkmp.location.IOSLocationProvider
 import nick.mirosh.newsappkmp.location.LocationProvider
 import nick.mirosh.newsappkmp.location.ReverseGeocodingService
 import nick.mirosh.newsappkmp.location.IosReverseGeocodingService
-import nick.mirosh.newsappkmp.repository.createDataStore
+import nick.mirosh.newsappkmp.repository.createIosDataStore
 import org.koin.dsl.bind
 import org.koin.dsl.module
 import platform.Foundation.NSDocumentDirectory
@@ -26,7 +26,8 @@ actual fun createPlatformHttpClient(): HttpClient {
 
 val iOSModule = module {
     factory { HttpClient(Darwin) }
-    single<PermissionsController> { PermissionsControllerIOS() }
+
+    single { PermissionsControllerIOS() } bind PermissionsController::class
 
     @OptIn(ExperimentalForeignApi::class)
     fun documentDirectory(): String {
@@ -46,7 +47,7 @@ val iOSModule = module {
             name = dbFilePath,
         )
     }
-    single<DataStore<Preferences>>  { createDataStore() }
+    single<DataStore<Preferences>> { createIosDataStore() }
 
     single { IOSLocationProvider() } bind LocationProvider::class
     single { IosReverseGeocodingService() } bind ReverseGeocodingService::class

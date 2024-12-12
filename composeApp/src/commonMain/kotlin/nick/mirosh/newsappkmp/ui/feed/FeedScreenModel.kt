@@ -17,8 +17,8 @@ import kotlinx.coroutines.launch
 import nick.mirosh.newsapp.domain.Result
 import nick.mirosh.newsapp.domain.feed.model.Article
 import nick.mirosh.newsapp.domain.feed.usecase.FetchArticlesUsecase
-import nick.mirosh.newsappkmp.data.repository.CountriesRepository
 import nick.mirosh.newsappkmp.domain.feed.model.Country
+import nick.mirosh.newsappkmp.domain.feed.repository.CountriesRepository
 import nick.mirosh.newsappkmp.domain.feed.repository.DataStoreRepository
 import nick.mirosh.newsappkmp.domain.feed.usecase.LikeArticleUsecase
 import nick.mirosh.newsappkmp.location.LocationData

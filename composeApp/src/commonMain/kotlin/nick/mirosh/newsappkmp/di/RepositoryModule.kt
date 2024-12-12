@@ -1,35 +1,20 @@
 package nick.mirosh.newsapp.di
 
-//import androidx.room.Room
-//import nick.mirosh.newsapp.data.database.AppDatabase
-//import nick.mirosh.newsapp.data.database.ArticleDao
-//import nick.mirosh.newsapp.data.database.DATABASE_NAME
-//import nick.mirosh.newsapp.data.repository.NewsRemoteDataSource
-//import nick.mirosh.newsapp.data.repository.NewsRepositoryImpl
-//import nick.mirosh.newsappkmp.domain.feed.repository.NewsRepository
-//import nick.mirosh.newsapp.domain.mapper.news.DTOtoDatabaseArticleMapper
-//import nick.mirosh.newsapp.domain.mapper.news.DatabaseToDomainArticleMapper
-//import org.koin.android.ext.koin.androidContext
-//import org.koin.core.module.dsl.bind
-//import org.koin.core.module.dsl.factoryOf
-//import org.koin.core.module.dsl.singleOf
-//import org.koin.dsl.module
-//
-//
-//val repositoryModule = module {
-//
-//    single<ArticleDao> {
-//        Room
-//            .databaseBuilder(
-//                androidContext(),
-//                AppDatabase::class.java,
-//                DATABASE_NAME
-//            )
-//            .build()
-//            .articleDao()
-//    }
-//    factoryOf(::DatabaseToDomainArticleMapper)
-//    factoryOf(::DTOtoDatabaseArticleMapper)
-//    singleOf(::NewsRemoteDataSource)
-//    singleOf(::NewsRepositoryImpl) { bind<NewsRepository>() }
-//}
+import org.koin.dsl.module
+
+import nick.mirosh.newsappkmp.data.repository.CountriesRepositoryImpl
+import nick.mirosh.newsappkmp.data.repository.DataStoreRepositoryImpl
+import nick.mirosh.newsappkmp.data.repository.NewsRemoteDataSource
+import nick.mirosh.newsappkmp.data.repository.NewsRepositoryImpl
+import nick.mirosh.newsappkmp.domain.feed.repository.CountriesRepository
+import nick.mirosh.newsappkmp.domain.feed.repository.DataStoreRepository
+import nick.mirosh.newsappkmp.domain.feed.repository.NewsRepository
+import org.koin.core.module.dsl.bind
+import org.koin.core.module.dsl.singleOf
+
+val repositoryModule = module {
+    singleOf(::NewsRemoteDataSource)
+    singleOf(::NewsRepositoryImpl) { bind<NewsRepository>() }
+    singleOf(::DataStoreRepositoryImpl) { bind<DataStoreRepository>() }
+    singleOf(::CountriesRepositoryImpl) { bind<CountriesRepository>() }
+}
