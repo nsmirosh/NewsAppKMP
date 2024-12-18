@@ -6,6 +6,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import nick.mirosh.newsapp.data.database.AppDatabase
 
+
+
+const val DATABASE_NAME = "news_app.db"
+
 class ArticleDaoConfiguration(
     private val builder: RoomDatabase.Builder<AppDatabase>
 ) {

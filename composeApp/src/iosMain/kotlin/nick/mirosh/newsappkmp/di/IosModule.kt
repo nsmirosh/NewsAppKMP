@@ -9,6 +9,7 @@ import io.ktor.client.HttpClient
 import io.ktor.client.engine.darwin.Darwin
 import kotlinx.cinterop.ExperimentalForeignApi
 import nick.mirosh.newsapp.data.database.AppDatabase
+import nick.mirosh.newsappkmp.data.database.DATABASE_NAME
 import nick.mirosh.newsappkmp.location.IOSLocationProvider
 import nick.mirosh.newsappkmp.location.LocationProvider
 import nick.mirosh.newsappkmp.location.ReverseGeocodingService
@@ -42,7 +43,7 @@ val iOSModule = module {
     }
 
     single {
-        val dbFilePath = documentDirectory() + "/my_room.db"
+        val dbFilePath = documentDirectory() + "/$DATABASE_NAME"
         Room.databaseBuilder<AppDatabase>(
             name = dbFilePath,
         )

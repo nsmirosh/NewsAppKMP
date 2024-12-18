@@ -6,7 +6,6 @@ import androidx.room.RoomDatabase
 import androidx.room.RoomDatabaseConstructor
 import nick.mirosh.newsappkmp.data.model.DatabaseArticle
 
-const val DATABASE_NAME = "articles-db"
 
 @Database(entities = [DatabaseArticle::class], version = 1)
 @ConstructedBy(AppDatabaseConstructor::class)

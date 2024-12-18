@@ -11,6 +11,7 @@ import io.ktor.client.HttpClient
 import io.ktor.client.engine.okhttp.OkHttp
 import nick.mirosh.newsapp.data.database.AppDatabase
 import nick.mirosh.newsappkmp.data.createDataStore
+import nick.mirosh.newsappkmp.data.database.DATABASE_NAME
 import nick.mirosh.newsappkmp.location.LocationProvider
 import nick.mirosh.newsappkmp.location.LocationProviderImpl
 import nick.mirosh.newsappkmp.location.ReverseGeocodingService
@@ -34,7 +35,7 @@ val androidModule = module {
     }
 
     single<RoomDatabase.Builder<AppDatabase>> {
-        val dbFile = androidContext().getDatabasePath("my_room.db")
+        val dbFile = androidContext().getDatabasePath(DATABASE_NAME)
         Room.databaseBuilder<AppDatabase>(
             context = androidContext(),
             name = dbFile.absolutePath
