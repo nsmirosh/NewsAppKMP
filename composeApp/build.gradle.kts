@@ -10,8 +10,8 @@ plugins {
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.buildConfig)
     alias(libs.plugins.ksp)
+    id("org.kodein.mock.mockmp") version "2.0.0"
 }
-
 
 val properties = Properties()
 properties.load(project.rootProject.file("local.properties").inputStream())
@@ -41,6 +41,7 @@ kotlin {
     }
 
     sourceSets {
+        jvmToolchain(17)
         androidMain.dependencies {
             implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
@@ -87,9 +88,24 @@ kotlin {
             implementation(libs.room.sqlite)
             implementation(libs.androidx.datastore.preferences)
         }
+//        androidUnitTest.dependencies {
+//            implementation(kotlin("test-junit"))
+//        }
+
+        commonTest.dependencies {
+            implementation(kotlin("test"))
+            implementation(libs.kotlinx.coroutines.test)
+            implementation(libs.kotlin.test.junit)
+        }
         iosMain.dependencies {
             implementation(libs.ktor.client.darwin)
         }
+    }
+}
+
+mockmp {
+    onTest {
+        withHelper()
     }
 }
 

@@ -11,12 +11,12 @@ import nick.mirosh.newsappkmp.domain.feed.repository.NewsRepository
 const val TAG = "NewsRepository"
 
 class NewsRepositoryImpl(
-    private val newsRemoteDataSource: NewsRemoteDataSource,
+    private val newRemoteDataSource: NewsRemoteDataSource,
     private val newsLocalDataSource: ArticleDao,
 ) : NewsRepository {
     override suspend fun getNewsArticles(country: String): Result<List<Article>> {
         try {
-            newsRemoteDataSource.getHeadlines(country).let { articleDtos ->
+            newRemoteDataSource.getHeadlines(country).let { articleDtos ->
                 val databaseArticles = articleDtos
                     .filterNot { it.duplicate ?: false }
                     .map { it.asDatabaseModel() }

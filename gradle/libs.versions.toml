@@ -12,16 +12,17 @@ kermit = "2.0.4"
 kotlin = "2.0.21"
 koin = "4.0.0"
 koinComposeMultiplatform = "4.0.0"
+kotlinxCoroutinesTest = "1.10.0"
 kotlinxDatetime = "0.6.0"
 lifecycleViewModel = "2.8.7"
 mokoPermissions = "0.18.1"
 playServicesLocation = "21.3.0"
-room = "2.7.0-alpha11"
-uiAndroid = "1.7.5"
+room = "2.7.0-alpha12"
+uiAndroid = "1.7.6"
 
 material3Android = "1.3.1"
 coil =  "3.0.1"
-ktor = "3.0.1"
+ktor = "3.0.2"
 
 coroutines = "1.9.0"
 
@@ -29,14 +30,14 @@ kotlinx-serialization = "1.7.3"
 gmazzoBuildConfig = "5.5.0"
 voyager = "1.1.0-beta03"
 coreI18n = "1.0.0-alpha01"
-ksp =  "2.0.21-1.0.25"
-sqlite = "2.5.0-alpha11"
-okio = "3.9.1"
+ksp =  "2.0.21-1.0.28"
+sqlite = "2.5.0-alpha12"
 
 
 [libraries]
 androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastorePreferences" }
-okio = {module = "com.squareup.okio:okio", version.ref = "okio"}
+kotlin-test-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlin" }
+kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinxCoroutinesTest" }
 kermit = { module = "co.touchlab:kermit", version.ref = "kermit" }
 moko-permissions = { module = "dev.icerock.moko:permissions", version.ref = "mokoPermissions" }
 play-services-location = { module = "com.google.android.gms:play-services-location", version.ref = "playServicesLocation" }

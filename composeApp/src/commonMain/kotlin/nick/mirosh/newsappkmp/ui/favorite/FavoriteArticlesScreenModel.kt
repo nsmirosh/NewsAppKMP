@@ -7,9 +7,11 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import nick.mirosh.newsapp.domain.Result
 import nick.mirosh.newsappkmp.domain.favorite.FetchFavoriteArticlesUsecase
+import nick.mirosh.newsappkmp.domain.feed.repository.NewsRepository
 
 class FavoriteArticlesScreenModel(
-    private val fetchFavoriteArticlesUsecase: FetchFavoriteArticlesUsecase
+//    private val fetchFavoriteArticlesUsecase: FetchFavoriteArticlesUsecase
+    private val repository: NewsRepository,
 ) : ScreenModel {
 
     private val _uiState =
@@ -18,7 +20,7 @@ class FavoriteArticlesScreenModel(
 
     init {
         screenModelScope.launch {
-            fetchFavoriteArticlesUsecase().collect { result ->
+            repository.getFavoriteArticles().collect { result ->
                 when (result) {
                     is Result.Success ->
                         _uiState.value = if (result.data.isEmpty())
