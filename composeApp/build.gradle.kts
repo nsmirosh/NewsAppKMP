@@ -88,10 +88,6 @@ kotlin {
             implementation(libs.room.sqlite)
             implementation(libs.androidx.datastore.preferences)
         }
-//        androidUnitTest.dependencies {
-//            implementation(kotlin("test-junit"))
-//        }
-
         commonTest.dependencies {
             implementation(kotlin("test"))
             implementation(libs.kotlinx.coroutines.test)

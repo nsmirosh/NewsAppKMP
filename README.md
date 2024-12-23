@@ -22,23 +22,26 @@ https://github.com/user-attachments/assets/74e79d93-0e9a-4778-8dfe-6c8dd3e872fa
 2. Create a local.properties file in the root of the project.
 3. Add a line `API_KEY=your_newsdata.io_key_here`
 
-#### Technologies used
+#### Technologies used and features implemented
 
 - Kotlin
-- Compose
+- Jetpack Compose for UI
 - MVVM 
-- Coroutines, Flows
-- Room
-- Native Location services
+- Coroutines, Flows for Reactive data flow
+- Room for database management
+- Localization
+- Getting the current users' location via location services native to each platform
 - Image loading using [Coil](https://coil-kt.github.io/coil/)
 - Dependency injection via [Koin](https://insert-koin.io/)
-- Networking using [Ktor](https://ktor.io/)
+- Networking using [Ktor](https://ktor.io/) and OkHttp
 - Navigation and state management using [Voyager](https://voyager.adriel.cafe/)
 - Date formatting using [Kotlinx DateTime](https://github.com/Kotlin/kotlinx-datetime)
 - Permission handling using [Moko](https://github.com/icerockdev/moko-permissions)
 - Logging via [Kermit](https://kermit.touchlab.co/)
-- Key- Value storage using [DataStore](https://developer.android.com/topic/libraries/architecture/datastore)
-- Mocking using [MocKMP](https://kosi-libs.org/mockmp)
+- Key-Value storage using [DataStore](https://developer.android.com/topic/libraries/architecture/datastore)
+- File I/O KMPs' resources plugin 
+- Unit testing
+- Mocking in unit tests using [MocKMP](https://kosi-libs.org/mockmp)
 
 Planned: 
 - Custom UI per platform
