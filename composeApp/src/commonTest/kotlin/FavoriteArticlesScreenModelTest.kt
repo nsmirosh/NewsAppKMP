@@ -1,6 +1,5 @@
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.flow.toList
@@ -13,9 +12,9 @@ import kotlinx.coroutines.test.setMain
 import nick.mirosh.newsapp.domain.Result
 import nick.mirosh.newsapp.domain.feed.model.Article
 import nick.mirosh.newsappkmp.domain.feed.repository.NewsRepository
+import nick.mirosh.newsappkmp.ui.favorite.FavoriteArticlesScreenModel
 import nick.mirosh.newsappkmp.ui.favorite.FavoriteArticlesUIState
 import nick.mirosh.newsappkmp.ui.favorite.FavoriteArticlesViewModel
-import nick.mirosh.newsappkmp.ui.feed.FeedUIState
 import org.kodein.mock.Mocker
 import org.kodein.mock.UsesMocks
 import org.kodein.mock.generated.mock
@@ -62,7 +61,7 @@ class FavoriteArticlesScreenModelTest {
         )
 
         val result = mutableListOf<FavoriteArticlesUIState>()
-        val model = FavoriteArticlesViewModel(repository)
+        val model = FavoriteArticlesScreenModel(repository)
 
         val job = launch {
             model.uiState.take(2).toList(result)
