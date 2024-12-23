@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Spanish NewsApp</string>
+    <string name="home">Spanish Home</string>
+    <string name="feed">Spanish Feed</string>
+    <string name="article">Spanish Article</string>
+    <string name="saved">Spanish Saved</string>
+    <string name="no_saved_articles">No saved articles</string>
+</resources>

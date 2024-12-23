@@ -9,7 +9,7 @@ import nick.mirosh.newsapp.domain.Result
 import nick.mirosh.newsappkmp.domain.feed.repository.NewsRepository
 
 class FavoriteArticlesScreenModel(
-    repository: NewsRepository,
+    private val repository: NewsRepository,
 ) : ScreenModel {
 
     val uiState = repository.getFavoriteArticles().map { result ->

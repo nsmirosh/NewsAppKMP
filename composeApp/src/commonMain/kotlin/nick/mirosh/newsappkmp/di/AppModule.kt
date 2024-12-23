@@ -1,11 +1,6 @@
 package nick.mirosh.newsappkmp.di
 
-import androidx.room.RoomDatabase
-import androidx.sqlite.driver.bundled.BundledSQLiteDriver
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.IO
 import kotlinx.serialization.json.Json
-import nick.mirosh.newsapp.data.database.AppDatabase
 import nick.mirosh.newsapp.data.database.ArticleDao
 import nick.mirosh.newsapp.domain.feed.usecase.FetchArticlesUsecase
 import nick.mirosh.newsappkmp.data.database.ArticleDaoConfiguration
