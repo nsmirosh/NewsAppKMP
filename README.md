@@ -38,6 +38,7 @@ https://github.com/user-attachments/assets/74e79d93-0e9a-4778-8dfe-6c8dd3e872fa
 - Permission handling using [Moko](https://github.com/icerockdev/moko-permissions)
 - Logging via [Kermit](https://kermit.touchlab.co/)
 - Key- Value storage using [DataStore](https://developer.android.com/topic/libraries/architecture/datastore)
+- Mocking using [MocKMP](https://kosi-libs.org/mockmp)
 
 Planned: 
 - Tests
