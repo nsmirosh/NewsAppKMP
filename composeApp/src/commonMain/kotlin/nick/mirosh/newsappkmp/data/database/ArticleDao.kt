@@ -14,7 +14,7 @@ interface ArticleDao {
     suspend fun getAllArticles():  List<DatabaseArticle>
 
     @Query("SELECT * FROM articles WHERE liked = 1")
-    fun getLikedArticles(): Flow<List<DatabaseArticle>>
+    fun getLikedArticles(): Flow<List<DatabaseArticle>?>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(articles: List<DatabaseArticle>): List<Long>

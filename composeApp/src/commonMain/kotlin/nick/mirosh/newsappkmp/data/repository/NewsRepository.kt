@@ -1,7 +1,9 @@
 package nick.mirosh.newsappkmp.data.repository
 
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.map
 import nick.mirosh.newsapp.data.database.ArticleDao
+import nick.mirosh.newsapp.domain.ErrorType
 import nick.mirosh.newsapp.domain.Result
 import nick.mirosh.newsapp.domain.feed.model.Article
 import nick.mirosh.newsapp.domain.feed.model.asDatabaseModel
@@ -35,15 +37,20 @@ class NewsRepositoryImpl(
         )
     }
 
-    override suspend fun getFavoriteArticles() = flow {
-        try {
-            newsLocalDataSource.getLikedArticles().collect { list ->
-                emit(Result.Success(list.map { it.asDomainModel() }))
-            }
-        } catch (e: Exception) {
-            emit(Result.Error(e))
+//    override suspend fun getFavoriteArticles() = flow {
+//        try {
+//            newsLocalDataSource.getLikedArticles().collect { list ->
+//                emit(Result.Success(list.map { it.asDomainModel() }))
+//            }
+//        } catch (e: Exception) {
+//            emit(Result.Error(e))
+//        }
+//    }
+
+    override fun getFavoriteArticles() =
+        newsLocalDataSource.getLikedArticles().map { articles ->
+                Result.Success(articles?.map { it.asDomainModel() } ?: listOf())
         }
-    }
 
     override suspend fun updateArticle(article: Article) =
         try {
