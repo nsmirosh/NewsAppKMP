@@ -41,7 +41,7 @@ https://github.com/user-attachments/assets/74e79d93-0e9a-4778-8dfe-6c8dd3e872fa
 - Mocking using [MocKMP](https://kosi-libs.org/mockmp)
 
 Planned: 
-- Tests
 - Custom UI per platform
+- Notifications using Firebase
 
 Design inspired by [Tomas Nozina](https://dribbble.com/shots/15246621-Denn-k-N-News-App)
