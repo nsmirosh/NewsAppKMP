@@ -14,7 +14,6 @@ import nick.mirosh.newsapp.domain.feed.model.Article
 import nick.mirosh.newsappkmp.domain.feed.repository.NewsRepository
 import nick.mirosh.newsappkmp.ui.favorite.FavoriteArticlesScreenModel
 import nick.mirosh.newsappkmp.ui.favorite.FavoriteArticlesUIState
-import nick.mirosh.newsappkmp.ui.favorite.FavoriteArticlesViewModel
 import org.kodein.mock.Mocker
 import org.kodein.mock.UsesMocks
 import org.kodein.mock.generated.mock

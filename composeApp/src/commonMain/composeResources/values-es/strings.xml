@@ -1,8 +1,8 @@
 <resources>
-    <string name="app_name">Spanish NewsApp</string>
-    <string name="home">Spanish Home</string>
-    <string name="feed">Spanish Feed</string>
-    <string name="article">Spanish Article</string>
-    <string name="saved">Spanish Saved</string>
-    <string name="no_saved_articles">No saved articles</string>
+    <string name="app_name">Aplicación de noticias</string>
+    <string name="home">Casa</string>
+    <string name="feed">Alimentación</string>
+    <string name="article">Artículo</string>
+    <string name="saved">Guardado</string>
+    <string name="no_saved_articles">No hay artículos guardados</string>
 </resources>
