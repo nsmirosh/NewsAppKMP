@@ -5,4 +5,5 @@
     <string name="article">Article</string>
     <string name="saved">Saved</string>
     <string name="no_saved_articles">No saved articles</string>
+    <string name="save_article_error">Failed to save article</string>
 </resources>

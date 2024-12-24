@@ -177,6 +177,10 @@ fun FeedScreenContent(
                     onLikeClick = onLikeClick
                 )
 
+            is FeedUIState.Error -> {
+
+            }
+
             else -> {
 
             }

@@ -7,6 +7,8 @@ import co.touchlab.kermit.Logger
 import dev.icerock.moko.permissions.Permission
 import dev.icerock.moko.permissions.PermissionState
 import dev.icerock.moko.permissions.PermissionsController
+import kotlinproject.composeapp.generated.resources.Res
+import kotlinproject.composeapp.generated.resources.save_article_error
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.delay
@@ -16,18 +18,20 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import nick.mirosh.newsapp.domain.Result
 import nick.mirosh.newsapp.domain.feed.model.Article
-import nick.mirosh.newsapp.domain.feed.usecase.FetchArticlesUsecase
 import nick.mirosh.newsappkmp.domain.feed.model.Country
 import nick.mirosh.newsappkmp.domain.feed.repository.CountriesRepository
 import nick.mirosh.newsappkmp.domain.feed.repository.DataStoreRepository
+import nick.mirosh.newsappkmp.domain.feed.repository.NewsRepository
 import nick.mirosh.newsappkmp.domain.feed.usecase.LikeArticleUsecase
 import nick.mirosh.newsappkmp.location.LocationData
 import nick.mirosh.newsappkmp.location.LocationProvider
 import nick.mirosh.newsappkmp.location.ReverseGeocodingService
+import org.jetbrains.compose.resources.stringResource
 
 class FeedScreenModel(
-    private val fetchArticlesUsecase: FetchArticlesUsecase,
-    private val likeArticleUsecase: LikeArticleUsecase,
+//    private val fetchArticlesUsecase: FetchArticlesUsecase,
+    private val newsRepository: NewsRepository,
+//    private val likeArticleUsecase: LikeArticleUsecase,
     private val locationProvider: LocationProvider,
     private val permissionsController: PermissionsController,
     private val reverseGeocodingService: ReverseGeocodingService,
@@ -76,6 +80,7 @@ class FeedScreenModel(
             }
         }
     }
+
 
     private suspend fun initializeCountriesList(selectedCountryCode: String) {
         when (val result = countriesRepository.getCountries()) {
@@ -139,7 +144,7 @@ class FeedScreenModel(
 
     private suspend fun fetchArticles(country: String) {
         _uiState.value = FeedUIState.Loading
-        _uiState.value = when (val result = fetchArticlesUsecase(country)) {
+        _uiState.value = when (val result = newsRepository.getNewsArticles(country)) {
             is Result.Success -> {
                 _articles.clear()
                 _articles.addAll(result.data)
@@ -148,22 +153,23 @@ class FeedScreenModel(
 
             is Result.Error -> {
                 Logger.e("error = ${result.throwable.message}")
-                FeedUIState.Failed
+                FeedUIState.FetchingArticlesFailed
             }
         }
     }
 
-    //https://stackoverflow.com/questions/74699081/jetpack-compose-lazy-column-all-items-recomposes-when-a-single-item-update
     fun onLikeClick(article: Article) {
         screenModelScope.launch {
-            when (val result = likeArticleUsecase(article)) {
+            val result = newsRepository.updateArticle(article.copy(liked = !article.liked))
+            when (result) {
                 is Result.Success -> {
                     val index = articles.indexOfFirst { it.url == result.data.url }
                     _articles[index] = result.data
                 }
 
                 is Result.Error -> {
-                   Logger.e("error = ${result.throwable.message}")
+                    _uiState.emit(FeedUIState.Error(Res.string.save_article_error))
+                    Logger.e("error = ${result.throwable.message}")
                 }
             }
         }
