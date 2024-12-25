@@ -18,6 +18,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import nick.mirosh.newsapp.domain.Result
 import nick.mirosh.newsapp.domain.feed.model.Article
+import nick.mirosh.newsappkmp.data.manager.PermissionManager
 import nick.mirosh.newsappkmp.domain.feed.model.Country
 import nick.mirosh.newsappkmp.domain.feed.repository.CountriesRepository
 import nick.mirosh.newsappkmp.domain.feed.repository.DataStoreRepository
@@ -36,7 +37,8 @@ class FeedScreenModel(
     private val permissionsController: PermissionsController,
     private val reverseGeocodingService: ReverseGeocodingService,
     private val dataStoreRepository: DataStoreRepository,
-    private val countriesRepository: CountriesRepository
+    private val countriesRepository: CountriesRepository,
+    private val permissionsManager: PermissionManager
 ) : ScreenModel {
 
     private val _articles = mutableStateListOf<Article>()
@@ -53,15 +55,16 @@ class FeedScreenModel(
             dataStoreRepository.isFirstLaunch().collect { isFirstLaunch ->
 
                 if (!isFirstLaunch) {
-                    dataStoreRepository.getSelectedCountryCode().collect {
-                        initializeCountriesList(it)
-                        fetchArticles(it)
+                    dataStoreRepository.getSelectedCountryCode().collect { countryCode ->
+                        initializeCountriesList(countryCode)
+                        fetchArticles(countryCode)
                     }
                     return@collect
                 }
 
                 dataStoreRepository.saveFirstLaunch()
-                requestLocationPermissions(
+                permissionsManager.requestLocationPermissions(
+                    this,
                     onSuccess = {
                         getCurrentLocation { location ->
                             reverseGeocodingService.getCountryCode(
@@ -103,34 +106,6 @@ class FeedScreenModel(
     fun saveCountry(countryCode: String) {
         screenModelScope.launch {
             dataStoreRepository.saveSelectedCountryCode(countryCode)
-        }
-    }
-
-    private suspend fun requestLocationPermissions(
-        onSuccess: suspend () -> Unit = {},
-        onDenied: () -> Unit = {}
-    ) {
-        //TODO in this app we're assuming that the user grants the permission
-        // but in a real app you should handle the permission denial with
-        // a proper UI/UX - more info https://developer.android.com/training/permissions/requesting
-
-        if (permissionsController.getPermissionState(Permission.COARSE_LOCATION) == PermissionState.Granted) {
-            onSuccess()
-            return
-        }
-
-        //TODO: Hack to overcome the moko libraries' bug for ios first-time permission requst
-        screenModelScope.launch(Dispatchers.IO) {
-            while (permissionsController.getPermissionState(Permission.COARSE_LOCATION) != PermissionState.Granted) {
-                delay(200)
-            }
-            onSuccess()
-        }
-        try {
-            permissionsController.providePermission(Permission.COARSE_LOCATION)
-        } catch (e: Exception) {
-            Logger.e("Error requesting location permissions: ${e.message}")
-            onDenied()
         }
     }
 
