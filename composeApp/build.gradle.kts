@@ -91,7 +91,7 @@ kotlin {
         commonTest.dependencies {
             implementation(kotlin("test"))
             implementation(libs.kotlinx.coroutines.test)
-            implementation(libs.kotlin.test.junit)
+//            implementation(libs.kotlin.test.junit)
         }
         iosMain.dependencies {
             implementation(libs.ktor.client.darwin)
