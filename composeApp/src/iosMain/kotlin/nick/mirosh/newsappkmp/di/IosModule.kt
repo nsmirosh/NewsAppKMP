@@ -1,4 +1,4 @@
-package nick.mirosh.newsapp.di
+package nick.mirosh.newsappkmp.di
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences

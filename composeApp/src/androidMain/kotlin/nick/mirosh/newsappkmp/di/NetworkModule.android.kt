@@ -1,6 +1,5 @@
-package nick.mirosh.newsapp.di
+package nick.mirosh.newsappkmp.di
 
-import android.app.Activity
 import androidx.activity.ComponentActivity
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences

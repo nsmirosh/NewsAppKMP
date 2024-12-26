@@ -4,14 +4,8 @@ import androidx.compose.runtime.mutableStateListOf
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
 import co.touchlab.kermit.Logger
-import dev.icerock.moko.permissions.Permission
-import dev.icerock.moko.permissions.PermissionState
-import dev.icerock.moko.permissions.PermissionsController
 import kotlinproject.composeapp.generated.resources.Res
 import kotlinproject.composeapp.generated.resources.save_article_error
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.IO
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -23,18 +17,13 @@ import nick.mirosh.newsappkmp.domain.feed.model.Country
 import nick.mirosh.newsappkmp.domain.feed.repository.CountriesRepository
 import nick.mirosh.newsappkmp.domain.feed.repository.DataStoreRepository
 import nick.mirosh.newsappkmp.domain.feed.repository.NewsRepository
-import nick.mirosh.newsappkmp.domain.feed.usecase.LikeArticleUsecase
 import nick.mirosh.newsappkmp.location.LocationData
 import nick.mirosh.newsappkmp.location.LocationProvider
 import nick.mirosh.newsappkmp.location.ReverseGeocodingService
-import org.jetbrains.compose.resources.stringResource
 
 class FeedScreenModel(
-//    private val fetchArticlesUsecase: FetchArticlesUsecase,
     private val newsRepository: NewsRepository,
-//    private val likeArticleUsecase: LikeArticleUsecase,
     private val locationProvider: LocationProvider,
-    private val permissionsController: PermissionsController,
     private val reverseGeocodingService: ReverseGeocodingService,
     private val dataStoreRepository: DataStoreRepository,
     private val countriesRepository: CountriesRepository,
@@ -88,17 +77,20 @@ class FeedScreenModel(
     private suspend fun initializeCountriesList(selectedCountryCode: String) {
         when (val result = countriesRepository.getCountries()) {
             is Result.Success -> {
-                //TODO Mutating a list of countries, should be done in a better way
-                result.data.first { it.code == selectedCountryCode }.selected = true
-                _allCountries.value = result.data
+                _allCountries.value = result.data.map { country ->
+                    if (country.code == selectedCountryCode) {
+                        country.copy(selected = true)
+                    } else {
+                        country
+                    }
+                }
             }
 
-            is Result.Error ->
-                Logger.e(
-                    tag = "FeedScreenModel",
-                    throwable = result.throwable,
-                    messageString = "Error reading countries"
-                )
+            is Result.Error -> Logger.e(
+                tag = "FeedScreenModel",
+                throwable = result.throwable,
+                messageString = "Error reading countries"
+            )
         }
     }
 

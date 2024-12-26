@@ -1,4 +1,4 @@
-package nick.mirosh.newsapp.di
+package nick.mirosh.newsappkmp.di
 
 import KotlinProject.composeApp.BuildConfig
 import io.ktor.client.HttpClient

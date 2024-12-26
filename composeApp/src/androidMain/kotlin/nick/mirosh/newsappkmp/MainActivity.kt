@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import dev.icerock.moko.permissions.PermissionsController
-import nick.mirosh.newsapp.di.androidModule
+import nick.mirosh.newsappkmp.di.androidModule
 import nick.mirosh.newsappkmp.di.KoinContainer
 import nick.mirosh.newsappkmp.ui.HomeNavigation
 import org.koin.android.ext.android.get
