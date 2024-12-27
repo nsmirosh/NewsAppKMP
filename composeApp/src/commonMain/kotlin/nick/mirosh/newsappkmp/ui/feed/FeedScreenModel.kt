@@ -20,6 +20,7 @@ import nick.mirosh.newsappkmp.domain.feed.repository.NewsRepository
 import nick.mirosh.newsappkmp.location.LocationData
 import nick.mirosh.newsappkmp.location.LocationProvider
 import nick.mirosh.newsappkmp.location.ReverseGeocodingService
+import nick.mirosh.newsappkmp.ui.utils.DialogProvider
 
 class FeedScreenModel(
     private val newsRepository: NewsRepository,
@@ -27,7 +28,8 @@ class FeedScreenModel(
     private val reverseGeocodingService: ReverseGeocodingService,
     private val dataStoreRepository: DataStoreRepository,
     private val countriesRepository: CountriesRepository,
-    private val permissionsManager: PermissionManager
+    private val permissionsManager: PermissionManager,
+    private val dialogProvider: DialogProvider
 ) : ScreenModel {
 
     private val _articles = mutableStateListOf<Article>()
@@ -67,11 +69,22 @@ class FeedScreenModel(
                     },
                     onDenied = {
                         Logger.d("Location permission denied")
+                    },
+                    onAlwaysDenied = {
+                        dialogProvider.showDialog(
+                            "Location permission denied",
+                            "Please enable location permissions in settings for better experience"
+                        ) {
+                            Logger.d("Location permission denied always")
+                        }
+
+                        Logger.d("Location permission denied always")
                     }
                 )
             }
         }
     }
+
 
 
     private suspend fun initializeCountriesList(selectedCountryCode: String) {
@@ -109,6 +122,8 @@ class FeedScreenModel(
         }
     }
 
+
+    //TODO - country code is optional and should be removed from the initial call
     private suspend fun fetchArticles(country: String) {
         _uiState.value = FeedUIState.Loading
         _uiState.value = when (val result = newsRepository.getNewsArticles(country)) {

@@ -63,7 +63,6 @@ kotlin {
             implementation(compose.ui)
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
-            implementation(libs.androidx.lifecycle.viewmodel)
             implementation(libs.androidx.lifecycle.runtime.compose)
             implementation(libs.coil.compose)
             implementation(libs.coil.network)
@@ -91,7 +90,6 @@ kotlin {
         commonTest.dependencies {
             implementation(kotlin("test"))
             implementation(libs.kotlinx.coroutines.test)
-//            implementation(libs.kotlin.test.junit)
         }
         iosMain.dependencies {
             implementation(libs.ktor.client.darwin)

@@ -15,6 +15,8 @@ import nick.mirosh.newsappkmp.location.LocationProvider
 import nick.mirosh.newsappkmp.location.ReverseGeocodingService
 import nick.mirosh.newsappkmp.location.IosReverseGeocodingService
 import nick.mirosh.newsappkmp.repository.createIosDataStore
+import nick.mirosh.newsappkmp.ui.utils.DialogProvider
+import nick.mirosh.newsappkmp.ui.utils.IosDialogProvider
 import org.koin.dsl.bind
 import org.koin.dsl.module
 import platform.Foundation.NSDocumentDirectory
@@ -26,6 +28,8 @@ actual fun createPlatformHttpClient(): HttpClient {
 }
 
 val iOSModule = module {
+
+    factory { IosDialogProvider() } bind DialogProvider::class
     factory { HttpClient(Darwin) }
 
     single { PermissionsControllerIOS() } bind PermissionsController::class

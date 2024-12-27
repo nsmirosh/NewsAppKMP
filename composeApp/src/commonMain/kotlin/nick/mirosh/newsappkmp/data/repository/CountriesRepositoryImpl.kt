@@ -2,6 +2,9 @@ package nick.mirosh.newsappkmp.data.repository
 
 import co.touchlab.kermit.Logger
 import kotlinproject.composeapp.generated.resources.Res
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.IO
+import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
 import nick.mirosh.newsapp.domain.Result
 import nick.mirosh.newsappkmp.data.model.CountryDTO
@@ -12,7 +15,7 @@ const val jsonFileName = "countries.json"
 
 class CountriesRepositoryImpl(
     private val json: Json
-): CountriesRepository {
+) : CountriesRepository {
 
     @OptIn(ExperimentalResourceApi::class)
     override suspend fun getCountries() =
