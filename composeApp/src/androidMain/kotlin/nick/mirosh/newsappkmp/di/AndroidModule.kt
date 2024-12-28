@@ -53,9 +53,9 @@ val androidModule = module {
 
 //    factory { (activity: ComponentActivity) -> AndroidDialogProvider(activity) } bind DialogProvider::class
 
-    scope<MainActivity> {
-        scoped { AndroidDialogProvider(androidContext()) } bind DialogProvider::class
-    }
+//    scope<MainActivity> {
+//        scoped { AndroidDialogProvider(androidContext()) } bind DialogProvider::class
+//    }
 }
 
 

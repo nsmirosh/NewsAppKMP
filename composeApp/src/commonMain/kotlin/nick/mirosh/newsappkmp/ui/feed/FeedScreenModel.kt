@@ -22,6 +22,26 @@ import nick.mirosh.newsappkmp.location.LocationProvider
 import nick.mirosh.newsappkmp.location.ReverseGeocodingService
 import nick.mirosh.newsappkmp.ui.utils.DialogProvider
 
+val CATEGORIES = listOf(
+    "business",
+    "crime",
+    "domestic",
+    "education",
+    "entertainment",
+    "environment",
+    "food",
+    "health",
+    "lifestyle",
+    "other",
+    "politics",
+    "science",
+    "sports",
+    "technology",
+    "top",
+    "tourism",
+    "world"
+)
+
 class FeedScreenModel(
     private val newsRepository: NewsRepository,
     private val locationProvider: LocationProvider,
@@ -29,7 +49,7 @@ class FeedScreenModel(
     private val dataStoreRepository: DataStoreRepository,
     private val countriesRepository: CountriesRepository,
     private val permissionsManager: PermissionManager,
-    private val dialogProvider: DialogProvider
+//    private val dialogProvider: DialogProvider
 ) : ScreenModel {
 
     private val _articles = mutableStateListOf<Article>()
@@ -44,7 +64,6 @@ class FeedScreenModel(
     init {
         screenModelScope.launch {
             dataStoreRepository.isFirstLaunch().collect { isFirstLaunch ->
-
                 if (!isFirstLaunch) {
                     dataStoreRepository.getSelectedCountryCode().collect { countryCode ->
                         initializeCountriesList(countryCode)
@@ -71,12 +90,13 @@ class FeedScreenModel(
                         Logger.d("Location permission denied")
                     },
                     onAlwaysDenied = {
-                        dialogProvider.showDialog(
-                            "Location permission denied",
-                            "Please enable location permissions in settings for better experience"
-                        ) {
-                            Logger.d("Location permission denied always")
-                        }
+                        //TODO this should be called from Composable
+//                        dialogProvider.showDialog(
+//                            "Location permission denied",
+//                            "Please enable location permissions in settings for better experience"
+//                        ) {
+//                            Logger.d("Location permission denied always")
+//                        }
 
                         Logger.d("Location permission denied always")
                     }
@@ -85,7 +105,13 @@ class FeedScreenModel(
         }
     }
 
-
+    fun onCategoryClick(category: Category) {
+        screenModelScope.launch {
+            dataStoreRepository.getSelectedCountryCode().collect { countryCode ->
+                fetchArticles(countryCode, category)
+            }
+        }
+    }
 
     private suspend fun initializeCountriesList(selectedCountryCode: String) {
         when (val result = countriesRepository.getCountries()) {
@@ -124,20 +150,23 @@ class FeedScreenModel(
 
 
     //TODO - country code is optional and should be removed from the initial call
-    private suspend fun fetchArticles(country: String) {
+    private suspend fun fetchArticles(country: String? = null, category: Category? = null) {
         _uiState.value = FeedUIState.Loading
-        _uiState.value = when (val result = newsRepository.getNewsArticles(country)) {
-            is Result.Success -> {
-                _articles.clear()
-                _articles.addAll(result.data)
-                if (result.data.isNotEmpty()) FeedUIState.Feed(articles) else FeedUIState.Empty
-            }
+        _uiState.value =
+            when (val result = newsRepository.getNewsArticles(country, category?.name)) {
+                is Result.Success -> {
+                    _articles.clear()
+                    _articles.addAll(result.data)
+                    if (result.data.isNotEmpty()) FeedUIState.Feed(
+                        articles,
+                        CATEGORIES.map { Category(it) }) else FeedUIState.Empty
+                }
 
-            is Result.Error -> {
-                Logger.e("error = ${result.throwable.message}")
-                FeedUIState.FetchingArticlesFailed
+                is Result.Error -> {
+                    Logger.e("error = ${result.throwable.message}")
+                    FeedUIState.FetchingArticlesFailed
+                }
             }
-        }
     }
 
     fun onLikeClick(article: Article) {

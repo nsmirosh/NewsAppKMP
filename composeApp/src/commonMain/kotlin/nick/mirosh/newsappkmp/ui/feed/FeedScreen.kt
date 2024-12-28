@@ -6,6 +6,7 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -18,6 +19,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
@@ -42,7 +44,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.platform.testTag
@@ -67,7 +68,6 @@ import org.jetbrains.compose.resources.painterResource
 @Composable
 fun FeedScreen(
     onArticleClick: (Article) -> Unit,
-    onLikeClick: (Article) -> Unit,
     modifier: Modifier = Modifier,
     screenModel: FeedScreenModel
 ) {
@@ -130,8 +130,9 @@ fun FeedScreen(
         content = { padding ->
             FeedScreenContent(
                 uiState = uiState,
-                onArticleClick = { onArticleClick(it) },
-                onLikeClick = { onLikeClick(it) },
+                onArticleClick = onArticleClick,
+                onLikeClick = { screenModel.onLikeClick(it) },
+                onCategoryClicked = { screenModel.onCategoryClick(it) },
                 modifier = modifier.padding(padding).fillMaxSize()
             )
         },
@@ -153,9 +154,6 @@ class FeedScreenVoyager : Screen {
                     DetailsScreen(it)
                 )
             },
-            onLikeClick = {
-                screenModel.onLikeClick(it)
-            }
         )
     }
 }
@@ -165,59 +163,93 @@ fun FeedScreenContent(
     uiState: FeedUIState,
     onArticleClick: (Article) -> Unit,
     onLikeClick: (Article) -> Unit,
+    onCategoryClicked: (Category) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    with(uiState) {
-        when (this) {
-            is FeedUIState.Feed ->
-                ArticleFeed(
-                    modifier = modifier,
-                    articles = articles,
-                    onArticleClick = onArticleClick,
-                    onLikeClick = onLikeClick
-                )
+    Scaffold(
+        modifier = modifier,
+        content = {
+            with(uiState) {
+                when (this) {
+                    is FeedUIState.Feed ->
+                        Feed(
+                            modifier = modifier.padding(top = 16.dp, start = 16.dp, end = 16.dp),
+                            articles = articles,
+                            categories = categories,
+                            onArticleClick = onArticleClick,
+                            onLikeClick = onLikeClick,
+                            onCategoryClicked = onCategoryClicked
+                        )
 
-            is FeedUIState.Error -> {
+                    is FeedUIState.Error -> {
 
+                    }
+
+                    else -> {
+
+                    }
+                }
             }
 
-            else -> {
-
-            }
-        }
-    }
+        },
+    )
 }
 
 
 @Composable
-fun ArticleFeed(
-    modifier: Modifier = Modifier,
+fun Feed(
     articles: List<Article>,
+    categories: List<Category>,
     onArticleClick: (Article) -> Unit,
     onLikeClick: (Article) -> Unit,
+    onCategoryClicked: (Category) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
+
     var isVisible by remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
         isVisible = true
     }
 
-    AnimatedVisibility(
-        visible = isVisible,
-        enter = fadeIn(),
-        exit = fadeOut(),
-    ) {
-        Scaffold(
-            modifier = modifier,
-            content = {
-                FeedList(
-                    modifier = Modifier.padding(top = 16.dp, start = 16.dp, end = 16.dp),
-                    articles = articles,
-                    onArticleClick = onArticleClick,
-                    onLikeClick = onLikeClick
-                )
-            },
-        )
+    Column {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .horizontalScroll(rememberScrollState())
+                .padding(horizontal = 16.dp),
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+
+        ) {
+            categories.forEach { category ->
+                OutlinedButton(
+                    onClick = { onCategoryClicked(category) },
+                    shape = RoundedCornerShape(16.dp),
+                    modifier = Modifier.shadow(4.dp)
+                ) {
+                    Text(
+                        text = category.name,
+                        style = TextStyle(
+                            fontSize = 14.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+                    )
+                }
+            }
+
+        }
+        AnimatedVisibility(
+            visible = isVisible,
+            enter = fadeIn(),
+            exit = fadeOut(),
+        ) {
+            FeedList(
+                articles = articles,
+                onArticleClick = onArticleClick,
+                onLikeClick = onLikeClick,
+                modifier = modifier
+            )
+        }
     }
 }
 
@@ -242,7 +274,6 @@ fun FeedList(
         }
     }
 }
-
 
 @Composable
 fun SaveButton(
@@ -293,6 +324,7 @@ fun ArticleItem(
                     .width(150.dp)
                     .padding(start = 16.dp)
                     .clip(shape = RoundedCornerShape(8.dp))
+
                 //If we're not in Preview mode
                 if (!LocalInspectionMode.current) {
                     AsyncImage(

@@ -20,8 +20,8 @@ import kotlinproject.composeapp.generated.resources.Res
 import kotlinproject.composeapp.generated.resources.no_saved_articles
 import nick.mirosh.newsapp.domain.feed.model.Article
 import nick.mirosh.newsappkmp.ui.article.DetailsScreen
+import nick.mirosh.newsappkmp.ui.feed.Feed
 import nick.mirosh.newsappkmp.ui.feed.FeedList
-import org.jetbrains.compose.resources.getString
 import org.jetbrains.compose.resources.stringResource
 
 

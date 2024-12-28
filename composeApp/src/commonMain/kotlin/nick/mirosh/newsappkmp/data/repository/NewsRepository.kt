@@ -14,9 +14,12 @@ class NewsRepositoryImpl(
     private val newRemoteDataSource: NewsRemoteDataSource,
     private val newsLocalDataSource: ArticleDao,
 ) : NewsRepository {
-    override suspend fun getNewsArticles(country: String): Result<List<Article>> {
+    override suspend fun getNewsArticles(
+        country: String?,
+        category: String?
+    ): Result<List<Article>> {
         try {
-            newRemoteDataSource.getHeadlines(country).let { articleDtos ->
+            newRemoteDataSource.getHeadlines(country, category).let { articleDtos ->
                 val databaseArticles = articleDtos
                     .filterNot { it.duplicate ?: false }
                     .map { it.asDatabaseModel() }
@@ -37,7 +40,7 @@ class NewsRepositoryImpl(
 
     override fun getFavoriteArticles() =
         newsLocalDataSource.getLikedArticles().map { articles ->
-                Result.Success(articles?.map { it.asDomainModel() } ?: listOf())
+            Result.Success(articles?.map { it.asDomainModel() } ?: listOf())
         }
 
     override suspend fun updateArticle(article: Article) =

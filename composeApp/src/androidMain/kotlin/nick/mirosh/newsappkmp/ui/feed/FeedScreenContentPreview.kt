@@ -10,7 +10,7 @@ import nick.mirosh.newsapp.domain.feed.model.Article
 @Preview(showBackground = true)
 @Composable
 fun FeedScreenContentPreview() {
-    FeedList(
+    Feed(
         modifier = Modifier.padding(16.dp),
         articles = listOf(
             Article(
@@ -31,7 +31,9 @@ fun FeedScreenContentPreview() {
                 publishedAt = "2024-11-21T10:47:00Z",
             ),
         ),
+        categories = listOf(Category("business"), Category("politics")),
         onArticleClick = {},
-        onLikeClick = {}
+        onLikeClick = {},
+        onCategoryClicked = {},
     )
 }

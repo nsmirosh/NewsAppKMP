@@ -5,7 +5,7 @@ import nick.mirosh.newsapp.domain.Result
 import nick.mirosh.newsapp.domain.feed.model.Article
 
 interface NewsRepository {
-    suspend fun getNewsArticles(country: String): Result<List<Article>>
+    suspend fun getNewsArticles(country: String?, category: String?): Result<List<Article>>
     fun getFavoriteArticles(): Flow<Result<List<Article>>>
     suspend fun updateArticle(article: Article): Result<Article>
 }

@@ -29,7 +29,7 @@ actual fun createPlatformHttpClient(): HttpClient {
 
 val iOSModule = module {
 
-    factory { IosDialogProvider() } bind DialogProvider::class
+//    factory { IosDialogProvider() } bind DialogProvider::class
     factory { HttpClient(Darwin) }
 
     single { PermissionsControllerIOS() } bind PermissionsController::class
