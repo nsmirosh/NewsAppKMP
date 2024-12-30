@@ -19,5 +19,4 @@ class NewsRemoteDataSourceImpl(private val client: HttpClient) : NewsRemoteDataS
     ): List<ArticleDTO> {
         return client.get(Latest(country, category)).body<ApiResponse>().articles!!
     }
-
 }

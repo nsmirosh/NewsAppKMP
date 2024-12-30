@@ -24,22 +24,22 @@ import nick.mirosh.newsappkmp.ui.utils.DialogProvider
 
 val CATEGORIES = listOf(
     "business",
-    "crime",
-    "domestic",
+    "world",
     "education",
     "entertainment",
     "environment",
     "food",
     "health",
+    "domestic",
     "lifestyle",
-    "other",
+    "crime",
     "politics",
     "science",
     "sports",
     "technology",
     "top",
     "tourism",
-    "world"
+    "other",
 )
 
 class FeedScreenModel(
@@ -60,6 +60,8 @@ class FeedScreenModel(
 
     private val _allCountries = MutableStateFlow<List<Country>?>(null)
     val allCountries: StateFlow<List<Country>?> = _allCountries.asStateFlow()
+
+    var selectedCategory: String? = null
 
     init {
         screenModelScope.launch {
@@ -106,6 +108,7 @@ class FeedScreenModel(
     }
 
     fun onCategoryClick(category: Category) {
+        selectedCategory = category.name
         screenModelScope.launch {
             dataStoreRepository.getSelectedCountryCode().collect { countryCode ->
                 fetchArticles(countryCode, category)
@@ -157,9 +160,18 @@ class FeedScreenModel(
                 is Result.Success -> {
                     _articles.clear()
                     _articles.addAll(result.data)
-                    if (result.data.isNotEmpty()) FeedUIState.Feed(
-                        articles,
-                        CATEGORIES.map { Category(it) }) else FeedUIState.Empty
+                    if (result.data.isNotEmpty()) {
+                        FeedUIState.Feed(
+                            articles = articles,
+                            categories = CATEGORIES.map { categoryString ->
+                                Category(
+                                    name = categoryString,
+                                    selected = selectedCategory == categoryString
+                                )
+                            })
+                    } else {
+                        FeedUIState.Empty
+                    }
                 }
 
                 is Result.Error -> {

@@ -63,6 +63,9 @@ import kotlinx.datetime.LocalDateTime
 import nick.mirosh.newsapp.domain.feed.model.Article
 import nick.mirosh.newsappkmp.ui.article.DetailsScreen
 import nick.mirosh.newsappkmp.ui.country.CountryDialog
+import nick.mirosh.newsappkmp.ui.theme.DarkGray
+import nick.mirosh.newsappkmp.ui.theme.Highlight
+import nick.mirosh.newsappkmp.ui.theme.LightGray
 import org.jetbrains.compose.resources.painterResource
 
 @Composable
@@ -221,19 +224,27 @@ fun Feed(
             horizontalArrangement = Arrangement.spacedBy(8.dp)
 
         ) {
+
             categories.forEach { category ->
-                OutlinedButton(
-                    onClick = { onCategoryClicked(category) },
-                    shape = RoundedCornerShape(16.dp),
-                    modifier = Modifier.shadow(4.dp)
+                Box(
+                    modifier = Modifier
+                        .background(
+                            color = if (category.selected) Highlight else LightGray,
+                            shape = RoundedCornerShape(16.dp)
+                        )
+                        .padding(8.dp)
+                        .clickable {
+                            onCategoryClicked(category)
+                        },
                 ) {
                     Text(
                         text = category.name,
                         style = TextStyle(
-                            fontSize = 14.sp,
-                            fontWeight = FontWeight.Bold
+                            fontSize = 16.sp,
+                            color = if (category.selected) Color.White else DarkGray,
                         )
                     )
+
                 }
             }
 
@@ -388,9 +399,6 @@ fun ArticleItem(
 
 fun formatDateTime(dateString: String) =
     try {
-//        DateTimeComponents.Formats.ISO_DATE_TIME_OFFSET
-//        val formattedDateString =
-
         LocalDateTime.parse(dateString.replace(" ", "T")).run {
             "${
                 month.name.lowercase().replaceFirstChar { it.uppercase() }
@@ -400,35 +408,3 @@ fun formatDateTime(dateString: String) =
         e.printStackTrace()
         ""
     }
-//fun NoNetworkState() {
-//    Column(
-//        modifier = Modifier.fillMaxSize(),
-//        horizontalAlignment = Alignment.CenterHorizontally,
-//        verticalArrangement = Arrangement.Center
-//    ) {
-//        Image(
-//            modifier = Modifier
-//                .testTag("no_network_connection_image")
-//                .padding(horizontal = 54.dp),
-//            painter = painterResource(id = R.drawable.wifi),
-//            contentDescription = "Network connection",
-//            alignment = Alignment.Center
-//        )
-//        Spacer(modifier = Modifier.height(24.dp))
-//        Text(
-//            modifier = Modifier
-//                .padding(start = 32.dp, end = 32.dp, top = 16.dp, bottom = 0.dp),
-//            text = stringResource(R.string.no_network_connection),
-//            textAlign = TextAlign.Center,
-//            fontSize = 18.sp
-//        )
-//    }
-//}
-
-//@Preview
-//@Composable
-//fun NoNetworkStatePreview() {
-//    NewsAppTheme {
-//        NoNetworkState()
-//    }
-//}

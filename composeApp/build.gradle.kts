@@ -50,13 +50,12 @@ kotlin {
             implementation(libs.ktor.client.okhttp)
             implementation(libs.kotlinx.coroutines.android)
             implementation(libs.androidx.ui.android)
-            implementation(libs.androidx.material3.android)
             implementation(libs.androidx.core.i18n)
             implementation(libs.play.services.location)
         }
         commonMain.dependencies {
             implementation(compose.runtime)
-
+            implementation(libs.androidx.material3.android)
             implementation(libs.kotlinx.datetime)
             implementation(compose.foundation)
             implementation(compose.material)
