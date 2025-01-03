@@ -1,8 +1,5 @@
 package nick.mirosh.newsappkmp.ui.feed
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -23,9 +20,9 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
-import androidx.compose.material.OutlinedButton
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
@@ -33,8 +30,9 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Place
+import androidx.compose.material.pullrefresh.pullRefresh
+import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -42,7 +40,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalInspectionMode
@@ -61,6 +58,7 @@ import kotlinproject.composeapp.generated.resources.Res
 import kotlinproject.composeapp.generated.resources.compose_multiplatform
 import kotlinx.datetime.LocalDateTime
 import nick.mirosh.newsapp.domain.feed.model.Article
+import nick.mirosh.newsappkmp.domain.feed.model.Country
 import nick.mirosh.newsappkmp.ui.article.DetailsScreen
 import nick.mirosh.newsappkmp.ui.country.CountryDialog
 import nick.mirosh.newsappkmp.ui.theme.DarkGray
@@ -74,61 +72,16 @@ fun FeedScreen(
     modifier: Modifier = Modifier,
     screenModel: FeedScreenModel
 ) {
-
     val uiState by screenModel.uiState.collectAsStateWithLifecycle()
     val countries by screenModel.allCountries.collectAsStateWithLifecycle()
 
-    var countriesClicked by remember { mutableStateOf(false) }
-    if (countriesClicked) {
-        countries?.let {
-            CountryDialog(
-                countries = it,
-                onCountryClicked = { selectedCountryCode ->
-                    screenModel.saveCountry(selectedCountryCode)
-                    countriesClicked = false
-                },
-                onDismissRequest = { countriesClicked = false }
-            )
-        }
-    }
     Scaffold(
         topBar = {
-            TopAppBar(
-                backgroundColor = Color.White,
-                elevation = 8.dp,
-            ) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(8.dp)
-                ) {
-                    Button(
-                        colors = ButtonDefaults.buttonColors(
-                            backgroundColor = Color.Gray,
-                            contentColor = Color.White
-                        ),
-                        modifier = Modifier.align(Alignment.TopEnd),
-                        onClick = { countriesClicked = !countriesClicked },
-                    ) {
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.SpaceBetween
-                        ) {
-                            Icon(
-                                imageVector = Icons.Default.Place,
-                                contentDescription = "Select Country",
-                                tint = Color.White
-                            )
-
-                            Text(
-                                modifier = Modifier.padding(start = 8.dp),
-                                text = countries?.first { it.selected }?.name ?: "Select Country"
-                            )
-                        }
-                    }
-                }
-            }
-
+            TopBar(
+                countries = countries,
+                onCountryClicked = { screenModel.saveCountry(it) },
+                modifier = modifier
+            )
         },
         content = { padding ->
             FeedScreenContent(
@@ -140,6 +93,65 @@ fun FeedScreen(
             )
         },
     )
+}
+
+@Composable
+fun TopBar(
+    countries: List<Country>? = null,
+    onCountryClicked: (String) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+
+    var countriesClicked by remember { mutableStateOf(false) }
+    if (countriesClicked) {
+        countries?.let {
+            CountryDialog(
+                countries = it,
+                onCountryClicked = { selectedCountryCode ->
+                    onCountryClicked(selectedCountryCode)
+                    countriesClicked = false
+                },
+                onDismissRequest = { countriesClicked = false }
+            )
+        }
+    }
+
+    TopAppBar(
+        backgroundColor = Color.White,
+        elevation = 8.dp,
+    ) {
+
+        Box(
+            modifier = modifier
+                .fillMaxWidth()
+                .padding(8.dp)
+        ) {
+            Button(
+                colors = ButtonDefaults.buttonColors(
+                    backgroundColor = Color.Gray,
+                    contentColor = Color.White
+                ),
+                modifier = Modifier.align(Alignment.TopEnd),
+                onClick = { countriesClicked = !countriesClicked },
+            ) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Place,
+                        contentDescription = "Select Country",
+                        tint = Color.White
+                    )
+
+                    Text(
+                        modifier = Modifier.padding(start = 8.dp),
+                        text = countries?.first { it.selected }?.name ?: "Select Country"
+                    )
+                }
+            }
+        }
+    }
 }
 
 
@@ -161,6 +173,7 @@ class FeedScreenVoyager : Screen {
     }
 }
 
+
 @Composable
 fun FeedScreenContent(
     uiState: FeedUIState,
@@ -169,36 +182,38 @@ fun FeedScreenContent(
     onCategoryClicked: (Category) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Scaffold(
-        modifier = modifier,
-        content = {
-            with(uiState) {
-                when (this) {
-                    is FeedUIState.Feed ->
-                        Feed(
-                            modifier = modifier.padding(top = 16.dp, start = 16.dp, end = 16.dp),
-                            articles = articles,
-                            categories = categories,
-                            onArticleClick = onArticleClick,
-                            onLikeClick = onLikeClick,
-                            onCategoryClicked = onCategoryClicked
-                        )
+    Box(modifier = modifier.fillMaxSize()) {
+        with(uiState) {
+            when (this) {
+                is FeedUIState.Feed ->
+                    Feed(
+                        modifier = modifier.padding(top = 16.dp, start = 16.dp, end = 16.dp),
+                        articles = articles,
+                        categories = categories,
+                        onArticleClick = onArticleClick,
+                        onLikeClick = onLikeClick,
+                        onCategoryClicked = onCategoryClicked
+                    )
 
-                    is FeedUIState.Error -> {
+                is FeedUIState.Loading -> NativeLoader(
+                    modifier = Modifier.align(Alignment.Center)
+                )
 
-                    }
+                is FeedUIState.Error -> {
 
-                    else -> {
+                }
 
-                    }
+                else -> {
+
                 }
             }
+        }
+    }
 
-        },
-    )
 }
 
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun Feed(
     articles: List<Article>,
@@ -208,60 +223,63 @@ fun Feed(
     onCategoryClicked: (Category) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-
-    var isVisible by remember { mutableStateOf(false) }
-
-    LaunchedEffect(Unit) {
-        isVisible = true
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+    ) {
+        CategoriesList(
+            categories = categories,
+            onCategoryClicked = onCategoryClicked,
+        )
+        FeedList(
+            articles = articles,
+            onArticleClick = onArticleClick,
+            onLikeClick = onLikeClick,
+            modifier = modifier
+        )
     }
+}
 
-    Column {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .horizontalScroll(rememberScrollState())
-                .padding(horizontal = 16.dp),
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
+@Composable
+fun CategoriesList(
+    categories: List<Category>,
+    onCategoryClicked: (Category) -> Unit,
+    modifier: Modifier = Modifier,
+) {
 
-        ) {
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .horizontalScroll(rememberScrollState())
+            .padding(horizontal = 16.dp),
+        horizontalArrangement = Arrangement.spacedBy(8.dp)
 
-            categories.forEach { category ->
-                Box(
-                    modifier = Modifier
-                        .background(
-                            color = if (category.selected) Highlight else LightGray,
-                            shape = RoundedCornerShape(16.dp)
-                        )
-                        .padding(8.dp)
-                        .clickable {
-                            onCategoryClicked(category)
-                        },
-                ) {
-                    Text(
-                        text = category.name,
-                        style = TextStyle(
-                            fontSize = 16.sp,
-                            color = if (category.selected) Color.White else DarkGray,
-                        )
+    ) {
+        categories.forEach { category ->
+            Box(
+                modifier = Modifier
+                    .background(
+                        color = if (category.selected) Highlight else LightGray,
+                        shape = RoundedCornerShape(16.dp)
                     )
+                    .padding(8.dp)
+                    .clickable {
+                        onCategoryClicked(category)
+                    },
+            ) {
+                Text(
+                    text = category.name,
+                    style = TextStyle(
+                        fontSize = 16.sp,
+                        color = if (category.selected) Color.White else DarkGray,
+                    )
+                )
 
-                }
             }
+        }
 
-        }
-        AnimatedVisibility(
-            visible = isVisible,
-            enter = fadeIn(),
-            exit = fadeOut(),
-        ) {
-            FeedList(
-                articles = articles,
-                onArticleClick = onArticleClick,
-                onLikeClick = onLikeClick,
-                modifier = modifier
-            )
-        }
     }
+
 }
 
 

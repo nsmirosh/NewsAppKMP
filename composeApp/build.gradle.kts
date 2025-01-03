@@ -52,10 +52,12 @@ kotlin {
             implementation(libs.androidx.ui.android)
             implementation(libs.androidx.core.i18n)
             implementation(libs.play.services.location)
+            implementation (libs.accompanist.swiperefresh)
+
+            implementation(libs.androidx.material3.android)
         }
         commonMain.dependencies {
             implementation(compose.runtime)
-            implementation(libs.androidx.material3.android)
             implementation(libs.kotlinx.datetime)
             implementation(compose.foundation)
             implementation(compose.material)
@@ -86,6 +88,7 @@ kotlin {
             implementation(libs.room.sqlite)
             implementation(libs.androidx.datastore.preferences)
             implementation(libs.ktor.resources)
+
 
         }
         commonTest.dependencies {
