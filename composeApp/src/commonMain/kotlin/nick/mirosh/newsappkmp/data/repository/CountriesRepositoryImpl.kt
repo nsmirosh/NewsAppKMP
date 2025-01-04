@@ -2,8 +2,12 @@ package nick.mirosh.newsappkmp.data.repository
 
 import co.touchlab.kermit.Logger
 import kotlinproject.composeapp.generated.resources.Res
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
 import nick.mirosh.newsapp.domain.Result
@@ -14,15 +18,18 @@ import org.jetbrains.compose.resources.ExperimentalResourceApi
 const val jsonFileName = "countries.json"
 
 class CountriesRepositoryImpl(
-    private val json: Json
+    private val json: Json,
+    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : CountriesRepository {
 
     @OptIn(ExperimentalResourceApi::class)
     override suspend fun getCountries() =
         try {
-            val readBytes = Res.readBytes("files/$jsonFileName")
-            val jsonData = readBytes.decodeToString()
-            val dtos = json.decodeFromString<List<CountryDTO>>(jsonData)
+            val dtos = withContext(ioDispatcher) {
+                val readBytes = Res.readBytes("files/$jsonFileName")
+                val jsonData = readBytes.decodeToString()
+                json.decodeFromString<List<CountryDTO>>(jsonData)
+            }
             Result.Success(dtos.map { it.toDomain() })
         } catch (e: Exception) {
             e.printStackTrace()

@@ -26,7 +26,8 @@ object KoinContainer {
                     appModule,
                     dataModule,
                     networkModule,
-                    repositoryModule
+                    repositoryModule,
+                    dispatchersModule
                 )
             }
         }
