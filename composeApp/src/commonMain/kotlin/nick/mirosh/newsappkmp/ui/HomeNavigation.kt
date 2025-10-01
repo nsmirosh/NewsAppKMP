@@ -23,9 +23,9 @@ import cafe.adriel.voyager.navigator.tab.Tab
 import cafe.adriel.voyager.navigator.tab.TabDisposable
 import cafe.adriel.voyager.navigator.tab.TabNavigator
 import cafe.adriel.voyager.navigator.tab.TabOptions
-import kotlinproject.composeapp.generated.resources.Res
-import kotlinproject.composeapp.generated.resources.home
-import kotlinproject.composeapp.generated.resources.saved
+import completekmpcourseapp.composeapp.generated.resources.Res
+import completekmpcourseapp.composeapp.generated.resources.home
+import completekmpcourseapp.composeapp.generated.resources.saved
 import nick.mirosh.newsappkmp.ui.favorite.FavoriteScreenVoyager
 import nick.mirosh.newsappkmp.ui.feed.FeedScreenVoyager
 import org.jetbrains.compose.resources.stringResource

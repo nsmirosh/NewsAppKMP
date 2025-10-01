@@ -32,6 +32,7 @@ voyager = "1.1.0-beta03"
 coreI18n = "1.0.0-alpha01"
 ksp = "2.1.0-1.0.29"
 sqlite = "2.5.0-alpha12"
+buildkonfig = "0.17.1"
 
 
 [libraries]
@@ -101,7 +102,8 @@ jetbrainsCompose = { id = "org.jetbrains.compose", version.ref = "compose-plugin
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
-buildConfig = { id = "com.github.gmazzo.buildconfig", version.ref = "gmazzoBuildConfig" }
+#buildConfig = { id = "com.github.gmazzo.buildconfig", version.ref = "gmazzoBuildConfig" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+buildkonfig = { id = "com.codingfeline.buildkonfig", version.ref = "buildkonfig" }
 
 

@@ -17,8 +17,8 @@ import androidx.compose.ui.graphics.Color
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
-import kotlinproject.composeapp.generated.resources.Res
-import kotlinproject.composeapp.generated.resources.back
+import completekmpcourseapp.composeapp.generated.resources.Res
+import completekmpcourseapp.composeapp.generated.resources.back
 import nick.mirosh.newsapp.domain.feed.model.Article
 import nick.mirosh.newsappkmp.ui.favorite.PlatformWebView
 import nick.mirosh.newsappkmp.ui.feed.NativeLoader

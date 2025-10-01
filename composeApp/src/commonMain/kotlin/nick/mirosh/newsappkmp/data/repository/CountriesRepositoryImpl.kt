@@ -1,7 +1,7 @@
 package nick.mirosh.newsappkmp.data.repository
 
 import co.touchlab.kermit.Logger
-import kotlinproject.composeapp.generated.resources.Res
+import completekmpcourseapp.composeapp.generated.resources.Res
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
@@ -20,6 +20,8 @@ class CountriesRepositoryImpl(
     @OptIn(ExperimentalResourceApi::class, ExperimentalStdlibApi::class)
     override suspend fun getCountries() =
         try {
+            //generate a counter function
+            
             val dtos = withContext(ioDispatcher) {
                 val dispatcher = coroutineContext[CoroutineDispatcher]?.toString() ?: "Unknown Dispatcher"
                 Logger.d("Reading countries from resources in dispatcher with CoroutineDispatcher: $dispatcher")

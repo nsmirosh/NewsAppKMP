@@ -54,8 +54,8 @@ import cafe.adriel.voyager.koin.koinScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import coil3.compose.AsyncImage
-import kotlinproject.composeapp.generated.resources.Res
-import kotlinproject.composeapp.generated.resources.compose_multiplatform
+import completekmpcourseapp.composeapp.generated.resources.Res
+import completekmpcourseapp.composeapp.generated.resources.compose_multiplatform
 import kotlinx.datetime.LocalDateTime
 import nick.mirosh.newsapp.domain.feed.model.Article
 import nick.mirosh.newsappkmp.domain.feed.model.Country
@@ -417,12 +417,18 @@ fun ArticleItem(
 
 fun formatDateTime(dateString: String) =
     try {
+        Ingredient("", "")
         LocalDateTime.parse(dateString.replace(" ", "T")).run {
             "${
                 month.name.lowercase().replaceFirstChar { it.uppercase() }
-            } $dayOfMonth, $year $hour:${minute?.let { if (it > 9) minute else "0$minute" }}"
+            } $dayOfMonth, $year $hour:${minute.let { if (it > 9) minute else "0$minute" }}"
         }
     } catch (e: Exception) {
         e.printStackTrace()
         ""
     }
+
+data class Ingredient(
+    val name: String,
+    val quantity: String
+)

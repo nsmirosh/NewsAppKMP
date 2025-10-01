@@ -1,6 +1,5 @@
 package nick.mirosh.newsappkmp.di
 
-import KotlinProject.composeApp.BuildConfig
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.defaultRequest
@@ -13,6 +12,7 @@ import io.ktor.http.URLProtocol
 import io.ktor.http.path
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
+import nick.mirosh.newsappkmp.BuildKonfig
 import org.koin.dsl.module
 
 
@@ -39,7 +39,7 @@ val networkModule = module {
                     protocol = URLProtocol.HTTPS
                     host = "newsdata.io"
                     path("api/1/")
-                    parameters.append("apikey", BuildConfig.API_KEY)
+                    parameters.append("apikey", BuildKonfig.API_KEY)
                 }
             }
         }

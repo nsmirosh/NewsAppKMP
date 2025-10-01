@@ -7,3 +7,7 @@ interface LocationProvider {
 }
 
 data class LocationData(val latitude: Double, val longitude: Double)
+
+
+
+//expect fun getLocationProvider(): LocationProvider

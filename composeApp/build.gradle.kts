@@ -1,6 +1,7 @@
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import java.util.Properties
+import com.codingfeline.buildkonfig.compiler.FieldSpec.Type.STRING
 
 plugins {
     alias(libs.plugins.serialization)
@@ -8,16 +9,9 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsCompose)
     alias(libs.plugins.compose.compiler)
-    alias(libs.plugins.buildConfig)
     alias(libs.plugins.ksp)
     id("org.kodein.mock.mockmp") version "2.0.0"
-}
-
-val properties = Properties()
-properties.load(project.rootProject.file("local.properties").inputStream())
-
-buildConfig {
-    buildConfigField("API_KEY", properties.getProperty("API_KEY"))
+    alias(libs.plugins.buildkonfig)
 }
 
 kotlin {
@@ -52,7 +46,7 @@ kotlin {
             implementation(libs.androidx.ui.android)
             implementation(libs.androidx.core.i18n)
             implementation(libs.play.services.location)
-            implementation (libs.accompanist.swiperefresh)
+            implementation(libs.accompanist.swiperefresh)
 
             implementation(libs.androidx.material3.android)
         }
@@ -101,6 +95,21 @@ kotlin {
     }
 }
 
+val properties = Properties()
+properties.load(project.rootProject.file("local.properties").inputStream())
+
+buildkonfig {
+    packageName = "nick.mirosh.newsappkmp"
+
+    defaultConfigs {
+        buildConfigField(STRING, "API_KEY", "release")
+    }
+
+    defaultConfigs("dev") {
+        buildConfigField(STRING, "API_KEY", "develop")
+    }
+}
+
 mockmp {
     onTest {
         withHelper()
@@ -126,6 +135,7 @@ android {
     buildTypes {
         getByName("release") {
             isMinifyEnabled = false
+            signingConfig = signingConfigs.getByName("debug")
         }
     }
     buildFeatures {

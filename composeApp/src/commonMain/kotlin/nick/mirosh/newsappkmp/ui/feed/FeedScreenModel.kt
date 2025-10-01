@@ -4,13 +4,12 @@ import androidx.compose.runtime.mutableStateListOf
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
 import co.touchlab.kermit.Logger
-import kotlinproject.composeapp.generated.resources.Res
-import kotlinproject.composeapp.generated.resources.save_article_error
+import completekmpcourseapp.composeapp.generated.resources.Res
+import completekmpcourseapp.composeapp.generated.resources.save_article_error
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import nick.mirosh.newsapp.domain.Result
 import nick.mirosh.newsapp.domain.feed.model.Article
 import nick.mirosh.newsappkmp.data.manager.PermissionManager

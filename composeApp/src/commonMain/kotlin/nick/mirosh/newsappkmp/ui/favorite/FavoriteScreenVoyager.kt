@@ -16,8 +16,8 @@ import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.koinScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
-import kotlinproject.composeapp.generated.resources.Res
-import kotlinproject.composeapp.generated.resources.no_saved_articles
+import completekmpcourseapp.composeapp.generated.resources.Res
+import completekmpcourseapp.composeapp.generated.resources.no_saved_articles
 import nick.mirosh.newsapp.domain.feed.model.Article
 import nick.mirosh.newsappkmp.ui.article.DetailsScreen
 import nick.mirosh.newsappkmp.ui.feed.Feed
