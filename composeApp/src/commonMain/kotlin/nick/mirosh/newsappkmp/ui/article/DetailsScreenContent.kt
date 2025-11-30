@@ -14,30 +14,17 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import cafe.adriel.voyager.core.screen.Screen
-import cafe.adriel.voyager.navigator.LocalNavigator
-import cafe.adriel.voyager.navigator.currentOrThrow
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import completekmpcourseapp.composeapp.generated.resources.Res
 import completekmpcourseapp.composeapp.generated.resources.back
-import nick.mirosh.newsapp.domain.feed.model.Article
 import nick.mirosh.newsappkmp.ui.favorite.PlatformWebView
 import nick.mirosh.newsappkmp.ui.feed.NativeLoader
 import org.jetbrains.compose.resources.painterResource
 
-class DetailsScreen(private val article: Article) : Screen {
-    @Composable
-    override fun Content() {
-        NativeLoader()
-        val navigator = LocalNavigator.currentOrThrow
-        DetailsScreenContent(article = article, onBackClick = {
-            navigator.pop()
-        })
-    }
-}
-
 @Composable
-fun DetailsScreenContent(
-    article: Article,
+fun DetailsScreen(
+    url: String,
     onBackClick: () -> Unit = {},
     modifier: Modifier = Modifier,
 ) {
@@ -63,7 +50,7 @@ fun DetailsScreenContent(
                 modifier = modifier.fillMaxSize()
             ) {
                 PlatformWebView(
-                    url = article.url,
+                    url = url,
                     startedLoading = { isLoading = true },
                     finishedLoading = { isLoading = false },
                 )

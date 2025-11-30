@@ -6,6 +6,7 @@ android-minSdk = "24"
 android-targetSdk = "34"
 androidx-activityCompose = "1.9.3"
 androidx-lifecycle = "2.8.4"
+androidx-navigation = "2.8.0-alpha08"
 compose-plugin = "1.7.1"
 composeWebviewMultiplatform = "1.9.40-alpha04"
 datastorePreferences = "1.1.1"
@@ -28,7 +29,6 @@ coroutines = "1.10.1"
 
 kotlinx-serialization = "1.7.3"
 gmazzoBuildConfig = "5.5.0"
-voyager = "1.1.0-beta03"
 coreI18n = "1.0.0-alpha01"
 ksp = "2.1.0-1.0.29"
 sqlite = "2.5.0-alpha12"
@@ -54,10 +54,7 @@ androidx-datastore-preferences = { module = "androidx.datastore:datastore-prefer
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinxDatetime" }
 
 #navigation and state management
-voyager-navigator = { module = "cafe.adriel.voyager:voyager-navigator", version.ref = "voyager" }
-voyager-screenModel = { module = "cafe.adriel.voyager:voyager-screenmodel", version.ref = "voyager" }
-voyager-tabNavigator = { module = "cafe.adriel.voyager:voyager-tab-navigator", version.ref = "voyager" }
-voyager-koin = { module = "cafe.adriel.voyager:voyager-koin", version.ref = "voyager" }
+androidx-navigation-compose = { group = "org.jetbrains.androidx.navigation", name = "navigation-compose", version.ref = "androidx-navigation" }
 
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activityCompose" }
 androidx-lifecycle-runtime-compose = { group = "org.jetbrains.androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "androidx-lifecycle" }

@@ -1,16 +1,16 @@
 package nick.mirosh.newsappkmp.ui.favorite
 
-import cafe.adriel.voyager.core.model.ScreenModel
-import cafe.adriel.voyager.core.model.screenModelScope
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import nick.mirosh.newsapp.domain.Result
 import nick.mirosh.newsappkmp.domain.feed.repository.NewsRepository
 
-class FavoriteArticlesScreenModel(
+class FavoriteArticlesViewModel(
     private val repository: NewsRepository,
-) : ScreenModel {
+) : ViewModel() {
 
     val uiState = repository.getFavoriteArticles().map { result ->
         when (result) {
@@ -25,7 +25,7 @@ class FavoriteArticlesScreenModel(
         }
     }
         .stateIn(
-            screenModelScope,
+            viewModelScope,
             SharingStarted.WhileSubscribed(),
             FavoriteArticlesUIState.Loading
         )

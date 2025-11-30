@@ -12,8 +12,8 @@ import kotlinx.coroutines.test.setMain
 import nick.mirosh.newsapp.domain.Result
 import nick.mirosh.newsapp.domain.feed.model.Article
 import nick.mirosh.newsappkmp.domain.feed.repository.NewsRepository
-import nick.mirosh.newsappkmp.ui.favorite.FavoriteArticlesScreenModel
 import nick.mirosh.newsappkmp.ui.favorite.FavoriteArticlesUIState
+import nick.mirosh.newsappkmp.ui.favorite.FavoriteArticlesViewModel
 import org.kodein.mock.Mocker
 import org.kodein.mock.UsesMocks
 import org.kodein.mock.generated.mock
@@ -60,7 +60,7 @@ class FeedScreenModelTest {
         )
 
         val result = mutableListOf<FavoriteArticlesUIState>()
-        val model = FavoriteArticlesScreenModel(repository)
+        val model = FavoriteArticlesViewModel(repository)
 
         val job = launch {
             model.uiState.take(2).toList(result)

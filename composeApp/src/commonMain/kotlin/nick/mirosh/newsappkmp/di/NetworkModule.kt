@@ -39,7 +39,7 @@ val networkModule = module {
                     protocol = URLProtocol.HTTPS
                     host = "newsdata.io"
                     path("api/1/")
-                    parameters.append("apikey", BuildKonfig.API_KEY)
+                    parameters.append("apikey", "pub_61495345b7845c5781a05995c599d8b04fbb8")
                 }
             }
         }

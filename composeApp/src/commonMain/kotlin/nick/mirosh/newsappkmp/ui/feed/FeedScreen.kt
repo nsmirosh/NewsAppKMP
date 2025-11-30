@@ -49,17 +49,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import cafe.adriel.voyager.core.screen.Screen
-import cafe.adriel.voyager.koin.koinScreenModel
-import cafe.adriel.voyager.navigator.LocalNavigator
-import cafe.adriel.voyager.navigator.currentOrThrow
 import coil3.compose.AsyncImage
 import completekmpcourseapp.composeapp.generated.resources.Res
 import completekmpcourseapp.composeapp.generated.resources.compose_multiplatform
 import kotlinx.datetime.LocalDateTime
 import nick.mirosh.newsapp.domain.feed.model.Article
 import nick.mirosh.newsappkmp.domain.feed.model.Country
-import nick.mirosh.newsappkmp.ui.article.DetailsScreen
 import nick.mirosh.newsappkmp.ui.country.CountryDialog
 import nick.mirosh.newsappkmp.ui.theme.DarkGray
 import nick.mirosh.newsappkmp.ui.theme.Highlight
@@ -70,16 +65,16 @@ import org.jetbrains.compose.resources.painterResource
 fun FeedScreen(
     onArticleClick: (Article) -> Unit,
     modifier: Modifier = Modifier,
-    screenModel: FeedScreenModel
+    viewModel: FeedViewModel
 ) {
-    val uiState by screenModel.uiState.collectAsStateWithLifecycle()
-    val countries by screenModel.allCountries.collectAsStateWithLifecycle()
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val countries by viewModel.allCountries.collectAsStateWithLifecycle()
 
     Scaffold(
         topBar = {
             TopBar(
                 countries = countries,
-                onCountryClicked = { screenModel.saveCountry(it) },
+                onCountryClicked = { viewModel.saveCountry(it) },
                 modifier = modifier
             )
         },
@@ -87,8 +82,8 @@ fun FeedScreen(
             FeedScreenContent(
                 uiState = uiState,
                 onArticleClick = onArticleClick,
-                onLikeClick = { screenModel.onLikeClick(it) },
-                onCategoryClicked = { screenModel.onCategoryClick(it) },
+                onLikeClick = { viewModel.onLikeClick(it) },
+                onCategoryClicked = { viewModel.onCategoryClick(it) },
                 modifier = modifier.padding(padding).fillMaxSize()
             )
         },
@@ -154,24 +149,6 @@ fun TopBar(
     }
 }
 
-
-class FeedScreenVoyager : Screen {
-
-    @Composable
-    override fun Content() {
-        val screenModel = koinScreenModel<FeedScreenModel>()
-        val navigator = LocalNavigator.currentOrThrow
-
-        FeedScreen(
-            screenModel = screenModel,
-            onArticleClick = {
-                navigator.push(
-                    DetailsScreen(it)
-                )
-            },
-        )
-    }
-}
 
 
 @Composable

@@ -1,8 +1,8 @@
 package nick.mirosh.newsappkmp.ui.feed
 
 import androidx.compose.runtime.mutableStateListOf
-import cafe.adriel.voyager.core.model.ScreenModel
-import cafe.adriel.voyager.core.model.screenModelScope
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import co.touchlab.kermit.Logger
 import completekmpcourseapp.composeapp.generated.resources.Res
 import completekmpcourseapp.composeapp.generated.resources.save_article_error
@@ -42,7 +42,7 @@ val CATEGORIES = listOf(
     "other",
 )
 
-class FeedScreenModel(
+class FeedViewModel(
     private val newsRepository: NewsRepository,
     private val locationProvider: LocationProvider,
     private val reverseGeocodingService: ReverseGeocodingService,
@@ -50,7 +50,7 @@ class FeedScreenModel(
     private val countriesRepository: CountriesRepository,
     private val permissionsManager: PermissionManager,
 //    private val dialogProvider: DialogProvider
-) : ScreenModel {
+) : ViewModel() {
 
     private val _articles = mutableStateListOf<Article>()
     val articles: List<Article> = _articles
@@ -64,7 +64,7 @@ class FeedScreenModel(
     var selectedCategory: String? = null
 
     init {
-        screenModelScope.launch {
+        viewModelScope.launch {
             dataStoreRepository.isFirstLaunch().collect { isFirstLaunch ->
                 if (!isFirstLaunch) {
                     dataStoreRepository.getSelectedCountryCode().collect { countryCode ->
@@ -109,7 +109,7 @@ class FeedScreenModel(
 
     fun onCategoryClick(category: Category) {
         selectedCategory = category.name
-        screenModelScope.launch {
+        viewModelScope.launch {
             dataStoreRepository.getSelectedCountryCode().collect { countryCode ->
                 fetchArticles(countryCode, category)
             }
@@ -138,7 +138,7 @@ class FeedScreenModel(
 
 
     fun saveCountry(countryCode: String) {
-        screenModelScope.launch {
+        viewModelScope.launch {
             dataStoreRepository.saveSelectedCountryCode(countryCode)
         }
     }
@@ -182,7 +182,7 @@ class FeedScreenModel(
     }
 
     fun onLikeClick(article: Article) {
-        screenModelScope.launch {
+        viewModelScope.launch {
             val result = newsRepository.updateArticle(article.copy(liked = !article.liked))
             when (result) {
                 is Result.Success -> {

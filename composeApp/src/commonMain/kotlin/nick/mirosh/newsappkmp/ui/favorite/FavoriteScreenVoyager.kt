@@ -1,6 +1,5 @@
 package nick.mirosh.newsappkmp.ui.favorite
 
-
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -12,41 +11,26 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import cafe.adriel.voyager.core.screen.Screen
-import cafe.adriel.voyager.koin.koinScreenModel
-import cafe.adriel.voyager.navigator.LocalNavigator
-import cafe.adriel.voyager.navigator.currentOrThrow
 import completekmpcourseapp.composeapp.generated.resources.Res
 import completekmpcourseapp.composeapp.generated.resources.no_saved_articles
 import nick.mirosh.newsapp.domain.feed.model.Article
-import nick.mirosh.newsappkmp.ui.article.DetailsScreen
-import nick.mirosh.newsappkmp.ui.feed.Feed
 import nick.mirosh.newsappkmp.ui.feed.FeedList
 import org.jetbrains.compose.resources.stringResource
 
-
-class FavoriteScreenVoyager : Screen {
-
-    override val key = "favorite"
-
-    @Composable
-    override fun Content() {
-        val navigator = LocalNavigator.currentOrThrow
-        val screenModel = koinScreenModel<FavoriteArticlesScreenModel>()
-        FavoriteArticlesScreenContent(
-            viewModel = screenModel,
-            onArticleClick = {
-                navigator.push(
-                    DetailsScreen(it)
-                )
-            },
-        )
-    }
+@Composable
+fun FavoriteScreen(
+    viewModel: FavoriteArticlesViewModel,
+    onArticleClick: (Article) -> Unit,
+) {
+    FavoriteArticlesScreenContent(
+        viewModel = viewModel,
+        onArticleClick = onArticleClick
+    )
 }
 
 @Composable
 fun FavoriteArticlesScreenContent(
-    viewModel: FavoriteArticlesScreenModel,
+    viewModel: FavoriteArticlesViewModel,
     onArticleClick: (Article) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -63,10 +47,8 @@ fun FavoriteArticlesScreenContent(
                 )
 
             is FavoriteArticlesUIState.Loading -> {}
-//                LoadingProgressBar()
 
             is FavoriteArticlesUIState.Failed -> {}
-//                FailedMessage(message = "Could not load favorite articles")
 
             is FavoriteArticlesUIState.FavoriteArticlesEmpty -> NoArticles()
         }
