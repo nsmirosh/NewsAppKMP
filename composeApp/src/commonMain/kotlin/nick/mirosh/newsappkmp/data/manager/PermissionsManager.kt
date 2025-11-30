@@ -5,6 +5,7 @@ import dev.icerock.moko.permissions.DeniedAlwaysException
 import dev.icerock.moko.permissions.Permission
 import dev.icerock.moko.permissions.PermissionState
 import dev.icerock.moko.permissions.PermissionsController
+import dev.icerock.moko.permissions.location.COARSE_LOCATION
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -29,6 +30,7 @@ class PermissionManager(private val permissionsController: PermissionsController
 
         //TODO: Hack to overcome the moko libraries' bug for ios first-time permission request
         scope.launch {
+
             while (permissionsController.getPermissionState(Permission.COARSE_LOCATION) != PermissionState.Granted) {
                 delay(200)
             }

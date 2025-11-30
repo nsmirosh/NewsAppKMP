@@ -10,7 +10,6 @@ plugins {
     alias(libs.plugins.jetbrainsCompose)
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.ksp)
-    id("org.kodein.mock.mockmp") version "2.0.0"
     alias(libs.plugins.buildkonfig)
 }
 
@@ -47,8 +46,9 @@ kotlin {
             implementation(libs.androidx.core.i18n)
             implementation(libs.play.services.location)
             implementation(libs.accompanist.swiperefresh)
-
             implementation(libs.androidx.material3.android)
+
+
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -78,7 +78,9 @@ kotlin {
             implementation(libs.room.runtime)
             implementation(libs.room.sqlite)
             implementation(libs.androidx.datastore.preferences)
+
             implementation(libs.ktor.resources)
+            implementation(libs.material.icons.core)
 
 
         }
@@ -107,11 +109,11 @@ buildkonfig {
     }
 }
 
-mockmp {
-    onTest {
-        withHelper()
-    }
-}
+//mockmp {
+//    onTest {
+//        withHelper()
+//    }
+//}
 
 android {
     namespace = "nick.mirosh.newsappkmp"
@@ -147,6 +149,8 @@ android {
 dependencies {
     // compose multiplatform
     commonMainApi(libs.moko.permissions)
+    commonMainImplementation(libs.moko.permissions.location)
+
     ksp(libs.room.compiler)
     debugImplementation(compose.uiTooling)
 }
